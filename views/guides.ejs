@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('partials/head') %>
+    <style>
+        .guide-section {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        .guide-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .step-number {
+            display: inline-block;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 40px;
+            font-weight: bold;
+            margin-right: 1rem;
+        }
+
+        .step-content {
+            display: inline-block;
+            vertical-align: top;
+        }
+
+        .step-content a {
+            color: #a855f7; /* Purple-500 */
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .step-content a:hover {
+            color: #7e22ce; /* Darker purple */
+        }
+
+        .discord-link {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, #7289da 0%, #5865f2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .discord-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(114, 137, 218, 0.3);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .guide-section {
+                padding: 1rem;
+            }
+
+            .step-number {
+                width: 30px;
+                height: 30px;
+                line-height: 30px;
+                margin-right: 0.5rem;
+            }
+
+            .step-content h3 {
+                font-size: 1.25rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .guide-section {
+                padding: 0.5rem;
+            }
+
+            .step-number {
+                width: 25px;
+                height: 25px;
+                line-height: 25px;
+                margin-right: 0.25rem;
+            }
+
+            .step-content h3 {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white min-h-screen font-sans">
+    <%- include('partials/nav') %>
+
+    <section class="container mx-auto px-4 py-24">
+        <h1 class="text-4xl md:text-5xl font-bold text-center mb-8 bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-orange-500">
+            Installation Guide
+        </h1>
+        <p class="text-xl text-gray-400 text-center mb-12">
+            Follow these steps to install and join the Tokyo Modded MC server.
+        </p>
+
+        <!-- Step 1 -->
+        <div class="guide-section">
+            <div class="step-number">1</div>
+            <div class="step-content">
+                <h3 class="text-xl font-bold mb-2">Download and Install Forge</h3>
+                <p class="text-gray-400">
+                    Download and install the Forge version specified in the mod pack. You can find the required Forge version in the mod pack description.
+                    <code>minecraft version: 1.20.1</code>
+                    <code>forge version    : 47.3.22</code>
+                </p>
+            </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="guide-section">
+            <div class="step-number">2</div>
+            <div class="step-content">
+                <h3 class="text-xl font-bold mb-2">Download the Mod Pack</h3>
+                <p class="text-gray-400">
+                    Download the mod pack from the <a href="https://mods.tokyomc.fun/mods" target="_blank">Click Here to download</a>.
+                </p>
+            </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="guide-section">
+            <div class="step-number">3</div>
+            <div class="step-content">
+                <h3 class="text-xl font-bold mb-2">Install the Mod Pack</h3>
+                <p class="text-gray-400">
+                    Extract the downloaded mod pack and place all the files in your Minecraft <code>mods</code> folder. The <code>mods</code> folder can be found in your Minecraft directory.
+                </p>
+            </div>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="guide-section">
+            <div class="step-number">4</div>
+            <div class="step-content">
+                <h3 class="text-xl font-bold mb-2">Launch Minecraft</h3>
+                <p class="text-gray-400">
+                    Launch Minecraft using the Forge profile and ensure all mods are loaded correctly. If any mods are missing, double-check the <code>mods</code> folder.
+                </p>
+            </div>
+        </div>
+
+        <!-- Step 5 -->
+        <div class="guide-section">
+            <div class="step-number">5</div>
+            <div class="step-content">
+                <h3 class="text-xl font-bold mb-2">Join the Server</h3>
+                <p class="text-gray-400">
+                    Go to <strong>Multiplayer</strong>, add the server <code>modded.tokyomc.fun</code>, and join the Tokyo Modded MC community!
+                </p>
+            </div>
+        </div>
+
+        <!-- Help Section -->
+        <div class="text-center mt-12">
+            <p class="text-gray-400 mb-4">Need help? Join the Tokyo MC Discord for support!</p>
+            <a href="https://discord.gg/zZtMR4PWwE" target="_blank" class="discord-link">
+                Join Discord
+            </a>
+        </div>
+    </section>
+
+    <%- include('partials/footer') %>
+</body>
+</html>

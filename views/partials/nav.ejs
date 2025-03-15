@@ -1,0 +1,77 @@
+<nav class="fixed w-full z-50 bg-gray-900/90 backdrop-blur-md border-b border-gray-800">
+    <div class="container mx-auto px-4 py-4">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-8">
+                <a href="/" class="text-2xl font-bold text-emerald-500">Vazha MC</a>
+                <!-- Desktop Navigation Links -->
+                <div class="hidden md:flex space-x-6">
+                    <a href="/" class="nav-link py-2">Home</a>
+                    <a href="/staff" class="nav-link py-2">Staffs</a>
+                    <a href="/guides" class="nav-link py-2">Guides</a>
+                    <a href="https://discord.gg/zZtMR4PWwE" class="nav-link py-2">Discord</a>
+                </div>
+            </div>
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-button" class="md:hidden text-emerald-500 focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path class="line line-1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16" />
+                    <path class="line line-2" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 12h16" />
+                    <path class="line line-3" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 18h16" />
+                </svg>
+            </button>
+        </div>
+        <!-- Mobile Navigation Links -->
+        <div id="mobile-menu" class="md:hidden hidden mt-4 space-y-2">
+            <a href="/" class="block nav-link py-2">Home</a>
+            <a href="/staff" class="block nav-link py-2">Mod Packs</a>
+            <a href="/guides" class="block nav-link py-2">Guides</a>
+            <a href="https://discord.gg/zZtMR4PWwE" class="block nav-link py-2">Discord</a>
+        </div>
+    </div>
+</nav>
+
+<style>
+    .nav-link {
+        @apply text-gray-300 hover:text-emerald-500 transition-colors duration-200;
+    }
+
+    #mobile-menu-button .line {
+        transition: all 0.3s ease;
+    }
+
+    #mobile-menu-button.open .line-1 {
+        transform: rotate(45deg) translate(5px, 5px);
+    }
+
+    #mobile-menu-button.open .line-2 {
+        opacity: 0;
+    }
+
+    #mobile-menu-button.open .line-3 {
+        transform: rotate(-45deg) translate(5px, -5px);
+    }
+
+    #mobile-menu {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease-out;
+    }
+
+    #mobile-menu.open {
+        max-height: 300px;
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuButton.addEventListener('click', function() {
+            this.classList.toggle('open');
+            mobileMenu.classList.toggle('hidden');
+            mobileMenu.classList.toggle('open');
+        });
+    });
+</script>
+

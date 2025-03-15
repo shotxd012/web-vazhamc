@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('partials/head') %>
+    <style>
+        .staff-card {
+            background-color: #1F2937;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .staff-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(15, 190, 29, 0.2);
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white min-h-screen font-sans">
+    <%- include('partials/nav') %>
+    
+    <section class="hero-gradient min-h-screen flex items-center justify-center pt-16">
+        <div class="container mx-auto px-4 py-20 text-center">
+            <h1 class="text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-green-700">
+                Meet Our Staff
+            </h1>
+            <p class="text-xl text-gray-300 mb-12">
+                Our dedicated team ensures the best experience for players.
+            </p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <% staffs.forEach(staff => { %>
+                <div class="staff-card rounded-xl p-6 text-center">
+                    <img src="<%= staff.avatar %>" alt="<%= staff.name %>" class="w-24 h-24 rounded-full mx-auto mb-4">
+                    <h3 class="text-xl font-bold mb-2"><%= staff.name %></h3>
+                    <p class="text-gray-400"><%= staff.position %></p>
+                    <p class="text-gray-500 mb-4">Top Roles: <%= staff.roles.join(', ') %></p>
+                    <a href="https://discord.com/users/<%= staff.id %>" target="_blank" class="bg-emerald-600 hover:bg-emerald-700 px-4 py-2 rounded-lg text-lg font-medium transition-colors transform hover:scale-105">
+                        Contact
+                    </a>
+                </div>
+                <% }); %>
+            </div>
+        </div>
+    </section>
+    
+    <%- include('partials/footer') %>
+</body>
+</html>

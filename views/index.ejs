@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('partials/head') %>
+    <style>
+        .loading-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #111827;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease-out;
+        }
+
+        .loading-content {
+            text-align: center;
+        }
+
+        .loading-text {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-top: 1rem;
+            background: linear-gradient(to right, #10B981, #064E3B);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        #loading-svg {
+            width: 150px;
+            height: 150px;
+        }
+
+        .hide-loading {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .hero-gradient {
+            background: linear-gradient(to bottom, #111827, #0F172A);
+        }
+        
+        .game-mode-card {
+            background-color: #1F2937;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .game-mode-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.2);
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white min-h-screen font-sans">
+    <div id="loading" class="loading-container">
+        <div class="loading-content">
+            <svg id="loading-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" style="stop-color:#10B981;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#064E3B;stop-opacity:1" />
+                    </linearGradient>
+                </defs>
+                <path fill="none" stroke="url(#gradient)" stroke-width="4" stroke-dasharray="42.76482137044271 42.76482137044271" d="M24.3 30C11.4 30 5 43.3 5 50s6.4 20 19.3 20c19.3 0 32.1-40 51.4-40 C88.6 30 95 43.3 95 50s-6.4 20-19.3 20C56.4 70 43.6 30 24.3 30z">
+                    <animate attributeName="stroke-dashoffset" repeatCount="indefinite" dur="2s" keyTimes="0;1" values="0;256.58892822265625"></animate>
+                </path>
+                <circle cx="50" cy="50" r="20" fill="url(#gradient)">
+                    <animate attributeName="r" repeatCount="indefinite" dur="2s" keyTimes="0;0.5;1" values="20;25;20"></animate>
+                </circle>
+            </svg>
+            <div class="loading-text">VAZHA MC</div>
+        </div>
+    </div>
+
+    <div id="content" style="display: none;">
+        <%- include('partials/nav') %>
+
+        <section id="home" class="hero-gradient min-h-screen flex items-center justify-center pt-16">
+            <div class="container mx-auto px-4 py-32 text-center">
+                <h1 class="text-5xl md:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-green-700">
+                    Welcome to Vazha MC
+                </h1>
+                <p class="text-xl md:text-2xl mb-8 text-gray-300">
+                    Experience enhanced Minecraft gameplay with our curated mod packs
+                </p>
+                <div class="flex justify-center space-x-4">
+                    <button id="play-now" class="bg-emerald-600 hover:bg-emerald-700 px-8 py-3 rounded-lg text-lg font-medium transition-colors transform hover:scale-105">
+                        Play Now
+                    </button>
+                    <a href="https://discord.gg/zZtMR4PWwE" target="_blank" class="bg-gray-800 hover:bg-gray-700 px-8 py-3 rounded-lg text-lg font-medium transition-colors transform hover:scale-105">
+                        Join Discord
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="modespacks" class="py-20 bg-gray-900">
+            <div class="container mx-auto px-4">
+                <h2 class="text-4xl font-bold text-center mb-12 animate-fade-in">Our Modes Packs</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="game-mode-card rounded-xl p-6 text-center animate-fade-in delay-100">
+                        <div class="w-16 h-16 mx-auto mb-4 bg-emerald-500 rounded-lg flex items-center justify-center">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Create Mod</h3>
+                        <p class="text-gray-400">Unleash your creativity with advanced contraptions and engineering marvels!</p>
+                    </div>
+                    <div class="game-mode-card rounded-xl p-6 text-center animate-fade-in delay-200">
+                        <div class="w-16 h-16 mx-auto mb-4 bg-green-600 rounded-lg flex items-center justify-center">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 2L3 14h7l-1 8 10-12h-7l1-8z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Create Addition</h3>
+                        <p class="text-gray-400">Electric Motor: Generates kinetic energy from Forge Energy, provides a ComputerCraft peripheral!</p>
+                    </div>
+                    <div class="game-mode-card rounded-xl p-6 text-center animate-fade-in delay-300">
+                        <div class="w-16 h-16 mx-auto mb-4 bg-emerald-400 rounded-lg flex items-center justify-center">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 8h12M6 12h12m-6 4h6" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Drawer</h3>
+                        <p class="text-gray-400">Organize your resources efficiently with functional storage solutions!</p>
+                    </div>
+                    <div class="game-mode-card rounded-xl p-6 text-center animate-fade-in delay-100">
+                        <div class="w-16 h-16 mx-auto mb-4 bg-green-500 rounded-lg flex items-center justify-center">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 21V9a2 2 0 012-2h14a2 2 0 012 2v12M3 21h18M3 21l9-9 9 9M9 21v-6h6v6" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">FramedBlocks</h3>
+                        <p class="text-gray-400">FramedBlocks adds blocks of various shapes that can be made to look like almost any other block in the game!</p>
+                    </div>
+                    <div class="game-mode-card rounded-xl p-6 text-center animate-fade-in delay-200">
+                        <div class="w-16 h-16 mx-auto mb-4 bg-emerald-600 rounded-lg flex items-center justify-center">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Easy Villager</h3>
+                        <p class="text-gray-400">Simplify villager management with intuitive and convenient tools!</p>
+                    </div>
+                    <div class="game-mode-card rounded-xl p-6 text-center animate-fade-in delay-300">
+                        <div class="w-16 h-16 mx-auto mb-4 bg-green-700 rounded-lg flex items-center justify-center">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2l4 7H8l4-7zm0 11a4 4 0 110 8 4 4 0 010-8z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">More</h3>
+                        <p class="text-gray-400">Discover additional features and enhancements to elevate your gameplay!</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="py-20 bg-gray-800">
+            <div class="container mx-auto px-4 text-center">
+                <h2 class="text-4xl font-bold mb-12">Server Status</h2>
+                <div class="inline-flex items-center space-x-2 bg-gray-900 px-6 py-3 rounded-lg">
+                    <span class="w-3 h-3 bg-emerald-500 rounded-full"></span>
+                    <span class="text-lg">Online - Join now play.vazha.fun</span>
+                </div>
+            </div>
+        </section>
+            
+        <%- include('partials/footer') %>
+    </div>
+
+    <script>
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                const loadingElement = document.getElementById('loading');
+                const contentElement = document.getElementById('content');
+                loadingElement.classList.add('hide-loading');
+                contentElement.style.display = 'block';
+                setTimeout(function() {
+                    loadingElement.style.display = 'none';
+                }, 500);
+            }, 2000);
+        });
+
+        document.getElementById('play-now').addEventListener('click', function() {
+            const serverIP = 'play.vazha.fun';
+
+            navigator.clipboard.writeText(serverIP).then(() => {
+                alert('Server IP copied to clipboard: ' + serverIP);
+            }).catch(err => {
+                console.error('Failed to copy server IP: ', err);
+                alert('Failed to copy server IP. Please try again.');
+            });
+        });
+    </script>
+</body>
+</html>
+
