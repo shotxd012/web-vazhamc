@@ -80,11 +80,14 @@ app.get('/', (req, res) => {
 
 app.get('/login', passport.authenticate('discord'));
 
-app.get('/callback', passport.authenticate('discord', {
+app.get('/auth/discord', passport.authenticate('discord'));
+
+app.get('/auth/discord/callback', passport.authenticate('discord', {
     failureRedirect: '/'
 }), (req, res) => {
     res.redirect('/profile');
 });
+
 
 app.get('/logout', (req, res) => {
     req.logout(() => {
