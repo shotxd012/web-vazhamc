@@ -10,6 +10,24 @@ app.set('view engine', 'ejs');
 
 app.use(express.static('public'));
 
+app.get('/', (req, res) => {
+    res.render('index');
+});
+
+app.get('/guides', (req, res) => {
+    res.render('guides');
+});
+
+app.get('/rules', (req, res) => {
+    res.render('rules');
+});
+
+app.get('/staff', async (req, res) => {
+    const staffs = await getStaffDetails();
+    res.render('staff', { staffs });
+});
+
+
 // Discord bot setup
 const bot = new Client({
     intents: [
@@ -51,23 +69,6 @@ async function getStaffDetails() {
         return [];
     }
 }
-
-app.get('/', (req, res) => {
-    res.render('index');
-});
-
-app.get('/guides', (req, res) => {
-    res.render('guides');
-});
-
-app.get('/rules', (req, res) => {
-    res.render('rules');
-});
-
-app.get('/staff', async (req, res) => {
-    const staffs = await getStaffDetails();
-    res.render('staff', { staffs });
-});
 
 // Listen for requests :)
 const PORT = process.env.PORT || 3000;
