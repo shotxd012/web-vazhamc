@@ -110,6 +110,57 @@ const bot = new Client({
 
 bot.login(process.env.DISCORD_BOT_TOKEN);
 
+
+
+// message 
+
+mongoose.connect(process.env.MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+}).then(() => console.log("MongoDB Connected"))
+.catch(err => console.log("MongoDB Connection Error:", err));
+
+const MessageSchema = new mongoose.Schema({
+    userId: String,
+    username: String,
+    role: { type: String, default: "Member" },
+    avatar: String,
+    message: String,
+    timestamp: { type: Date, default: Date.now }
+});
+
+const Message = mongoose.model("Message", MessageSchema);
+
+app.post("/send-message", async (req, res) => {
+    if (!req.user) return res.status(401).json({ success: false, error: "Not logged in" });
+
+    try {
+        const newMessage = new Message({
+            userId: req.user.discordId,
+            username: req.user.username,
+            role: req.user.role || "Member",
+            avatar: req.user.avatar,
+            message: req.body.message
+        });
+
+        await newMessage.save();
+        res.json({ success: true });
+    } catch (err) {
+        console.error("Error saving message:", err);
+        res.status(500).json({ success: false });
+    }
+});
+
+app.get("/messages", async (req, res) => {
+    try {
+        const messages = await Message.find().sort({ timestamp: -1 }).limit(10);
+        res.json(messages);
+    } catch (err) {
+        res.status(500).json({ error: "Error fetching messages" });
+    }
+});
+
+
 // Start Server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

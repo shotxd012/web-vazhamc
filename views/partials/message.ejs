@@ -1,0 +1,56 @@
+<!-- Floating Message Button -->
+<button id="message-toggle" class="fixed bottom-5 right-5 bg-emerald-600 text-white p-4 rounded-full shadow-lg hover:bg-emerald-700">
+    💬
+</button>
+
+<!-- Message Box Container -->
+<div id="message-box" class="fixed bottom-16 right-5 bg-gray-800 text-white p-4 rounded-lg shadow-lg w-80 hidden">
+    <h2 class="text-lg font-semibold">Send a Message</h2>
+    
+    <% if (user) { %>
+        <div class="flex items-center space-x-2 mt-2">
+            <img src="https://cdn.discordapp.com/avatars/<%= user.discordId %>/<%= user.avatar %>.png" class="w-8 h-8 rounded-full" />
+            <span class="text-sm font-medium"><%= user.username %> [<%= user.role || 'Member' %>]</span>
+        </div>
+        
+        <textarea id="message-input" class="w-full mt-2 p-2 bg-gray-700 border border-gray-600 rounded-lg" placeholder="Type your message..."></textarea>
+        <button id="send-message" class="bg-emerald-600 w-full py-2 mt-2 rounded-lg hover:bg-emerald-700">Send</button>
+    
+    <% } else { %>
+        <p class="text-gray-400 text-sm mt-2">Please <a href="/login" class="text-emerald-400 hover:underline">log in</a> to send messages.</p>
+    <% } %>
+
+    <!-- Close Button -->
+    <button id="close-message" class="absolute top-2 right-2 text-gray-400 hover:text-gray-200">✖</button>
+</div>
+
+<script>
+    document.getElementById("message-toggle").addEventListener("click", () => {
+        document.getElementById("message-box").classList.toggle("hidden");
+    });
+
+    document.getElementById("close-message").addEventListener("click", () => {
+        document.getElementById("message-box").classList.add("hidden");
+    });
+
+    <% if (user) { %>
+    document.getElementById("send-message").addEventListener("click", async () => {
+        const message = document.getElementById("message-input").value;
+        if (!message.trim()) return alert("Message cannot be empty!");
+
+        const response = await fetch("/send-message", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ message })
+        });
+
+        const result = await response.json();
+        if (result.success) {
+            alert("Message sent!");
+            document.getElementById("message-input").value = "";
+        } else {
+            alert("Error sending message.");
+        }
+    });
+    <% } %>
+</script>
