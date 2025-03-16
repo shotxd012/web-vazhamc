@@ -5,17 +5,33 @@
 </head>
 <body class="bg-gray-900 text-white min-h-screen font-sans">
     <%- include('partials/nav') %>
-    
+
     <section class="py-20 bg-gray-800">
         <div class="container mx-auto px-4 py-32 text-center">
             <h1 class="text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-green-700">
                 User Profile
             </h1>
-            
+
             <div class="bg-gray-800 p-6 rounded-lg shadow-lg inline-block text-center">
-                <img src="https://cdn.discordapp.com/avatars/<%= user.discordId %>/<%= user.avatar %>.png" alt="Avatar" class="w-24 h-24 rounded-full mx-auto">
-                <h2 class="text-2xl font-bold mt-4"><%= user.username %></h2>
+                <img src="<%= discordDetails.avatar %>" alt="Avatar" class="w-24 h-24 rounded-full mx-auto">
+                <h2 class="text-2xl font-bold mt-4"><%= discordDetails.username %></h2>
                 <p class="text-lg text-gray-400">Role: <%= user.role %></p>
+
+                <div class="mt-4 text-left">
+                    <p class="text-md text-gray-300"><strong>Discord Roles:</strong></p>
+                    <ul class="text-gray-400">
+                        <% discordDetails.roles.forEach(role => { %>
+                            <li>- <%= role %></li>
+                        <% }); %>
+                    </ul>
+                </div>
+
+                <p class="text-lg text-gray-400 mt-2"><strong>Joined Server:</strong> <%= discordDetails.joinDate %></p>
+
+                <% if (discordDetails.isBooster) { %>
+                    <p class="text-lg text-purple-400 mt-2"><strong>💎 Nitro Booster</strong></p>
+                <% } %>
+
                 <a href="/logout" class="mt-4 inline-block bg-red-600 px-6 py-2 rounded-lg hover:bg-red-700">Logout</a>
             </div>
         </div>

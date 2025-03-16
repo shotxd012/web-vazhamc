@@ -17,6 +17,7 @@ bot.once('ready', () => {
     console.log(`✅ Bot Logged in as ${bot.user.tag}`);
 });
 
+// Function to fetch staff details
 async function getStaffDetails() {
     try {
         const guild = await bot.guilds.fetch(GUILD_ID);
@@ -46,4 +47,23 @@ async function getStaffDetails() {
     }
 }
 
-module.exports = { bot, getStaffDetails };
+// Function to fetch user information including Discord roles and join date
+async function getUserDetails(userId) {
+    try {
+        const guild = await bot.guilds.fetch(GUILD_ID);
+        const member = await guild.members.fetch(userId);
+
+        return {
+            username: member.user.username,
+            avatar: member.user.displayAvatarURL({ dynamic: true, size: 256 }),
+            roles: member.roles.cache.map(role => role.name),
+            joinDate: member.joinedAt.toDateString(),
+            isBooster: member.premiumSince ? true : false // Checks if user is boosting the server
+        };
+    } catch (error) {
+        console.error(`❌ Error fetching user details for ${userId}:`, error);
+        return null;
+    }
+}
+
+module.exports = { bot, getStaffDetails, getUserDetails };
