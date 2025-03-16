@@ -5,6 +5,8 @@ const connectDB = require("./config/database");
 const authRoutes = require("./routes/auth");
 const profileRoutes = require("./routes/profile");
 const messageRoutes = require("./routes/messages");
+const pageGuideRoutes = require("./routes/guides");
+const pageStaffRoutes = require("./routes/staff");
 
 require("dotenv").config();
 require("./config/passport");
@@ -31,6 +33,8 @@ app.use(passport.session());
 app.use(authRoutes);
 app.use(profileRoutes);
 app.use(messageRoutes);
+app.use(pageGuideRoutes);
+app.use(pageStaffRoutes);
 
 app.get("/", (req, res) => {
     res.render("index", { user: req.user });
