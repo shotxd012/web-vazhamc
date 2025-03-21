@@ -8,6 +8,7 @@ const messageRoutes = require("./routes/messages");
 const pageGuideRoutes = require("./routes/guides");
 const pageStaffRoutes = require("./routes/staff");
 const pageRulesRoutes = require("./routes/rules");
+const authShotRoutes = require("./routes/authShot");
 
 require("dotenv").config();
 require("./config/passport");
@@ -37,6 +38,7 @@ app.use(messageRoutes);
 app.use(pageGuideRoutes);
 app.use(pageStaffRoutes);
 app.use(pageRulesRoutes);
+app.use(authShotRoutes);
 
 app.get("/", (req, res) => {
     res.render("index", { user: req.user });
