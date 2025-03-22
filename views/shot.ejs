@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('partials/shot/head') %>
+</head>
+<body class="bg-dark-500 text-gray-200 h-screen flex flex-col">
+    <!-- Header -->
+    <%- include('partials/shot/header') %>
+
+    <!-- Main Content -->
+    <div class="flex flex-1">
+        <!-- Sidebar -->
+        <%- include('partials/shot/sidebar') %>
+
+        <!-- Content Area -->
+        <div class="flex-1 p-6">
+            <%- include('partials/shot/dashboard') %>
+            
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <%- include('partials/shot/footer') %>
+
+    <!-- Scripts -->
+    <%- include('partials/shot/scripts') %>
+</body>
+</html>
