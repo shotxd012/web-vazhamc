@@ -10,6 +10,7 @@ const pageStaffRoutes = require("./routes/staff");
 const pageRulesRoutes = require("./routes/rules");
 const authShotRoutes = require("./routes/authShot");
 const activityRoutes = require("./routes/activity");
+const shotUsersRoutes = require("./routes/shotUsers");
 
 require("dotenv").config();
 require("./config/passport");
@@ -42,6 +43,7 @@ app.use(pageStaffRoutes);
 app.use(pageRulesRoutes);
 app.use(authShotRoutes);
 app.use(activityRoutes);
+app.use(shotUsersRoutes);
 
 app.get("/", (req, res) => {
     res.render("index", { user: req.user });

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('partials/shot/head') %>
+</head>
+<body class="bg-dark-500 text-gray-200 h-screen flex flex-col">
+    <!-- Header -->
+    <%- include('partials/shot/header') %>
+
+    <!-- Main Content -->
+    <div class="flex flex-1">
+        <!-- Sidebar -->
+        <%- include('partials/shot/sidebar') %>
+
+        <!-- User Management Section -->
+        <div class="flex-1 p-6">
+            <h2 class="text-lg font-medium text-gray-200 mb-4">User Management</h2>
+
+            <table class="min-w-full bg-dark-500 border border-dark-200 rounded-lg">
+                <thead>
+                    <tr class="border-b border-dark-200">
+                        <th class="py-2 px-4 text-left text-sm font-medium text-gray-400">Username</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if (users && users.length > 0) { %>
+                        <% users.forEach(user => { %>
+                            <tr class="border-b border-dark-200">
+                                <td class="py-2 px-4 text-sm text-gray-300"><%= user.username %></td>
+                            </tr>
+                        <% }); %>
+                    <% } else { %>
+                        <tr>
+                            <td class="py-2 px-4 text-sm text-gray-500 text-center" colspan="1">No users found</td>
+                        </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <%- include('partials/shot/footer') %>
+
+    <!-- Scripts -->
+    <%- include('partials/shot/scripts') %>
+</body>
+</html>
