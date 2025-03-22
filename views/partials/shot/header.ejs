@@ -1,0 +1,43 @@
+<header class="flex items-center justify-between px-4 py-2 bg-dark-400 border-b border-dark-100">
+    <div class="flex items-center">
+        <span class="text-proxorange font-bold text-xl">SH</span>
+        <span class="text-proxblue font-bold text-xl">OT</span>
+        <span class="text-proxorange font-bold text-xl">XD</span>
+        <span class="ml-2 text-gray-400 text-sm">Virtual Environment</span>
+    </div>
+    <div class="flex items-center space-x-2">
+        <div class="relative">
+            <input type="text" placeholder="Search" class="w-64 h-8 bg-dark-300 border border-dark-100 rounded px-2 text-sm text-gray-200">
+            <svg class="absolute right-2 top-1.5 h-4 w-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+        </div>
+        <button class="h-8 px-3 bg-dark-300 border border-dark-100 rounded text-xs text-gray-200 flex items-center">
+            <svg class="h-4 w-4 mr-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+            </svg>
+            Documentation
+        </button>
+        <button class="h-8 px-3 bg-proxblue hover:bg-blue-700 border-none rounded text-xs text-white">
+            Create VM
+        </button>
+        <button class="h-8 px-3 bg-proxblue hover:bg-blue-700 border-none rounded text-xs text-white">
+            Create CT
+        </button>
+        <div class="relative">
+            <button id="user-menu-button" class="h-8 px-3 bg-dark-300 border border-dark-100 rounded text-xs text-gray-200 flex items-center">
+                <span class="mr-1"><%= user.username %></span>
+                <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M19 9l-7 7-7-7"></path>
+                </svg>
+            </button>
+            <div id="user-dropdown" class="absolute right-0 mt-1 w-48 bg-dark-400 border border-dark-100 rounded shadow-lg z-10 hidden">
+                <a href="/shot/logout" class="block px-4 py-2 text-sm text-gray-200 hover:bg-dark-200">
+                    Logout
+                </a>
+            </div>
+        </div>
+    </div>
+</header>

@@ -9,12 +9,14 @@ const pageGuideRoutes = require("./routes/guides");
 const pageStaffRoutes = require("./routes/staff");
 const pageRulesRoutes = require("./routes/rules");
 const authShotRoutes = require("./routes/authShot");
+const activityRoutes = require("./routes/activity");
 
 require("dotenv").config();
 require("./config/passport");
 
 const app = express();
 app.set("view engine", "ejs");
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static("public"));
 
@@ -39,6 +41,7 @@ app.use(pageGuideRoutes);
 app.use(pageStaffRoutes);
 app.use(pageRulesRoutes);
 app.use(authShotRoutes);
+app.use(activityRoutes);
 
 app.get("/", (req, res) => {
     res.render("index", { user: req.user });

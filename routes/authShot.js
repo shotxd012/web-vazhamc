@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const ShotUser = require("../models/ShotUser");
+const ActivityLog = require("../models/ActivityLog");
+const bcrypt = require("bcrypt");
 
 // Middleware to check authentication
 function authshot(req, res, next) {
@@ -11,8 +13,9 @@ function authshot(req, res, next) {
 }
 
 // Shot home page (requires authentication)
-router.get("/shot", authshot, (req, res) => {
-    res.render("shot", { user: req.session.user });
+router.get("/shot", authshot, async (req, res) => {
+    const recentActivities = await ActivityLog.find().sort({ timestamp: -1 }).limit(10);
+    res.render("shot", { user: req.session.user, recentActivities });
 });
 
 // Login page
@@ -25,14 +28,18 @@ router.post("/shot/login", async (req, res) => {
     const { username, password } = req.body;
 
     try {
-        const user = await ShotUser.findOne({ username, password });
+        const user = await ShotUser.findOne({ username });
 
-        if (user) {
-            req.session.user = user;
-            res.redirect("/shot");
-        } else {
-            res.render("shotlogin", { error: "Invalid username or password" });
+        if (!user || !(await user.comparePassword(password))) {
+            return res.render("shotlogin", { error: "Invalid username or password" });
         }
+
+        req.session.user = { username: user.username };
+
+        // Log the login action
+        await ActivityLog.create({ username: user.username, action: "Login" });
+
+        res.redirect("/shot");
     } catch (err) {
         console.error("Error during login:", err);
         res.status(500).send("Internal Server Error");
@@ -40,10 +47,11 @@ router.post("/shot/login", async (req, res) => {
 });
 
 // Logout
-router.get("/shot/logout", (req, res) => {
-    req.session.destroy(err => {
-        res.redirect("/shot/login");
-    });
+router.get("/shot/logout", async (req, res) => {
+    if (req.session.user) {
+        await ActivityLog.create({ username: req.session.user.username, action: "Logout" });
+    }
+    req.session.destroy(() => res.redirect("/shot/login"));
 });
 
 module.exports = router;
