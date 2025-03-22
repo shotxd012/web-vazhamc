@@ -15,6 +15,7 @@ const shotUsersRoutes = require("./routes/shotUsers");
 require("dotenv").config();
 require("./config/passport");
 
+
 const app = express();
 app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true }));
