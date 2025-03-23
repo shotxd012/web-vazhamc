@@ -11,6 +11,7 @@ const pageRulesRoutes = require("./routes/rules");
 const authShotRoutes = require("./routes/authShot");
 const activityRoutes = require("./routes/activity");
 const shotUsersRoutes = require("./routes/shotUsers");
+const mongoStatsRoutes = require("./routes/mongoStats");
 
 require("dotenv").config();
 require("./config/passport");
@@ -45,6 +46,7 @@ app.use(pageRulesRoutes);
 app.use(authShotRoutes);
 app.use(activityRoutes);
 app.use(shotUsersRoutes);
+app.use(mongoStatsRoutes);
 
 app.get("/", (req, res) => {
     res.render("index", { user: req.user });
