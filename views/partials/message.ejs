@@ -24,6 +24,34 @@
     <button id="close-message" class="absolute top-2 right-2 text-gray-400 hover:text-gray-200">✖</button>
 </div>
 
+<!-- Custom Scrollbar Style -->
+<style>
+/* Custom Scrollbar */
+#chat-messages {
+    scrollbar-width: thin; /* For Firefox */
+    scrollbar-color: #4ade80 #1f2937; /* Track color */
+}
+
+/* Webkit Browsers (Chrome, Edge, Safari) */
+#chat-messages::-webkit-scrollbar {
+    width: 8px;
+}
+
+#chat-messages::-webkit-scrollbar-track {
+    background: #1f2937; /* Dark Gray */
+    border-radius: 10px;
+}
+
+#chat-messages::-webkit-scrollbar-thumb {
+    background: #4ade80; /* Emerald Green */
+    border-radius: 10px;
+}
+
+#chat-messages::-webkit-scrollbar-thumb:hover {
+    background: #34d399; /* Lighter Green on Hover */
+}
+</style>
+
 <script>
     document.getElementById("message-toggle").addEventListener("click", () => {
         document.getElementById("message-box").classList.toggle("hidden");
@@ -35,49 +63,60 @@
     });
 
     async function loadMessages() {
-    const response = await fetch("/messages");
-    const messages = await response.json();
-    
-    const chatBox = document.getElementById("chat-messages");
-    chatBox.innerHTML = ""; 
+        try {
+            const response = await fetch("/messages");
+            let messages = await response.json();
 
-    messages.forEach(msg => {
-        const messageDiv = document.createElement("div");
-        messageDiv.classList.add("p-2", "border-b", "border-gray-700", "flex", "items-center", "space-x-2");
+            // Keep only the last 4 messages
+            messages = messages.slice(-4);
 
-        messageDiv.innerHTML = `
-            <img src="https://cdn.discordapp.com/avatars/${msg.userId}/${msg.avatar}.png" class="w-8 h-8 rounded-full">
-            <div>
-                <span class="text-sm font-medium">${msg.username} [${msg.role || 'Member'}]</span>
-                <p class="text-gray-300 text-sm">${msg.message}</p>
-            </div>
-        `;
-        chatBox.appendChild(messageDiv);
-    });
-    chatBox.scrollTop = chatBox.scrollHeight;
-}
+            const chatBox = document.getElementById("chat-messages");
+            chatBox.innerHTML = ""; 
+
+            messages.forEach(msg => {
+                const messageDiv = document.createElement("div");
+                messageDiv.classList.add("p-2", "border-b", "border-gray-700", "flex", "items-center", "space-x-2");
+
+                messageDiv.innerHTML = `
+                    <img src="https://cdn.discordapp.com/avatars/${msg.userId}/${msg.avatar}.png" class="w-8 h-8 rounded-full">
+                    <div>
+                        <span class="text-sm font-medium">${msg.username} [${msg.role || 'Member'}]</span>
+                        <p class="text-gray-300 text-sm">${msg.message}</p>
+                    </div>
+                `;
+                chatBox.appendChild(messageDiv);
+            });
+
+            chatBox.scrollTop = chatBox.scrollHeight;
+        } catch (error) {
+            console.error("Error loading messages:", error);
+        }
+    }
 
     <% if (user) { %>
     document.getElementById("send-message").addEventListener("click", async () => {
         const message = document.getElementById("message-input").value;
         if (!message.trim()) return alert("Message cannot be empty!");
 
-        const response = await fetch("/send-message", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ message })
-        });
+        try {
+            const response = await fetch("/send-message", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ message })
+            });
 
-        const result = await response.json();
-        if (result.success) {
-            document.getElementById("message-input").value = "";
-            loadMessages(); 
-        } else {
-            alert("Error sending message.");
+            const result = await response.json();
+            if (result.success) {
+                document.getElementById("message-input").value = "";
+                loadMessages(); 
+            } else {
+                alert("Error sending message.");
+            }
+        } catch (error) {
+            console.error("Error sending message:", error);
         }
     });
     <% } %>
 
-
-    setInterval(loadMessages, 5000);
+    setInterval(loadMessages, 5000); // Refresh messages every 5 seconds
 </script>

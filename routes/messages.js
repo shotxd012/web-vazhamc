@@ -19,6 +19,16 @@ router.post("/send-message", async (req, res) => {
         });
 
         await newMessage.save();
+
+        // Keep only the last 4 messages in the database
+        const totalMessages = await Message.countDocuments();
+        if (totalMessages > 4) {
+            const oldestMessage = await Message.findOne().sort({ timestamp: 1 });
+            if (oldestMessage) {
+                await Message.deleteOne({ _id: oldestMessage._id });
+            }
+        }
+
         res.json({ success: true });
     } catch (err) {
         console.error("Error saving message:", err);
