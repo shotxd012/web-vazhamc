@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const ShotUser = require("../models/ShotUser");
+const User = require("../models/User");
 
 // Middleware for authentication
 function authshot(req, res, next) {
@@ -47,6 +48,28 @@ router.delete("/shot/users/delete/:id", authshot, async (req, res) => {
         res.json({ success: true });
     } catch (error) {
         console.error("Error deleting user:", error);
+        res.status(500).json({ success: false });
+    }
+});
+
+// Fetch all subusers
+router.get("/shot/subusers", authshot, async (req, res) => {
+    try {
+        const users = await User.find().select("username role");
+        res.render("shotSubusers", { user: req.session.user, users });
+    } catch (error) {
+        console.error("Error fetching subusers:", error);
+        res.status(500).send("Internal Server Error");
+    }
+});
+
+// Delete a subuser
+router.delete("/shot/subusers/delete/:id", authshot, async (req, res) => {
+    try {
+        await User.findByIdAndDelete(req.params.id);
+        res.json({ success: true });
+    } catch (error) {
+        console.error("Error deleting subuser:", error);
         res.status(500).json({ success: false });
     }
 });
