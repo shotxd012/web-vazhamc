@@ -1,6 +1,6 @@
-const { Client, GatewayIntentBits, SlashCommandBuilder } = require("discord.js");
+const { Client, GatewayIntentBits, SlashCommandBuilder, ButtonBuilder } = require("discord.js");
 const mongoose = require("mongoose");
-const Announcement = require("../models/Announcement"); // Import the model
+const Announcement = require("../models/Announcement"); 
 
 const bot = new Client({
     intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages]
@@ -10,16 +10,13 @@ bot.once("ready", () => {
     console.log(`✅ Bot Logged in as ${bot.user.tag}`);
 });
 
-// Function to automatically fetch an announcement channel
 async function getAnnouncementChannel(guild) {
     const channels = guild.channels.cache.filter(channel => 
-        channel.type === 0 && channel.permissionsFor(guild.roles.everyone).has("SendMessages") // 0 = GUILD_TEXT
+        channel.type === 0 && channel.permissionsFor(guild.roles.everyone).has("SendMessages")
     );
     
-    return channels.first(); // Return the first available text channel
+    return channels.first(); 
 }
-
-// Handle Slash Command `/announce`
 bot.on("interactionCreate", async (interaction) => {
     if (!interaction.isCommand()) return;
 
@@ -36,7 +33,6 @@ bot.on("interactionCreate", async (interaction) => {
             timestamp: new Date()
         };
 
-        // Automatically find a channel to send announcements
         const guild = interaction.guild;
         const channel = await getAnnouncementChannel(guild);
 
@@ -44,10 +40,8 @@ bot.on("interactionCreate", async (interaction) => {
             return interaction.reply({ content: "❌ No suitable announcement channel found.", ephemeral: true });
         }
 
-        // Send message to the channel
         channel.send({ embeds: [announcementEmbed] });
 
-        // Save to database
         const newAnnouncement = new Announcement({ title, description, footer, timestamp: new Date() });
         await newAnnouncement.save();
 
@@ -55,7 +49,6 @@ bot.on("interactionCreate", async (interaction) => {
     }
 });
 
-// Register Slash Command
 bot.once("ready", async () => {
     const guild = bot.guilds.cache.get(process.env.GUILD_ID);
     if (guild) {
@@ -71,7 +64,6 @@ bot.once("ready", async () => {
     }
 });
 
-// Function to start the bot
 function startBot() {
     bot.login(process.env.DISCORD_BOT_TOKEN).catch((err) => {
         console.error("❌ Bot Login Error:", err);
