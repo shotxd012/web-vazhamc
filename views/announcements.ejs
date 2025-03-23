@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('partials/head') %>
+</head>
+<body class="bg-gray-900 text-white min-h-screen font-sans">
+    <%- include('partials/nav') %>
+
+
+    <section class="container mx-auto px-4 py-24">
+        <h1 class="text-4xl md:text-5xl font-bold text-center mb-8 bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-blue-500">
+            Announcements
+        </h1>
+        
+        <div class="space-y-6">
+            <% if (announcements.length > 0) { %>
+                <% announcements.forEach(announcement => { %>
+                    <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+                        <h2 class="text-2xl font-bold text-green-400"><%= announcement.title %></h2>
+                        <p class="mt-2 text-gray-300"><%= announcement.description %></p>
+                        <p class="mt-2 text-gray-500 text-sm"><%= new Date(announcement.timestamp).toLocaleString() %> - <%= announcement.footer %></p>
+                    </div>
+                <% }); %>
+            <% } else { %>
+                <p class="text-center text-gray-500">No announcements yet.</p>
+            <% } %>
+        </div>
+    </section>
+
+    <%- include('partials/footer') %>
+</body>
+</html>

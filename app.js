@@ -11,7 +11,9 @@ const pageRulesRoutes = require("./routes/rules");
 const authShotRoutes = require("./routes/authShot");
 const activityRoutes = require("./routes/activity");
 const shotUsersRoutes = require("./routes/shotUsers");
+const announcementRoutes = require("./routes/announcements");
 const mongoStatsRoutes = require("./routes/mongoStats");
+const { startBot } = require("./config/bot");
 
 require("dotenv").config();
 require("./config/passport");
@@ -23,8 +25,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static("public"));
 
-// MongoDB Connection
+
+// connect to database
 connectDB();
+startBot();
 
 // Session
 app.use(session({
@@ -47,6 +51,7 @@ app.use(authShotRoutes);
 app.use(activityRoutes);
 app.use(shotUsersRoutes);
 app.use(mongoStatsRoutes);
+app.use(announcementRoutes);
 
 app.get("/", (req, res) => {
     res.render("index", { user: req.user });
