@@ -52,7 +52,7 @@ router.delete("/shot/users/delete/:id", authshot, async (req, res) => {
     }
 });
 
-// Fetch all subusers
+// Fetch subusers
 router.get("/shot/subusers", authshot, async (req, res) => {
     try {
         const users = await User.find().select("username role");
@@ -60,6 +60,24 @@ router.get("/shot/subusers", authshot, async (req, res) => {
     } catch (error) {
         console.error("Error fetching subusers:", error);
         res.status(500).send("Internal Server Error");
+    }
+});
+
+// Update user role
+router.post("/shot/subusers/update-role/:id", authshot, async (req, res) => {
+    const { role } = req.body;
+    const validRoles = ["ꜰᴏᴜɴᴅᴇʀ", "ᴄᴏᴍᴍᴜɴɪᴛʏ ᴍᴀɴᴀɢᴇʀ", "ᴀᴅᴍɪɴ", "ᴅᴇᴠ", "ꜱᴛᴀꜰꜰ"];
+    
+    if (!validRoles.includes(role)) {
+        return res.status(400).json({ success: false, error: "Invalid role selected" });
+    }
+
+    try {
+        await User.findByIdAndUpdate(req.params.id, { role });
+        res.json({ success: true });
+    } catch (error) {
+        console.error("Error updating role:", error);
+        res.status(500).json({ success: false });
     }
 });
 
