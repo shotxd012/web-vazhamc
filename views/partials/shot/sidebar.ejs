@@ -1,8 +1,9 @@
-<div class="w-64 bg-dark-400 border-r border-dark-100">
+<div class="w-64 bg-dark-400 border-r border-dark-100 h-full flex flex-col">
     <div class="p-2 border-b border-dark-100 flex items-center justify-between">
         <span class="text-sm">Server View</span>
     </div>
-    <div class="p-2">
+    <div class="p-2 flex flex-col space-y-2">
+        <!-- Datacenter Section -->
         <div class="flex items-center text-sm py-1 px-2 hover:bg-dark-200 rounded cursor-pointer">
             <a href="/shot" class="flex items-center w-full">
                 <svg class="mr-2" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -16,7 +17,7 @@
         </div>
 
         <!-- Users Section -->
-        <div class="text-sm py-1 px-2 rounded cursor-pointer">
+        <div class="text-sm px-2 rounded cursor-pointer">
             <div class="flex items-center justify-between hover:bg-dark-200 p-2 rounded" id="toggle-users">
                 <span class="flex items-center">
                     <svg class="mr-2" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -34,16 +35,46 @@
 
             <div id="user-submenu" class="hidden ml-6 mt-2">
                 <a href="/shot/users" class="block py-1 px-2 hover:bg-dark-300 rounded">Datacenter Users</a>
-                <a href="/shot/subusers" class="block py-1 px-2 hover:bg-dark-300 rounded">Discord users</a>
+                <a href="/shot/subusers" class="block py-1 px-2 hover:bg-dark-300 rounded">Discord Users</a>
+            </div>
+        </div>
+
+        <!-- Msg Data Section -->
+        <div class="text-sm px-2 rounded cursor-pointer">
+            <div class="flex items-center justify-between hover:bg-dark-200 p-2 rounded" id="toggle-msg-data">
+                <span class="flex items-center">
+                    <svg class="mr-2" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 12h18M3 6h18M3 18h18"></path>
+                    </svg>
+                    <span>Msg Data</span>
+                </span>
+                <svg class="w-4 h-4 transition-transform transform rotate-0" id="msg-data-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M6 9l6 6 6-6"></path>
+                </svg>
+            </div>
+
+            <div id="msg-data-submenu" class="hidden ml-6 mt-2">
+                <a href="/shot/messages" class="block py-1 px-2 hover:bg-dark-300 rounded">Chat Messages</a>
+                <a href="/shot/announcements" class="block py-1 px-2 hover:bg-dark-300 rounded">Announcements</a>
             </div>
         </div>
     </div>
 </div>
 
 <script>
+    // Toggle Users Submenu
     document.getElementById("toggle-users").addEventListener("click", function() {
         const submenu = document.getElementById("user-submenu");
         const arrow = document.getElementById("user-arrow");
+
+        submenu.classList.toggle("hidden");
+        arrow.classList.toggle("rotate-180");
+    });
+
+    // Toggle Msg Data Submenu
+    document.getElementById("toggle-msg-data").addEventListener("click", function() {
+        const submenu = document.getElementById("msg-data-submenu");
+        const arrow = document.getElementById("msg-data-arrow");
 
         submenu.classList.toggle("hidden");
         arrow.classList.toggle("rotate-180");
