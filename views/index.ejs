@@ -240,17 +240,27 @@
             </div>
         </section>
         
-        <section class="py-20 bg-gray-800">
-            <div class="container mx-auto px-4 text-center">
-                <h2 class="text-4xl font-bold mb-12">Server Status</h2>
-                <div class="inline-flex items-center space-x-2 bg-gray-900 px-6 py-3 rounded-lg">
-                    <span class="w-3 h-3 bg-emerald-500 rounded-full"></span>
-                    <span class="text-lg">Online - Join now play.vazha.fun</span>
-                </div>
+<section class="py-20 bg-gray-800">
+    <div class="container mx-auto px-4 text-center">
+        <h2 class="text-4xl font-bold mb-12">Server Status</h2>
+        
+        <% if (serverStatus.online) { %>
+            <div class="inline-flex items-center space-x-2 bg-gray-900 px-6 py-3 rounded-lg">
+                <span class="w-3 h-3 bg-emerald-500 rounded-full"></span>
+                <span class="text-lg">✅ Online - Join now <b>play.vazha.fun</b></span>
             </div>
-        </section>
-            
-        <%- include('partials/footer') %>
+            <p class="mt-4 text-gray-300">Players Online: <b><%= serverStatus.players.online %></b> / <%= serverStatus.players.max %></p>
+        <% } else { %>
+            <div class="inline-flex items-center space-x-2 bg-gray-900 px-6 py-3 rounded-lg">
+                <span class="w-3 h-3 bg-red-500 rounded-full"></span>
+                <span class="text-lg">❌ Offline - Check back later</span>
+            </div>
+        <% } %>
+    </div>
+</section>
+
+<%- include('partials/footer') %>
+
     </div>
 
     <script>
