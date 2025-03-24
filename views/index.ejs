@@ -32,8 +32,8 @@
         }
 
         #loading-svg {
-            width: 150px;
-            height: 150px;
+            width: 200px;
+            height: 200px;
         }
 
         .hide-loading {
@@ -54,6 +54,87 @@
             transform: translateY(-5px);
             box-shadow: 0 10px 25px rgba(16, 185, 129, 0.2);
         }
+
+        /* Banana plant animation styles */
+        .banana-stem {
+            stroke-dasharray: 300;
+            stroke-dashoffset: 300;
+            animation: drawStem 2s forwards;
+        }
+
+        .banana-leaf {
+            opacity: 0;
+            transform-origin: bottom center;
+            animation: growLeaf 0.5s forwards;
+        }
+
+        .banana-leaf-1 {
+            animation-delay: 0.5s;
+        }
+
+        .banana-leaf-2 {
+            animation-delay: 0.8s;
+        }
+
+        .banana-leaf-3 {
+            animation-delay: 1.1s;
+        }
+
+        .banana-leaf-4 {
+            animation-delay: 1.4s;
+        }
+
+        .banana-fruit {
+            opacity: 0;
+            animation: showFruit 0.3s forwards;
+            animation-delay: 1.7s;
+        }
+
+        .loading-progress {
+            stroke-dasharray: 283;
+            stroke-dashoffset: 283;
+            animation: loadingProgress 2s infinite;
+        }
+
+        @keyframes drawStem {
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        @keyframes growLeaf {
+            from {
+                opacity: 0;
+                transform: scale(0) rotate(-10deg);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) rotate(0);
+            }
+        }
+
+        @keyframes showFruit {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes loadingProgress {
+            0% {
+                stroke-dashoffset: 283;
+            }
+            50% {
+                stroke-dashoffset: 0;
+            }
+            100% {
+                stroke-dashoffset: 283;
+            }
+        }
     </style>
     <%- include('partials/message') %>
 </head>
@@ -61,19 +142,41 @@
 <body class="bg-gray-900 text-white min-h-screen font-sans">
     <div id="loading" class="loading-container">
         <div class="loading-content">
-            <svg id="loading-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <svg id="loading-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
                 <defs>
-                    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <linearGradient id="leafGradient" x1="0%" y1="0%" x2="100%" y2="0%">
                         <stop offset="0%" style="stop-color:#10B981;stop-opacity:1" />
                         <stop offset="100%" style="stop-color:#064E3B;stop-opacity:1" />
                     </linearGradient>
+                    <linearGradient id="fruitGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" style="stop-color:#FBBF24;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#D97706;stop-opacity:1" />
+                    </linearGradient>
+                    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+                        <feGaussianBlur stdDeviation="2" result="blur" />
+                        <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                    </filter>
                 </defs>
-                <path fill="none" stroke="url(#gradient)" stroke-width="4" stroke-dasharray="42.76482137044271 42.76482137044271" d="M24.3 30C11.4 30 5 43.3 5 50s6.4 20 19.3 20c19.3 0 32.1-40 51.4-40 C88.6 30 95 43.3 95 50s-6.4 20-19.3 20C56.4 70 43.6 30 24.3 30z">
-                    <animate attributeName="stroke-dashoffset" repeatCount="indefinite" dur="2s" keyTimes="0;1" values="0;256.58892822265625"></animate>
-                </path>
-                <circle cx="50" cy="50" r="20" fill="url(#gradient)">
-                    <animate attributeName="r" repeatCount="indefinite" dur="2s" keyTimes="0;0.5;1" values="20;25;20"></animate>
-                </circle>
+                
+                <!-- Loading circle -->
+                <circle cx="100" cy="100" r="90" fill="none" stroke="#1F2937" stroke-width="4" />
+                <circle cx="100" cy="100" r="90" fill="none" stroke="url(#leafGradient)" stroke-width="4" class="loading-progress" />
+                
+                <!-- Banana plant stem -->
+                <path class="banana-stem" d="M100,160 C100,140 100,120 100,80" fill="none" stroke="#2F855A" stroke-width="6" stroke-linecap="round" />
+                
+                <!-- Banana leaves -->
+                <path class="banana-leaf banana-leaf-1" d="M100,100 C120,80 150,90 160,70" fill="none" stroke="url(#leafGradient)" stroke-width="5" stroke-linecap="round" filter="url(#glow)" />
+                <path class="banana-leaf banana-leaf-2" d="M100,90 C80,70 50,80 40,60" fill="none" stroke="url(#leafGradient)" stroke-width="5" stroke-linecap="round" filter="url(#glow)" />
+                <path class="banana-leaf banana-leaf-3" d="M100,110 C130,110 150,130 170,120" fill="none" stroke="url(#leafGradient)" stroke-width="5" stroke-linecap="round" filter="url(#glow)" />
+                <path class="banana-leaf banana-leaf-4" d="M100,120 C70,120 50,140 30,130" fill="none" stroke="url(#leafGradient)" stroke-width="5" stroke-linecap="round" filter="url(#glow)" />
+                
+                <!-- Banana bunch -->
+                <g class="banana-fruit">
+                    <path d="M95,80 C90,70 90,65 95,60 C100,55 110,55 115,60 C120,65 120,70 115,80 Z" fill="url(#fruitGradient)" filter="url(#glow)" />
+                    <path d="M105,85 C100,75 100,70 105,65 C110,60 120,60 125,65 C130,70 130,75 125,85 Z" fill="url(#fruitGradient)" filter="url(#glow)" />
+                    <path d="M90,90 C85,80 85,75 90,70 C95,65 105,65 110,70 C115,75 115,80 110,90 Z" fill="url(#fruitGradient)" filter="url(#glow)" />
+                </g>
             </svg>
             <div class="loading-text">VAZHA MC</div>
         </div>
@@ -125,7 +228,7 @@
                 setTimeout(function() {
                     loadingElement.style.display = 'none';
                 }, 500);
-            }, 2000);
+            }, 2500); // Increased loading time slightly to show the full animation
         });
 
         document.getElementById('play-now').addEventListener('click', function() {
@@ -141,4 +244,3 @@
     </script>
 </body>
 </html>
-
