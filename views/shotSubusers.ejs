@@ -14,7 +14,7 @@
 
         <!-- Subusers Section -->
         <div class="flex-1 p-6">
-            <h2 class="text-lg font-medium text-gray-200 mb-4">Discord users</h2>
+            <h2 class="text-lg font-medium text-gray-200 mb-4">Discord Users</h2>
 
             <table class="min-w-full bg-dark-500 border border-dark-200 rounded-lg">
                 <thead>
@@ -29,7 +29,13 @@
                         <% users.forEach(user => { %>
                             <tr class="border-b border-dark-200">
                                 <td class="py-2 px-4 text-sm text-gray-300"><%= user.username %></td>
-                                <td class="py-2 px-4 text-sm text-gray-300"><%= user.role %></td>
+                                <td class="py-2 px-4 text-sm">
+                                    <select class="role-select bg-dark-300 text-gray-200 px-2 py-1 rounded" data-userid="<%= user._id %>">
+                                        <% ["ꜰᴏᴜɴᴅᴇʀ", "ᴄᴏᴍᴍᴜɴɪᴛʏ ᴍᴀɴᴀɢᴇʀ", "ᴀᴅᴍɪɴ", "ᴅᴇᴠ", "ꜱᴛᴀꜰꜰ"].forEach(role => { %>
+                                            <option value="<%= role %>" <%= user.role === role ? 'selected' : '' %>><%= role %></option>
+                                        <% }); %>
+                                    </select>
+                                </td>
                                 <td class="py-2 px-4 text-sm text-right">
                                     <button onclick="deleteUser('<%= user._id %>')" class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded">
                                         Delete
@@ -63,6 +69,26 @@
                 alert("Error deleting user.");
             }
         }
+
+        document.querySelectorAll(".role-select").forEach(select => {
+            select.addEventListener("change", async function () {
+                const userId = this.getAttribute("data-userid");
+                const newRole = this.value;
+
+                const response = await fetch(`/shot/subusers/update-role/${userId}`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ role: newRole })
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    alert("User role updated successfully!");
+                } else {
+                    alert("Error updating user role.");
+                }
+            });
+        });
     </script>
 </body>
 </html>

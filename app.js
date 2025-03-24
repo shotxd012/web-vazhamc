@@ -14,6 +14,7 @@ const shotUsersRoutes = require("./routes/shotUsers");
 const announcementRoutes = require("./routes/announcements");
 const mongoStatsRoutes = require("./routes/mongoStats");
 const { startBot } = require("./config/bot");
+const homeRoute = require("./routes/home");
 
 require("dotenv").config();
 require("./config/passport");
@@ -52,6 +53,7 @@ app.use(activityRoutes);
 app.use(shotUsersRoutes);
 app.use(mongoStatsRoutes);
 app.use(announcementRoutes);
+app.use("/", homeRoute);
 
 app.get("/", (req, res) => {
     res.render("index", { user: req.user });
