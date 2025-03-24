@@ -22,7 +22,7 @@ async function getStaffDetails() {
         const guild = await bot.guilds.fetch(GUILD_ID);
         const members = await guild.members.fetch();
 
-        const staffRoles = ['Admin', 'Moderator', 'Helper'];
+        const staffRoles = ['ꜰᴏᴜɴᴅᴇʀ', 'ᴄᴏᴍᴍᴜɴɪᴛʏ ᴍᴀɴᴀɢᴇʀ', 'ᴀᴅᴍɪɴ', 'ᴅᴇᴠ', 'ᴍᴏᴅ', 'ꜱᴛᴀꜰꜰ ɪɴᴛᴇʀᴠɪᴇᴡᴇʀ', 'ꜱᴇʀᴠᴇʀ ꜱᴛᴀꜰꜰ', 'ꜱᴛᴀꜰꜰ'];
 
         let staffList = [];
         members.forEach(member => {
