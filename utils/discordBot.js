@@ -4,7 +4,8 @@ require("dotenv").config();
 const bot = new Client({
     intents: [
         GatewayIntentBits.Guilds,
-        GatewayIntentBits.GuildMembers
+        GatewayIntentBits.GuildMembers,
+        GatewayIntentBits.GuildPresences
     ]
 });
 
@@ -44,12 +45,16 @@ async function getStaffDetails() {
                 // Sort user roles based on priority
                 matchedRoles.sort((a, b) => staffRoles.indexOf(a) - staffRoles.indexOf(b));
 
+                // Get presence status (default to 'offline' if undefined)
+                const presenceStatus = member.presence?.status || "offline";
+
                 staffList.push({
                     id: member.user.id,
                     name: member.user.username,
                     avatar: member.user.displayAvatarURL({ dynamic: true, size: 256 }),
                     position: matchedRoles[0], // Highest priority role
-                    roles: matchedRoles
+                    roles: matchedRoles,
+                    status: presenceStatus
                 });
             }
         });

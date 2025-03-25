@@ -30,15 +30,22 @@
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <% staffs.forEach(staff => { %>
-                <div class="staff-card rounded-xl p-6 text-center">
-                    <img src="<%= staff.avatar %>" alt="<%= staff.name %>" class="w-24 h-24 rounded-full mx-auto mb-4">
-                    <h3 class="text-xl font-bold mb-2"><%= staff.name %></h3>
-                    <p class="text-gray-400"><%= staff.position %></p>
-                    <p class="text-gray-500 mb-4">Top Roles: <%= staff.roles.join(', ') %></p>
-                    <a href="https://discord.com/users/<%= staff.id %>" target="_blank" class="bg-emerald-600 hover:bg-emerald-700 px-4 py-2 rounded-lg text-lg font-medium transition-colors transform hover:scale-105">
-                        Contact
-                    </a>
-                </div>
+                    <div class="staff-card rounded-xl p-6 text-center">
+                        <img src="<%= staff.avatar %>" alt="<%= staff.name %>" class="w-24 h-24 rounded-full mx-auto mb-4">
+                        
+                        <h3 class="text-xl font-bold mb-2"><%= staff.name %></h3>
+                        <p class="text-gray-400"><%= staff.position %></p>
+                        <p class="text-gray-500 mb-4">Top Roles: <%= staff.roles.join(', ') %></p>
+                        
+                        <!-- Status Badge -->
+                        <p class="mb-2">
+                            Status: 
+                            <span class="inline-block px-3 py-1 rounded-full text-white text-sm font-medium"
+                                  style="background-color: <%= staff.status === 'online' ? '#34D399' : staff.status === 'idle' ? '#FACC15' : staff.status === 'dnd' ? '#EF4444' : '#6B7280' %>;">
+                                <%= staff.status.charAt(0).toUpperCase() + staff.status.slice(1) %>
+                            </span>
+                        </p>
+                    </div>
                 <% }); %>
             </div>
         </div>
