@@ -66,7 +66,7 @@ router.get("/shot/subusers", authshot, async (req, res) => {
 // Update user role
 router.post("/shot/subusers/update-role/:id", authshot, async (req, res) => {
     const { role } = req.body;
-    const validRoles = ["ꜰᴏᴜɴᴅᴇʀ", "ᴄᴏᴍᴍᴜɴɪᴛʏ ᴍᴀɴᴀɢᴇʀ", "ᴀᴅᴍɪɴ", "ᴅᴇᴠ", "ꜱᴛᴀꜰꜰ"];
+    const validRoles = ["ꜰᴏᴜɴᴅᴇʀ", "ᴄᴏᴍᴍᴜɴɪᴛʏ ᴍᴀɴᴀɢᴇʀ", "ᴀᴅᴍɪɴ", "ᴅᴇᴠ", "ꜱᴛᴀꜰꜰ", "Member"];
     
     if (!validRoles.includes(role)) {
         return res.status(400).json({ success: false, error: "Invalid role selected" });

@@ -31,7 +31,7 @@
                                 <td class="py-2 px-4 text-sm text-gray-300"><%= user.username %></td>
                                 <td class="py-2 px-4 text-sm">
                                     <select class="role-select bg-dark-300 text-gray-200 px-2 py-1 rounded" data-userid="<%= user._id %>">
-                                        <% ["ꜰᴏᴜɴᴅᴇʀ", "ᴄᴏᴍᴍᴜɴɪᴛʏ ᴍᴀɴᴀɢᴇʀ", "ᴀᴅᴍɪɴ", "ᴅᴇᴠ", "ꜱᴛᴀꜰꜰ"].forEach(role => { %>
+                                        <% ["ꜰᴏᴜɴᴅᴇʀ", "ᴄᴏᴍᴍᴜɴɪᴛʏ ᴍᴀɴᴀɢᴇʀ", "ᴀᴅᴍɪɴ", "ᴅᴇᴠ", "ꜱᴛᴀꜰꜰ", "Member"].forEach(role => { %>
                                             <option value="<%= role %>" <%= user.role === role ? 'selected' : '' %>><%= role %></option>
                                         <% }); %>
                                     </select>

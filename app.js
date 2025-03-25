@@ -15,10 +15,7 @@ const announcementRoutes = require("./routes/announcements");
 const mongoStatsRoutes = require("./routes/mongoStats");
 const { startBot } = require("./config/bot");
 const homeRoute = require("./routes/home");
-<<<<<<< HEAD
 const msgDataRoutes = require("./routes/msgData");
-=======
->>>>>>> d39532740d46d684b07f33f467f3ae4f34633f28
 
 require("dotenv").config();
 require("./config/passport");
@@ -45,6 +42,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
+
 // Routes
 app.use(authRoutes);
 app.use(profileRoutes);
@@ -58,17 +56,11 @@ app.use(shotUsersRoutes);
 app.use(mongoStatsRoutes);
 app.use(announcementRoutes);
 app.use("/", homeRoute);
-<<<<<<< HEAD
 app.use(msgDataRoutes);
-=======
->>>>>>> d39532740d46d684b07f33f467f3ae4f34633f28
-
-app.get("/", (req, res) => {
-    res.render("index", { user: req.user });
-});
 
 // Start Server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`🚀 Server running on http://localhost:${PORT}`);
 });
+
