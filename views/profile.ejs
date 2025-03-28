@@ -2,22 +2,51 @@
 <html lang="en">
 <head>
     <%- include('partials/head') %>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <%- include('partials/message') %>
 <body class="bg-gray-900 text-white min-h-screen font-sans">
     <%- include('partials/nav') %>
-    
+
     <section class="py-20 bg-gray-800">
-        <div class="container mx-auto px-4 py-32 text-center">
-            <h1 class="text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-green-700">
+        <div class="container mx-auto px-4 py-20 flex flex-col items-center">
+            <h1 class="text-5xl font-bold mb-8 bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-green-700">
                 User Profile
             </h1>
-            
-            <div class="bg-gray-800 p-6 rounded-lg shadow-lg inline-block text-center">
-                <img src="https://cdn.discordapp.com/avatars/<%= user.discordId %>/<%= user.avatar %>.png" alt="Avatar" class="w-24 h-24 rounded-full mx-auto">
-                <h2 class="text-2xl font-bold mt-4"><%= user.username %></h2>
-                <p class="text-lg text-gray-400">Role: <%= user.role %></p>
-                <a href="/logout" class="mt-4 inline-block bg-red-600 px-6 py-2 rounded-lg hover:bg-red-700">Logout</a>
+
+            <div class="relative bg-gray-900 bg-opacity-70 backdrop-blur-lg p-8 rounded-lg shadow-lg w-full max-w-xl text-center border border-gray-700">
+                <!-- Avatar -->
+                <div class="relative w-32 h-32 mx-auto">
+                    <img src="https://cdn.discordapp.com/avatars/<%= user.discordId %>/<%= user.avatar %>.png" alt="Avatar" 
+                         class="w-full h-full rounded-full border-4 border-emerald-500 shadow-lg">
+                    <!-- Discord Status Indicator -->
+                    <div class="absolute bottom-2 right-2 w-6 h-6 rounded-full border-2 border-gray-900"
+                         style="background-color: <%= user.statusColor || 'gray' %>;">
+                    </div>
+                </div>
+
+                <h2 class="text-3xl font-bold mt-4"><%= user.username %></h2>
+                <p class="text-lg text-gray-400">@<%= user.discordTag %></p>
+
+                <!-- Role Badge -->
+                <span class="mt-2 inline-block px-4 py-1 rounded-full text-sm font-medium"
+                      style="background-color: <%= user.roleColor || '#4CAF50' %>;">
+                    <%= user.role %>
+                </span>
+
+                <!-- User Details -->
+                <div class="mt-6 space-y-4 text-left">
+                    <p><strong class="text-emerald-400">Email:</strong> <%= user.email || 'Not linked' %></p>
+                    <p><strong class="text-emerald-400">Joined:</strong> <%= user.joinDate %></p>
+                    <p><strong class="text-emerald-400">Server Rank:</strong> <%= user.rank || 'Member' %></p>
+                </div>
+
+                <!-- Buttons -->
+                <div class="mt-6 flex justify-center space-x-4">
+                    <a href="/logout" class="bg-red-600 hover:bg-red-700 px-6 py-2 rounded-lg shadow-md">
+                        Logout
+                    </a>
+                </div>
             </div>
         </div>
     </section>
