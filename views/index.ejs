@@ -110,6 +110,43 @@
             animation: drawCircle 2s linear infinite;
         }
 
+        /* Countdown timer styles */
+        .countdown-container {
+            margin-top: 1.5rem;
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .countdown-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: rgba(31, 41, 55, 0.8);
+            border-radius: 0.5rem;
+            padding: 0.5rem 1rem;
+            min-width: 4rem;
+        }
+
+        .countdown-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #10B981;
+        }
+
+        .countdown-label {
+            font-size: 0.75rem;
+            color: #D1D5DB;
+            text-transform: uppercase;
+        }
+
+        .launch-message {
+            margin-top: 1rem;
+            font-size: 1.25rem;
+            color: #10B981;
+            font-weight: bold;
+        }
+
         @keyframes growTrunk {
             from {
                 transform: scaleY(0);
@@ -214,6 +251,25 @@
                 <path class="tree-character" d="M130,160 C130,155 132,150 135,150 C138,150 140,155 140,160" fill="#10B981" />
             </svg>
             <div class="loading-text">VAZHA MC</div>
+            
+            <!-- Countdown Timer -->
+            <div class="countdown-container">
+                <div class="countdown-item">
+                    <span id="hours" class="countdown-value">00</span>
+                    <span class="countdown-label">Hours</span>
+                </div>
+                <div class="countdown-item">
+                    <span id="minutes" class="countdown-value">00</span>
+                    <span class="countdown-label">Minutes</span>
+                </div>
+                <div class="countdown-item">
+                    <span id="seconds" class="countdown-value">00</span>
+                    <span class="countdown-label">Seconds</span>
+                </div>
+            </div>
+            <div id="launch-message" class="launch-message" style="display: none;">
+                Server is now LIVE! Join now!
+            </div>
         </div>
     </div>
 
@@ -416,8 +472,35 @@
     </div>
 
     <script>
-        window.addEventListener('load', function() {
-            setTimeout(function() {
+        // Set the launch date to today at 3:00 PM
+        function getTargetDate() {
+            const now = new Date();
+            const targetDate = new Date(now);
+            targetDate.setHours(15, 0, 0, 0); // 3:00 PM
+            
+            // If it's already past 3:00 PM today, show the main content immediately
+            if (now > targetDate) {
+                return now;
+            }
+            
+            return targetDate;
+        }
+        
+        // Calculate the time remaining
+        function updateCountdown() {
+            const now = new Date();
+            const targetDate = getTargetDate();
+            const timeRemaining = targetDate - now;
+            
+            // If the countdown is finished
+            if (timeRemaining <= 0) {
+                // Show the launch message
+                document.getElementById('launch-message').style.display = 'block';
+                
+                // Hide the countdown
+                document.querySelector('.countdown-container').style.display = 'none';
+                
+                // Show the main content
                 const loadingElement = document.getElementById('loading');
                 const contentElement = document.getElementById('content');
                 loadingElement.classList.add('hide-loading');
@@ -425,9 +508,28 @@
                 setTimeout(function() {
                     loadingElement.style.display = 'none';
                 }, 500);
-            }, 3000); // Increased loading time to show the full animation
-        });
-
+                
+                // Clear the interval
+                clearInterval(countdownInterval);
+                return;
+            }
+            
+            // Calculate hours, minutes, and seconds
+            const hours = Math.floor(timeRemaining / (1000 * 60 * 60));
+            const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+            
+            // Update the countdown display
+            document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+            document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+            document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+        }
+        
+        // Initialize countdown
+        updateCountdown();
+        const countdownInterval = setInterval(updateCountdown, 1000);
+        
+        // Original play-now button functionality
         document.getElementById('play-now').addEventListener('click', function() {
             const serverIP = 'play.vazha.fun';
 
@@ -441,3 +543,4 @@
     </script>
 </body>
 </html>
+
