@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('partials/head') %>
+</head>
+<body class="bg-gray-900 text-white font-sans">
+    <%- include('partials/nav') %>
+
+    <section class="py-20">
+        <div class="container mx-auto px-4">
+            <h1 class="text-4xl font-bold mb-8 text-center text-emerald-400">Community Media</h1>
+
+            <form action="/media/upload" method="POST" enctype="multipart/form-data" class="mb-12 text-center">
+                <input type="file" name="image" accept="image/*" class="mb-4 p-2 bg-gray-800 rounded" required>
+                <button class="bg-emerald-600 hover:bg-emerald-700 px-6 py-2 rounded shadow">Upload</button>
+            </form>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <% media.forEach(item => { %>
+                    <div class="relative rounded-lg overflow-hidden shadow-lg bg-gray-800">
+                        <img src="<%= item.imageUrl %>" alt="Media" class="w-full h-64 object-cover">
+                        <div class="absolute top-2 right-2 bg-gray-900 bg-opacity-75 rounded-lg px-3 py-1 flex items-center space-x-2">
+                            <img src="https://cdn.discordapp.com/avatars/<%= item.discordId %>/<%= item.avatar %>.png"
+                                 class="w-8 h-8 rounded-full border-2 border-emerald-500">
+                            <span class="text-sm font-semibold"><%= item.username %></span>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+        </div>
+    </section>
+
+    <%- include('partials/footer') %>
+</body>
+</html>

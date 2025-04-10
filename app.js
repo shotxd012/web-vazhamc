@@ -16,6 +16,8 @@ const mongoStatsRoutes = require("./routes/mongoStats");
 const { startBot } = require("./config/bot");
 const homeRoute = require("./routes/home");
 const msgDataRoutes = require("./routes/msgData");
+const mediaRoutes = require("./routes/media");
+
 
 require("dotenv").config();
 require("./config/passport");
@@ -57,6 +59,7 @@ app.use(mongoStatsRoutes);
 app.use(announcementRoutes);
 app.use("/", homeRoute);
 app.use(msgDataRoutes);
+app.use(mediaRoutes);
 
 // Start Server
 const PORT = process.env.PORT || 3000;
