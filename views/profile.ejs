@@ -41,6 +41,23 @@
                     <p><strong class="text-emerald-400">Server Rank:</strong> <%= user.rank || 'Member' %></p>
                 </div>
 
+                <form action="/profile/upload" method="POST" enctype="multipart/form-data" class="mt-10 w-full max-w-md mx-auto bg-gray-800 p-6 rounded-lg shadow-lg border border-gray-700">
+                    <label class="block text-left text-sm font-medium text-gray-300 mb-2">Upload Image</label>
+                    
+                    <input type="file" name="image" accept="image/*" required 
+                        class="block w-full text-sm text-gray-300 file:mr-4 file:py-2 file:px-4
+                               file:rounded-full file:border-0
+                               file:text-sm file:font-semibold
+                               file:bg-emerald-600 file:text-white
+                               hover:file:bg-emerald-700 transition duration-200" />
+                
+                    <button type="submit" 
+                        class="mt-4 w-full bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300">
+                        📤 Upload to Media
+                    </button>
+                </form>
+                
+
                 <!-- Buttons -->
                 <div class="mt-6 flex justify-center space-x-4">
                     <a href="/logout" class="bg-red-600 hover:bg-red-700 px-6 py-2 rounded-lg shadow-md">
