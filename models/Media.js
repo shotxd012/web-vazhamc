@@ -1,15 +1,14 @@
 const mongoose = require("mongoose");
 
-const mediaSchema = new mongoose.Schema({
-    username: String,
+const MediaSchema = new mongoose.Schema({
     discordId: String,
+    username: String,
     avatar: String,
     imageUrl: String,
     likes: { type: Number, default: 0 },
     dislikes: { type: Number, default: 0 },
-    likedBy: [String],   
-    dislikedBy: [String],
+    voters: [String],
     timestamp: { type: Date, default: Date.now }
 });
 
-module.exports = mongoose.model("Media", mediaSchema);
+module.exports = mongoose.model("Media", MediaSchema);

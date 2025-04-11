@@ -5,6 +5,16 @@
 </head>
 <body class="bg-gray-900 text-white font-sans">
     <%- include('partials/nav') %>
+    <%- include('partials/message') %>
+    <div id="custom-alert" class="fixed top-6 right-6 z-50 hidden opacity-0 translate-x-5 bg-gray-900 border-l-4 border-emerald-500 text-white px-6 py-4 rounded-lg shadow-lg flex items-center space-x-3 transition-all duration-300 ease-in-out">
+        <svg class="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" stroke-width="2"
+            viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M13 16h-1v-4h-1m1-4h.01M12 17a5 5 0 100-10 5 5 0 000 10z"/>
+        </svg>
+        <span id="alert-message" class="text-sm"></span>
+    </div>
+
 
     <section class="py-20">
         <div class="container mx-auto px-4">
@@ -14,28 +24,22 @@
                 <% media.forEach(item => { %>
                     <div class="relative rounded-lg overflow-hidden shadow-lg bg-gray-800">
                         <img src="<%= item.imageUrl %>" alt="Media" class="w-full h-64 object-cover">
-
-                        <!-- User Info Badge -->
+                        
                         <div class="absolute top-2 right-2 bg-gray-900 bg-opacity-75 rounded-lg px-3 py-1 flex items-center space-x-2">
                             <img src="https://cdn.discordapp.com/avatars/<%= item.discordId %>/<%= item.avatar %>.png"
                                  class="w-8 h-8 rounded-full border-2 border-emerald-500">
                             <span class="text-sm font-semibold"><%= item.username %></span>
                         </div>
 
-                        <!-- Voting Section -->
                         <div class="flex justify-between items-center px-4 py-2 bg-gray-900">
-                            <% if (user) { %>
-                                <div class="flex items-center space-x-3">
-                                    <button onclick="vote('<%= item._id %>', 'like')" class="text-green-400 hover:text-green-600">
-                                        👍 <span id="like-<%= item._id %>"><%= item.likes || 0 %></span>
-                                    </button>
-                                    <button onclick="vote('<%= item._id %>', 'dislike')" class="text-red-400 hover:text-red-600">
-                                        👎 <span id="dislike-<%= item._id %>"><%= item.dislikes || 0 %></span>
-                                    </button>
-                                </div>
-                            <% } else { %>
-                                <p class="text-sm text-gray-400">Login to like or dislike this media.</p>
-                            <% } %>
+                            <div class="flex items-center space-x-3">
+                                <button onclick="vote('<%= item._id %>', 'like')" class="text-green-400 hover:text-green-600">
+                                    👍 <span id="like-<%= item._id %>"><%= item.likes || 0 %></span>
+                                </button>
+                                <button onclick="vote('<%= item._id %>', 'dislike')" class="text-red-400 hover:text-red-600">
+                                    👎 <span id="dislike-<%= item._id %>"><%= item.dislikes || 0 %></span>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 <% }) %>
@@ -45,24 +49,35 @@
 
     <%- include('partials/footer') %>
 
-    <% if (user) { %>
     <script>
         async function vote(id, type) {
-            try {
-                const res = await fetch(`/media/vote/${id}/${type}`, { method: "POST" });
-                const data = await res.json();
-
-                if (data.success) {
-                    document.getElementById(`${type}-${id}`).textContent = data.count;
-                } else {
-                    alert(data.message || "You already voted.");
-                }
-            } catch (err) {
-                console.error("Vote error:", err);
-                alert("There was an error voting.");
+            const res = await fetch(`/media/vote/${id}/${type}`, {
+                method: "POST",
+                credentials: "include"
+            });
+    
+            const data = await res.json();
+            if (data.success) {
+                document.getElementById(`${type}-${id}`).textContent = data.count;
+                showAlert("Thank you for your feedback!");
+            } else {
+                showAlert(data.message || "Error voting");
             }
         }
+    
+        function showAlert(message) {
+            const alertBox = document.getElementById("custom-alert");
+            const alertText = document.getElementById("alert-message");
+    
+            alertText.textContent = message;
+            alertBox.classList.remove("hidden");
+            alertBox.classList.add("opacity-100");
+    
+            setTimeout(() => {
+                alertBox.classList.add("hidden");
+            }, 3000);
+        }
     </script>
-    <% } %>
+    
 </body>
 </html>
