@@ -30,6 +30,11 @@
                                  class="w-8 h-8 rounded-full border-2 border-emerald-500">
                             <span class="text-sm font-semibold"><%= item.username %></span>
                         </div>
+                        <div class="px-4 py-2">
+                            <% if (item.description) { %>
+                                <p class="text-sm text-gray-300 italic"><%= item.description %></p>
+                            <% } %>
+                        </div>
 
                         <div class="flex justify-between items-center px-4 py-2 bg-gray-900">
                             <div class="flex items-center space-x-3">

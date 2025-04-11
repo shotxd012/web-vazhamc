@@ -39,16 +39,19 @@ router.get("/media", async (req, res) => {
 });
 
 
-// POST /media/upload
 router.post("/profile/upload", isAuthenticated, upload.single("image"), async (req, res) => {
     try {
         const imageUrl = req.file.path;
+        const description = req.body.description || "";
+
         await new Media({
             username: req.user.username,
             avatar: req.user.avatar,
             discordId: req.user.discordId,
             imageUrl,
+            description,
         }).save();
+
         res.redirect("/media");
     } catch (error) {
         console.error("Upload failed:", error);

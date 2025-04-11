@@ -40,22 +40,25 @@
                     <p><strong class="text-emerald-400">Joined:</strong> <%= user.joinDate %></p>
                     <p><strong class="text-emerald-400">Server Rank:</strong> <%= user.rank || 'Member' %></p>
                 </div>
-
                 <form action="/profile/upload" method="POST" enctype="multipart/form-data" class="mt-10 w-full max-w-md mx-auto bg-gray-800 p-6 rounded-lg shadow-lg border border-gray-700">
                     <label class="block text-left text-sm font-medium text-gray-300 mb-2">Upload Image</label>
-                    
-                    <input type="file" name="image" accept="image/*" required 
+                
+                    <input type="file" name="image" accept="image/*" required
                         class="block w-full text-sm text-gray-300 file:mr-4 file:py-2 file:px-4
                                file:rounded-full file:border-0
                                file:text-sm file:font-semibold
                                file:bg-emerald-600 file:text-white
                                hover:file:bg-emerald-700 transition duration-200" />
                 
-                    <button type="submit" 
+                    <label class="block mt-4 text-sm font-medium text-gray-300 mb-1">Description (optional)</label>
+                    <textarea name="description" rows="3" class="w-full p-2 rounded bg-gray-700 text-white resize-none" placeholder="Write something..."></textarea>
+                
+                    <button type="submit"
                         class="mt-4 w-full bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300">
                         📤 Upload to Media
                     </button>
                 </form>
+                
                 
 
                 <!-- Buttons -->
