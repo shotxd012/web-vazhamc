@@ -3,6 +3,7 @@ const router = express.Router();
 const ShotUser = require("../models/ShotUser");
 const ActivityLog = require("../models/ActivityLog");
 const bcrypt = require("bcrypt");
+const Media = require("../models/Media");
 
 // Middleware to check authentication
 function authshot(req, res, next) {
@@ -43,6 +44,22 @@ router.post("/shot/login", async (req, res) => {
     } catch (err) {
         console.error("Error during login:", err);
         res.status(500).send("Internal Server Error");
+    }
+});
+
+router.get("/shot/media/manage", authshot, async (req, res) => {
+    const media = await Media.find().sort({ timestamp: -1 });
+    res.render("shotManageMedia", { user: req.session.user, media });
+});
+
+// Delete media by ID
+router.delete("/shot/media/delete/:id", authshot, async (req, res) => {
+    try {
+        await Media.findByIdAndDelete(req.params.id);
+        res.json({ success: true });
+    } catch (error) {
+        console.error("Delete error:", error);
+        res.status(500).json({ success: false });
     }
 });
 
