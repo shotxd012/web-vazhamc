@@ -10,7 +10,6 @@ router.get("/profile", (req, res) => {
     res.render("profile", { user: req.user });
 });
 
-// Cloudinary config
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
     api_key: process.env.CLOUDINARY_API_KEY,
@@ -28,7 +27,6 @@ const storage = new CloudinaryStorage({
 
 const upload = multer({ storage });
 
-// Upload route on profile
 router.post("/profile/upload", upload.single("image"), async (req, res) => {
     if (!req.isAuthenticated()) return res.redirect("/login");
 
@@ -39,6 +37,11 @@ router.post("/profile/upload", upload.single("image"), async (req, res) => {
             username: req.user.username,
             avatar: req.user.avatar,
             discordId: req.user.discordId,
+            description: req.body.description || "",
+            type: req.body.type || "image",
+            likes: 0,
+            dislikes: 0,
+            voters: [],
             imageUrl,
         }).save();
 

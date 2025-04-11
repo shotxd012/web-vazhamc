@@ -23,7 +23,6 @@ async function getStaffDetails() {
         const guild = await bot.guilds.fetch(GUILD_ID);
         const members = await guild.members.fetch();
 
-        // Role Priority Order (Higher Index = Higher Priority)
         const staffRoles = [
             "ꜰᴏᴜɴᴅᴇʀ",
             "ᴄᴏᴍᴍᴜɴɪᴛʏ ᴍᴀɴᴀɢᴇʀ",
@@ -42,24 +41,20 @@ async function getStaffDetails() {
             const matchedRoles = userRoles.filter(role => staffRoles.includes(role));
 
             if (matchedRoles.length > 0) {
-                // Sort user roles based on priority
                 matchedRoles.sort((a, b) => staffRoles.indexOf(a) - staffRoles.indexOf(b));
 
-                // Get presence status (default to 'offline' if undefined)
                 const presenceStatus = member.presence?.status || "offline";
 
                 staffList.push({
                     id: member.user.id,
                     name: member.user.username,
                     avatar: member.user.displayAvatarURL({ dynamic: true, size: 256 }),
-                    position: matchedRoles[0], // Highest priority role
+                    position: matchedRoles[0], 
                     roles: matchedRoles,
                     status: presenceStatus
                 });
             }
         });
-
-        // Sort staff members based on their highest role priority
         staffList.sort((a, b) => staffRoles.indexOf(a.position) - staffRoles.indexOf(b.position));
 
         return staffList;
