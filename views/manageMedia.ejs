@@ -35,7 +35,41 @@
                     </div>
                 <% }) %>
             </div>
+            <!-- Add this where you list each media -->
+<% media.forEach(item => { %>
+    <div class="bg-gray-800 p-4 rounded-lg shadow-lg relative">
+        <img src="<%= item.imageUrl %>" alt="media" class="w-full h-48 object-cover rounded-lg mb-3">
+        
+        <!-- Description Editing -->
+        <form action="/profile/manage/media/<%= item._id %>/edit" method="POST">
+            <textarea name="description" class="w-full bg-gray-700 text-white p-2 rounded mb-2 resize-none"><%= item.description || "" %></textarea>
+            <div class="flex justify-between items-center">
+                <button type="submit" class="text-blue-400 hover:underline">💾 Save</button>
+                <a href="/profile/manage/media/<%= item._id %>/delete" class="text-red-500 hover:underline">🗑️ Delete Image</a>
+            </div>
+        </form>
+
+        <!-- Comments Section -->
+        <% if (comments && comments.length) { %>
+            <div class="mt-4 bg-gray-900 p-3 rounded-lg text-sm space-y-2">
+                <h3 class="text-emerald-400 font-semibold mb-2">Comments:</h3>
+                <% comments.filter(c => c.mediaId === item._id.toString()).forEach(comment => { %>
+                    <div class="flex justify-between items-start bg-gray-800 px-3 py-2 rounded">
+                        <div>
+                            <p class="text-emerald-400 font-medium"><%= comment.username %></p>
+                            <p class="text-gray-300"><%= comment.message %></p>
+                        </div>
+                        <form action="/profile/manage/media/<%= comment._id %>/comment/delete" method="POST">
+                            <button class="text-red-400 hover:underline text-sm">🗑️</button>
+                        </form>
+                    </div>
+                <% }) %>
+            </div>
+        <% } %>
+    </div>
+<% }) %>
         </div>
+
     </section>
 
     <%- include('partials/footer') %>
