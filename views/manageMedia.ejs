@@ -19,22 +19,6 @@
                 <textarea name="description" rows="3" class="w-full bg-gray-700 rounded p-2 mt-1" placeholder="Write something..."></textarea>
                 <button type="submit" class="w-full mt-4 bg-emerald-600 hover:bg-emerald-700 rounded py-2">Upload</button>
             </form>
-
-            <!-- Media Gallery -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <% media.forEach(item => { %>
-                    <div class="bg-gray-800 p-4 rounded-lg shadow-lg relative">
-                        <img src="<%= item.imageUrl %>" alt="media" class="w-full h-48 object-cover rounded-lg mb-3">
-                        <form action="/profile/manage/media/<%= item._id %>/edit" method="POST">
-                            <textarea name="description" class="w-full bg-gray-700 text-white p-2 rounded mb-2 resize-none"><%= item.description || "" %></textarea>
-                            <div class="flex justify-between items-center">
-                                <button type="submit" class="text-blue-400 hover:underline">Save</button>
-                                <a href="/profile/manage/media/<%= item._id %>/delete" class="text-red-500 hover:underline">Delete</a>
-                            </div>
-                        </form>
-                    </div>
-                <% }) %>
-            </div>
             <!-- Add this where you list each media -->
 <% media.forEach(item => { %>
     <div class="bg-gray-800 p-4 rounded-lg shadow-lg relative">
