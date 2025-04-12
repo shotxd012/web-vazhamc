@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('partials/head') %>
+</head>
+<body class="bg-gray-900 text-white font-sans">
+  <%- include('partials/nav') %>
+
+  <section class="py-16 px-4">
+    <div class="max-w-4xl mx-auto bg-gray-800 p-6 rounded-lg shadow-lg">
+      <!-- Ticket Info -->
+      <div class="mb-6">
+        <h1 class="text-3xl font-bold text-emerald-400 mb-2">🎟️ Ticket: <%= ticket.ticketId %></h1>
+        <p><span class="font-semibold text-gray-300">Title:</span> <%= ticket.title %></p>
+        <p><span class="font-semibold text-gray-300">Type:</span> <%= ticket.type %></p>
+        <p><span class="font-semibold text-gray-300">Status:</span> 
+          <span class="<%= ticket.status === 'Closed' ? 'text-red-400' : 'text-green-400' %>">
+            <%= ticket.status %>
+          </span>
+        </p>
+        <% if (ticket.closedReason) { %>
+          <p class="text-red-400 italic mt-1">Reason: <%= ticket.closedReason %></p>
+        <% } %>
+      </div>
+
+      <!-- Ticket Rules -->
+      <div class="bg-gray-900 p-4 rounded-md mb-6 text-sm text-gray-300 border border-gray-700">
+        <h1>✅ Be respectful and patient while communicating with staff.</h1>
+        <h1>❗ Inappropriate language will result in a ban.  </h1>
+        <h1>📌 Ticket replies can take a few minutes to a few hours.</h1>
+      </div>
+
+      <!-- Message List -->
+      <div class="bg-gray-700 p-4 rounded-md space-y-4 max-h-96 overflow-y-auto mb-6">
+        <% messages.forEach(msg => { %>
+          <div class="flex <%= msg.userId === user.discordId ? 'justify-end' : 'justify-start' %>">
+            <div class="max-w-xs bg-gray-800 p-3 rounded-lg shadow text-sm">
+              <div class="flex items-center space-x-2 mb-1">
+                <img src="https://cdn.discordapp.com/avatars/<%= msg.userId %>/<%= msg.avatar %>.png" class="w-6 h-6 rounded-full">
+                <span class="text-emerald-400 font-semibold"><%= msg.username %></span>
+              </div>
+              <% if (msg.message) { %>
+                <p class="text-gray-200"><%= msg.message %></p>
+              <% } %>
+              <% if (msg.image) { %>
+                <img src="<%= msg.image %>" class="mt-2 rounded-md max-h-48 border border-gray-600">
+              <% } %>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+
+      <!-- Send Message -->
+<% if (ticket.status !== 'closed') { %>
+    <form action="/profile/ticket/<%= ticket.ticketId %>/message" method="POST" enctype="multipart/form-data" class="mb-4 space-y-2">
+      <input type="text" name="message" placeholder="Your message..." class="w-full p-2 rounded bg-gray-700 text-white">
+      <input type="file" name="image" accept="image/*" class="text-sm text-gray-300">
+      <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 py-2 rounded text-white font-semibold">
+        📤 Send
+      </button>
+    </form>
+  <% } %>
+  
+  <!-- Close Ticket -->
+  <% if (ticket.status !== 'closed') { %>
+    <form action="/profile/ticket/<%= ticket.ticketId %>/close" method="POST" class="mt-6 space-y-2">
+      <label for="reason" class="text-sm text-gray-300">Reason for closing:</label>
+      <textarea name="reason" rows="2" required placeholder="Explain why you're closing the ticket..." class="w-full p-2 rounded bg-gray-700 text-white resize-none"></textarea>
+      <button type="submit" class="w-full bg-red-600 hover:bg-red-700 py-2 rounded text-white font-semibold">
+        ❌ Close Ticket
+      </button>
+    </form>
+  <% } %>
+  <div class="mt-4 text-right">
+    <a href="/profile/tickets" class="text-blue-400 hover:underline text-sm">
+        🔍 ticket panel
+    </a>
+</div>
+    </div>
+
+    </div>
+    
+  </section>
+
+  <%- include('partials/footer') %>
+</body>
+</html>
