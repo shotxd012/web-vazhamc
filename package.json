@@ -1,6 +1,6 @@
 {
-  "name": "tokyomc-downloader",
-  "version": "1.0.0",
+  "name": "vazhamc",
+  "version": "3.6.4",
   "main": "app.js",
   "scripts": {
     "start": "node app.js",

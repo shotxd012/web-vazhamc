@@ -4,6 +4,7 @@ const Media = require("../models/Media");
 const multer = require("multer");
 const { CloudinaryStorage } = require("multer-storage-cloudinary");
 const cloudinary = require("cloudinary").v2;
+const Comment = require("../models/Comment");
 
 // Cloudinary config
 cloudinary.config({
@@ -34,9 +35,17 @@ const upload = multer({ storage });
 
 // GET /media
 router.get("/media", async (req, res) => {
-    const media = await Media.find().sort({ timestamp: -1 });
-    res.render("media", { user: req.user, media });
+    try {
+        const media = await Media.find().sort({ timestamp: -1 });
+        const comments = await Comment.find().sort({ timestamp: 1 }); // oldest first
+
+        res.render("media", { user: req.user, media, comments });
+    } catch (err) {
+        console.error("Error loading media:", err);
+        res.status(500).send("Server Error");
+    }
 });
+
 
 // Manage media page
 router.get("/profile/manage/media", isAuthenticated, async (req, res) => {
@@ -103,5 +112,56 @@ router.post("/media/vote/:id/:type", isAuthenticated, async (req, res) => {
         res.status(500).json({ success: false, message: "Server error" });
     }
 });
+
+// GET /media/:id
+router.get("/media", async (req, res) => {
+    const media = await Media.find().sort({ timestamp: -1 });
+    const comments = await Comment.find().sort({ timestamp: 1 }); // oldest first
+
+    res.render("media", { user: req.user, media, comments });
+});
+
+router.post("/media/comment/:mediaId", isAuthenticated, async (req, res) => {
+    const { mediaId } = req.params;
+    const { message } = req.body;
+
+    if (!message.trim()) return res.status(400).json({ success: false, message: "Empty comment" });
+
+    await Comment.create({
+        mediaId,
+        userId: req.user.discordId,
+        username: req.user.username,
+        avatar: req.user.avatar,
+        message
+    });
+
+    res.json({ success: true, message: "Comment added" });
+});
+
+router.post("/media/comment/:mediaId", async (req, res) => {
+    if (!req.isAuthenticated || !req.isAuthenticated()) {
+        return res.status(401).json({ success: false, message: "Unauthorized" });
+    }
+
+    const { mediaId } = req.params;
+    const { message } = req.body;
+
+    try {
+        await new Comment({
+            mediaId,
+            userId: req.user.discordId,
+            username: req.user.username,
+            avatar: req.user.avatar,
+            message
+        }).save();
+
+        res.json({ success: true });
+    } catch (err) {
+        console.error("Comment error:", err);
+        res.status(500).json({ success: false, message: "Failed to comment" });
+    }
+});
+
+
 
 module.exports = router;
