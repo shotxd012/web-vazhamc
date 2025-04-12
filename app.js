@@ -18,6 +18,7 @@ const homeRoute = require("./routes/home");
 const msgDataRoutes = require("./routes/msgData");
 const mediaRoutes = require("./routes/media");
 const ticketRoutes = require('./routes/tickets');
+const adminticket = require('./routes/shot/tickets');
 
 
 
@@ -63,6 +64,7 @@ app.use("/", homeRoute);
 app.use(msgDataRoutes);
 app.use(mediaRoutes);
 app.use(ticketRoutes);
+app.use(adminticket);
 
 // Start Server
 const PORT = process.env.PORT || 3000;

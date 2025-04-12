@@ -1,0 +1,12 @@
+<h1 class="text-3xl font-bold text-emerald-400 mb-6">🎫 All Tickets</h1>
+<div class="space-y-3">
+  <% tickets.forEach(ticket => { %>
+    <div class="bg-dark-300 px-4 py-3 rounded shadow flex justify-between items-center">
+      <div>
+        <p class="text-white font-semibold">#<%= ticket.ticketId %> - <%= ticket.title %></p>
+        <p class="text-sm text-gray-400">From: <%= ticket.username %> • Type: <%= ticket.type %></p>
+      </div>
+      <a href="/shot/ticket/<%= ticket.ticketId %>" class="text-emerald-400 hover:underline">View</a>
+    </div>
+  <% }) %>
+</div>

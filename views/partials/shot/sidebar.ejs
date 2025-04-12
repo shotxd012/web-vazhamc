@@ -62,6 +62,25 @@
     <a href="/shot/media/manage" class="block text-sm py-1 px-2 hover:bg-dark-300 rounded ml-8">Manage Media</a>
 </div>
 
+<!-- Ticket System Section -->
+<div class="text-sm px-2 rounded cursor-pointer">
+    <div class="flex items-center justify-between hover:bg-dark-200 p-2 rounded" id="toggle-tickets">
+      <span class="flex items-center">
+        <svg class="mr-2" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path d="M3 7h18M3 17h18M7 3v4M7 17v4"></path>
+        </svg>
+        <span>Tickets</span>
+      </span>
+      <svg class="w-4 h-4 transition-transform transform rotate-0" id="tickets-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <path d="M6 9l6 6 6-6"></path>
+      </svg>
+    </div>
+  
+    <div id="tickets-submenu" class="hidden ml-6 mt-2">
+      <a href="/shot/tickets" class="block py-1 px-2 hover:bg-dark-300 rounded">All Tickets</a>
+    </div>
+  </div>
+
 <script>
     document.getElementById("toggle-users").addEventListener("click", function() {
         const submenu = document.getElementById("user-submenu");
@@ -78,4 +97,9 @@
         submenu.classList.toggle("hidden");
         arrow.classList.toggle("rotate-180");
     });
+
+    document.getElementById("toggle-tickets").addEventListener("click", () => {
+    document.getElementById("tickets-submenu").classList.toggle("hidden");
+    document.getElementById("tickets-arrow").classList.toggle("rotate-180");
+  });
 </script>

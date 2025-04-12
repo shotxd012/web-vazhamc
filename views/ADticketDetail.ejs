@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('partials/shot/head') %>
+</head>
+
+<body class="flex flex-1">
+  <%- include('partials/shot/sidebar') %>
+  <div class="flex-1 p-6">
+
+    <main class="min-w-full bg-dark-500 border border-dark-200 rounded-lg">
+      <div class="max-w-6xl mx-auto bg-dark-800 p-6 rounded-lg shadow-lg border border-dark-600">
+        <div class="flex justify-between items-center mb-6">
+          <h1 class="py-2 px-4 text-left text-sm font-medium text-gray-400">🎫 Ticket: <%= ticket.ticketId %></h1>
+          <span class="text-sm bg-gray-700 px-3 py-1 rounded-full">
+            <%= ticket.status %>
+          </span>
+        </div>
+
+        <!-- Ticket Info -->
+        <div class="mb-4 text-sm text-gray-300 space-y-1">
+          <p><strong>Title:</strong> <%= ticket.title %></p>
+          <p><strong>Reason:</strong> <%= ticket.reason %></p>
+          <p><strong>Description:</strong> <%= ticket.description %></p>
+          <p><strong>Type:</strong> <%= ticket.type %></p>
+          <p><strong>User:</strong> <%= ticket.username %> (<%= ticket.userId %>)</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-10">
+          <!-- Messages Area -->
+          <div class="md:col-span-2 bg-dark-700 p-4 rounded-lg space-y-4 h-[32rem] overflow-y-auto">
+            <% messages.forEach(msg => { %>
+              <div class="flex <%= msg.userId === ticket.userId ? 'justify-start' : 'justify-end' %>">
+                <div class="bg-dark-600 p-3 rounded shadow max-w-sm w-full">
+                  <div class="flex items-center space-x-2 mb-1">
+                    <img src="https://cdn.discordapp.com/avatars/<%= msg.userId %>/<%= msg.avatar %>.png" class="w-6 h-6 rounded-full">
+                    <span class="text-emerald-400 font-semibold text-sm"><%= msg.username %></span>
+                  </div>
+                  <% if (msg.message) { %>
+                    <p class="text-sm text-gray-200"><%= msg.message %></p>
+                  <% } %>
+                  <% if (msg.image) { %>
+                    <img src="<%= msg.image %>" class="mt-2 rounded border border-dark-500 max-h-48">
+                  <% } %>
+                </div>
+              </div>
+            <% }) %>
+          </div>
+
+          <!-- Admin Reply Area -->
+          <% if (ticket.status !== "closed") { %>
+            <form action="/shot/ticket/<%= ticket.ticketId %>/reply" method="POST" enctype="multipart/form-data" class="bg-dark-700 p-4 rounded-lg shadow-lg space-y-3 h-fit">
+              <h2 class="text-lg font-bold text-emerald-400 mb-2">💬 Reply to Ticket</h2>
+              <textarea name="message" placeholder="Write your message..." class="w-full p-2 bg-dark-600 rounded resize-none text-sm text-white"></textarea>
+              <input type="file" name="image" accept="image/*" class="text-sm text-gray-300">
+              <button type="submit" class="bg-emerald-600 hover:bg-emerald-700 w-full py-2 rounded text-sm font-semibold">
+                📤 Send Reply
+              </button>
+            </form>
+          <% } else { %>
+            <p class="text-center text-sm text-gray-400 mt-6 italic">This ticket is closed. You cannot send messages.</p>
+          <% } %>
+        </div>
+      </div>
+    </main>
+  </div>
+  <%- include('partials/shot/footer') %>
+</body>
+</html>
