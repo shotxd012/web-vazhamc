@@ -38,25 +38,39 @@ router.get("/media", async (req, res) => {
     res.render("media", { user: req.user, media });
 });
 
+// Manage media page
+router.get("/profile/manage/media", isAuthenticated, async (req, res) => {
+    const media = await Media.find({ discordId: req.user.discordId }).sort({ timestamp: -1 });
+    res.render("manageMedia", { user: req.user, media });
+});
 
-router.post("/profile/upload", isAuthenticated, upload.single("image"), async (req, res) => {
-    try {
-        const imageUrl = req.file.path;
-        const description = req.body.description || "";
+// Upload new media
+router.post("/profile/manage/media/upload", isAuthenticated, upload.single("image"), async (req, res) => {
+    const imageUrl = req.file.path;
+    const description = req.body.description;
+    await new Media({
+        username: req.user.username,
+        avatar: req.user.avatar,
+        discordId: req.user.discordId,
+        imageUrl,
+        description,
+    }).save();
+    res.redirect("/profile/manage/media");
+});
 
-        await new Media({
-            username: req.user.username,
-            avatar: req.user.avatar,
-            discordId: req.user.discordId,
-            imageUrl,
-            description,
-        }).save();
+// Edit description
+router.post("/profile/manage/media/:id/edit", isAuthenticated, async (req, res) => {
+    const { id } = req.params;
+    const { description } = req.body;
+    await Media.findOneAndUpdate({ _id: id, discordId: req.user.discordId }, { description });
+    res.redirect("/profile/manage/media");
+});
 
-        res.redirect("/media");
-    } catch (error) {
-        console.error("Upload failed:", error);
-        res.status(500).send("Upload error");
-    }
+// Delete media
+router.get("/profile/manage/media/:id/delete", isAuthenticated, async (req, res) => {
+    const { id } = req.params;
+    await Media.findOneAndDelete({ _id: id, discordId: req.user.discordId });
+    res.redirect("/profile/manage/media");
 });
 
 
