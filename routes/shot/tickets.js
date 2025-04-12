@@ -13,6 +13,14 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
+// Middleware to check authentication
+function authshot(req, res, next) {
+  if (req.session && req.session.user) {
+      return next();
+  }
+  res.redirect("/shot/login");
+}
+
 // Setup Multer with Cloudinary
 const storage = new CloudinaryStorage({
   cloudinary,
@@ -24,13 +32,13 @@ const storage = new CloudinaryStorage({
 const upload = multer({ storage });
 
 // Get all tickets
-router.get("/shot/tickets", async (req, res) => {
+router.get("/shot/tickets", authshot ,  async (req, res) => {
   const tickets = await Ticket.find().sort({ createdAt: -1 });
   res.render("ADtickets", { tickets });
 });
 
 // Get ticket detail
-router.get("/shot/ticket/:ticketId", async (req, res) => {
+router.get("/shot/ticket/:ticketId" , authshot, async (req, res) => {
   const ticket = await Ticket.findOne({ ticketId: req.params.ticketId });
   const messages = await Message.find({ ticketId: req.params.ticketId }).sort({ timestamp: 1 });
 

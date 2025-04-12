@@ -42,7 +42,7 @@
               <div class="flex <%= msg.userId === ticket.userId ? 'justify-start' : 'justify-end' %>">
                 <div class="bg-dark-500 p-4 rounded-lg shadow max-w-md w-full">
                   <div class="flex items-center space-x-3 mb-2">
-                    <img src="https://web.vazha.fun/img/modded-favicon.ico" class="w-7 h-7 rounded-full">
+                    <img src="https://cdn.discordapp.com/avatars/<%= msg.userId %>/<%= msg.avatar %>.png" class="w-7 h-7 rounded-full">
                     <span class="text-emerald-400 font-semibold text-sm"><%= msg.username %></span>
                   </div>
                   <% if (msg.message) { %>
@@ -75,7 +75,9 @@
 
         <!-- Close Ticket -->
         <% if (ticket.status !== "closed") { %>
+          <!-- ✅ Reply form shown when ticket is not closed -->
       
+          <!-- reply form here -->
         <% } else { %>
           <!-- ❌ Ticket is closed -->
           <p class="text-center text-sm text-gray-400 italic">This ticket is closed. You cannot send replies.</p>
