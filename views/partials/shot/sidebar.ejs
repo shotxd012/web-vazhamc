@@ -39,6 +39,46 @@
             </div>
         </div>
 
+                <!-- Ticket Section -->
+                <div class="text-sm px-2 rounded cursor-pointer">
+                    <div class="flex items-center justify-between hover:bg-dark-200 p-2 rounded" id="toggle-Ticket">
+                        <span class="flex items-center">
+                            <svg class="mr-2" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                <path d="M21 8V6a2 2 0 0 0-2-2h-2a2 2 0 0 1-4 0h-2a2 2 0 0 1-4 0H5a2 2 0 0 0-2 2v2a2 2 0 0 1 0 4v2a2 2 0 0 0 2 2h2a2 2 0 0 1 4 0h2a2 2 0 0 1 4 0h2a2 2 0 0 0 2-2v-2a2 2 0 0 1 0-4z"></path>
+                            </svg>
+                            <span>Tickets Access</span>
+                        </span>
+                        <svg class="w-4 h-4 transition-transform transform rotate-0" id="user-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M6 9l6 6 6-6"></path>
+                        </svg>
+                    </div>
+        
+                    <div id="Ticket-sub" class="hidden ml-6 mt-2">
+                        <a href="/shot/tickets" class="block py-1 px-2 hover:bg-dark-300 rounded">All Tickets</a>
+                    </div>
+                </div>
+
+                <!-- Users Section -->
+                <div class="text-sm px-2 rounded cursor-pointer">
+                    <div class="flex items-center justify-between hover:bg-dark-200 p-2 rounded" id="toggle-Manage-Media">
+                        <span class="flex items-center">
+                            <svg class="mr-2" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                                <path d="M21 15l-5-5L5 21"></path>
+                              </svg>                              
+                            <span>Manage Media</span>
+                        </span>
+                        <svg class="w-4 h-4 transition-transform transform rotate-0" id="user-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M6 9l6 6 6-6"></path>
+                        </svg>
+                    </div>
+        
+                    <div id="user-submedia" class="hidden ml-6 mt-2">
+                        <a href="/shot/media/manage" class="block py-1 px-2 hover:bg-dark-300 rounded">All Medias</a>
+                    </div>
+                </div>
+
         <!-- Msg Data Section -->
         <div class="text-sm px-2 rounded cursor-pointer">
             <div class="flex items-center justify-between hover:bg-dark-200 p-2 rounded" id="toggle-msg-data">
@@ -59,27 +99,8 @@
             </div>
         </div>
     </div>
-    <a href="/shot/media/manage" class="block text-sm py-1 px-2 hover:bg-dark-300 rounded ml-8">Manage Media</a>
 </div>
 
-<!-- Ticket System Section -->
-<div class="text-sm px-2 rounded cursor-pointer">
-    <div class="flex items-center justify-between hover:bg-dark-200 p-2 rounded" id="toggle-tickets">
-      <span class="flex items-center">
-        <svg class="mr-2" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-          <path d="M3 7h18M3 17h18M7 3v4M7 17v4"></path>
-        </svg>
-        <span>Tickets</span>
-      </span>
-      <svg class="w-4 h-4 transition-transform transform rotate-0" id="tickets-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-        <path d="M6 9l6 6 6-6"></path>
-      </svg>
-    </div>
-  
-    <div id="tickets-submenu" class="hidden ml-6 mt-2">
-      <a href="/shot/tickets" class="block py-1 px-2 hover:bg-dark-300 rounded">All Tickets</a>
-    </div>
-  </div>
 
 <script>
     document.getElementById("toggle-users").addEventListener("click", function() {
@@ -98,8 +119,20 @@
         arrow.classList.toggle("rotate-180");
     });
 
-    document.getElementById("toggle-tickets").addEventListener("click", () => {
-    document.getElementById("tickets-submenu").classList.toggle("hidden");
-    document.getElementById("tickets-arrow").classList.toggle("rotate-180");
-  });
+    document.getElementById("toggle-Manage-Media").addEventListener("click", function() {
+        const submenu = document.getElementById("user-submedia");
+        const arrow = document.getElementById("user-arrow");
+
+        submenu.classList.toggle("hidden");
+        arrow.classList.toggle("rotate-180");
+    });
+    
+    document.getElementById("toggle-Ticket").addEventListener("click", function() {
+        const submenu = document.getElementById("Ticket-sub");
+        const arrow = document.getElementById("ticket-arrow");
+
+        submenu.classList.toggle("hidden");
+        arrow.classList.toggle("rotate-180");
+    });
+
 </script>
