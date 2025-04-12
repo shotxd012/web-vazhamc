@@ -50,7 +50,8 @@ router.get("/media", async (req, res) => {
 // Manage media page
 router.get("/profile/manage/media", isAuthenticated, async (req, res) => {
     const media = await Media.find({ discordId: req.user.discordId }).sort({ timestamp: -1 });
-    res.render("manageMedia", { user: req.user, media });
+    const comments = await Comment.find().sort({ timestamp: 1 }); // include all comments
+    res.render("manageMedia", { user: req.user, media, comments });
 });
 
 // Upload new media
