@@ -2,72 +2,68 @@
 <html lang="en">
 <head>
     <%- include('partials/head') %>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
 </head>
-<body class="bg-gray-900 text-white font-sans">
+<%- include('partials/message') %>
+<body class="bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white min-h-screen font-sans">
     <%- include('partials/nav') %>
 
-    <section class="py-16">
-        <div class="container mx-auto px-4">
-            <h1 class="text-4xl font-bold text-center mb-10 text-emerald-400">Manage Your Media</h1>
+    <section class="py-20">
+        <div class="container mx-auto px-4 py-10 flex flex-col items-center gap-12">
+            <h1 class="text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-teal-400 via-emerald-500 to-green-600">
+                Manage Your Media
+            </h1>
 
-            <!-- Upload Form -->
-            <form action="/profile/manage/media/upload" method="POST" enctype="multipart/form-data" class="max-w-xl mx-auto bg-gray-800 p-6 rounded-lg shadow-lg border border-gray-700 mb-10">
-                <label class="block text-sm text-gray-300 mb-2">Upload Image</label>
-                <input type="file" name="image" accept="image/*" required
-                    class="w-full text-sm text-gray-300 file:bg-emerald-600 hover:file:bg-emerald-700 file:text-white file:rounded file:py-2 file:px-4" />
-                <label class="block mt-4 text-sm text-gray-300">Description (optional)</label>
-                <textarea name="description" rows="3" class="w-full bg-gray-700 rounded p-2 mt-1" placeholder="Write something..."></textarea>
-                <button type="submit" class="w-full mt-4 bg-emerald-600 hover:bg-emerald-700 rounded py-2">Upload</button>
-            </form>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 w-full max-w-6xl items-start">
+                <!-- Upload Form -->
+                <form action="/profile/manage/media/upload" method="POST" enctype="multipart/form-data" class="bg-gray-900 bg-opacity-80 backdrop-blur-xl p-6 rounded-2xl shadow-xl border border-gray-700 w-full">
+                    <h2 class="text-2xl font-semibold mb-4 text-emerald-400">Upload New Media</h2>
+                    <label class="block text-sm text-gray-300 mb-2">Upload Image</label>
+                    <input type="file" name="image" accept="image/*" required class="w-full text-sm text-gray-300 file:bg-emerald-600 hover:file:bg-emerald-700 file:text-white file:rounded file:py-2 file:px-4 mb-4" />
+                    <label class="block text-sm text-gray-300 mb-2">Description (optional)</label>
+                    <textarea name="description" rows="3" class="w-full bg-gray-700 rounded p-2 mb-4" placeholder="Write something..."></textarea>
+                    <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 rounded py-2">Upload</button>
+                </form>
 
-
-            <div class="flex flex-wrap gap-4 justify-center">
-              <% media.forEach(item => { %>
-                <div class="bg-gray-800 p-3 rounded-lg shadow-lg max-w-sm w-full sm:w-96 text-sm flex gap-3">
-                  
-                  <!-- Image on the left -->
-                  <div class="w-28 h-28 flex-shrink-0">
-                    <img src="<%= item.imageUrl %>" alt="media" class="w-full h-full object-cover rounded">
-                  </div>
-            
-                  <!-- Text and actions on the right -->
-                  <div class="flex-1 flex flex-col justify-between">
-                    <form action="/profile/manage/media/<%= item._id %>/edit" method="POST">
-                      <textarea name="description"
-                        class="w-full bg-gray-700 text-white p-1 rounded text-xs resize-none"
-                        rows="2"><%= item.description || "" %></textarea>
-                      <div class="flex justify-between items-center mt-1">
-                        <button type="submit" class="text-blue-400 hover:underline text-xs">💾 Save</button>
-                        <a href="/profile/manage/media/<%= item._id %>/delete"
-                          class="text-red-500 hover:underline text-xs">🗑️ Delete</a>
-                      </div>
-                    </form>
-            
-                    <% const itemComments = comments.filter(c => c.mediaId === item._id.toString()); %>
-                    <% if (itemComments.length) { %>
-                      <div class="mt-2 bg-gray-900 p-1 rounded space-y-1 max-h-28 overflow-y-auto">
-                        <h3 class="text-emerald-400 font-semibold text-xs mb-1">💬 Comments</h3>
-                        <% itemComments.forEach(comment => { %>
-                          <div class="flex justify-between items-start bg-gray-800 px-2 py-1 rounded">
-                            <div>
-                              <p class="text-emerald-300 font-medium text-xs"><%= comment.username %></p>
-                              <p class="text-gray-300 text-xs"><%= comment.message %></p>
-                            </div>
-                            <form action="/profile/manage/media/<%= comment._id %>/comment/delete" method="POST">
-                              <button class="text-red-400 hover:underline text-xs">🗑️</button>
+                <!-- Media List -->
+                <div class="flex flex-col gap-4">
+                    <% media.forEach(item => { %>
+                    <div class="bg-gray-800 p-3 rounded-lg shadow-lg max-w-full w-full text-sm flex gap-3">
+                        <div class="w-28 h-28 flex-shrink-0">
+                            <img src="<%= item.imageUrl %>" alt="media" class="w-full h-full object-cover rounded">
+                        </div>
+                        <div class="flex-1 flex flex-col justify-between">
+                            <form action="/profile/manage/media/<%= item._id %>/edit" method="POST">
+                                <textarea name="description" class="w-full bg-gray-700 text-white p-1 rounded text-xs resize-none" rows="2"><%= item.description || "" %></textarea>
+                                <div class="flex justify-between items-center mt-1">
+                                    <button type="submit" class="text-blue-400 hover:underline text-xs">💾 Save</button>
+                                    <a href="/profile/manage/media/<%= item._id %>/delete" class="text-red-500 hover:underline text-xs">🗑️ Delete</a>
+                                </div>
                             </form>
-                          </div>
-                        <% }) %>
-                      </div>
-                    <% } %>
-                  </div>
+                            <% const itemComments = comments.filter(c => c.mediaId === item._id.toString()); %>
+                            <% if (itemComments.length) { %>
+                            <div class="mt-2 bg-gray-900 p-1 rounded space-y-1 max-h-28 overflow-y-auto">
+                                <h3 class="text-emerald-400 font-semibold text-xs mb-1">💬 Comments</h3>
+                                <% itemComments.forEach(comment => { %>
+                                <div class="flex justify-between items-start bg-gray-800 px-2 py-1 rounded">
+                                    <div>
+                                        <p class="text-emerald-300 font-medium text-xs"><%= comment.username %></p>
+                                        <p class="text-gray-300 text-xs"><%= comment.message %></p>
+                                    </div>
+                                    <form action="/profile/manage/media/<%= comment._id %>/comment/delete" method="POST">
+                                        <button class="text-red-400 hover:underline text-xs">🗑️</button>
+                                    </form>
+                                </div>
+                                <% }) %>
+                            </div>
+                            <% } %>
+                        </div>
+                    </div>
+                    <% }) %>
                 </div>
-              <% }) %>
             </div>
-            
-
         </div>
-
     </section>
 
     <%- include('partials/footer') %>

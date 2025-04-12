@@ -3,63 +3,71 @@
 <head>
     <%- include('partials/head') %>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
 </head>
-<%- include('partials/message') %>
-<body class="bg-gray-900 text-white min-h-screen font-sans">
+<body class="bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white min-h-screen font-sans">
     <%- include('partials/nav') %>
 
-    <section class="py-20 bg-gray-800">
-        <div class="container mx-auto px-4 py-20 flex flex-col items-center">
-            <h1 class="text-5xl font-bold mb-8 bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-green-700">
+    <section class="py-20">
+        <div class="container mx-auto px-4 py-10 flex flex-col items-center gap-12">
+            <h1 class="text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-teal-400 via-emerald-500 to-green-600">
                 User Profile
             </h1>
 
-            <div class="relative bg-gray-900 bg-opacity-70 backdrop-blur-lg p-8 rounded-lg shadow-lg w-full max-w-xl text-center border border-gray-700">
-                <!-- Avatar -->
-                <div class="relative w-32 h-32 mx-auto">
-                    <img src="https://cdn.discordapp.com/avatars/<%= user.discordId %>/<%= user.avatar %>.png" alt="Avatar" 
-                         class="w-full h-full rounded-full border-4 border-emerald-500 shadow-lg">
-                    <!-- Discord Status Indicator -->
-                    <div class="absolute bottom-2 right-2 w-6 h-6 rounded-full border-2 border-gray-900"
-                         style="background-color: <%= user.statusColor || 'gray' %>;">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 w-full max-w-5xl items-start">
+                <!-- Avatar + Name + Role -->
+                <div class="flex flex-col items-center md:items-start text-center md:text-left">
+                    <div class="relative w-36 h-36">
+                        <img src="https://cdn.discordapp.com/avatars/<%= user.discordId %>/<%= user.avatar %>.png" alt="Avatar"
+                                class="rounded-full border-4 border-gray-900 shadow-lg object-cover w-full h-full">
+                        <div class="absolute bottom-2 right-2 w-6 h-6 rounded-full border-2 border-gray-900"
+                             style="background-color: <%= user.statusColor || 'gray' %>;"></div>
                     </div>
+                    <h2 class="text-3xl font-bold mt-6">@<%= user.username %></h2>
+                    <p class="text-lg text-gray-400"><%= user.discordTag %></p>
+                    <span class="mt-3 inline-block px-5 py-1.5 rounded-full text-sm font-semibold text-white shadow-lg"
+                          style="background-color: <%= user.roleColor || '#4CAF50' %>;"><%= user.role %></span>
                 </div>
 
-                <h2 class="text-3xl font-bold mt-4"><%= user.username %></h2>
-                <p class="text-lg text-gray-400">@<%= user.discordTag %></p>
+                <!-- User Info + Buttons -->
+                <div class="bg-gray-900 bg-opacity-80 backdrop-blur-xl p-6 rounded-2xl shadow-xl border border-gray-700 w-full">
+                    <div class="space-y-4">
+                        <p class="text-lg"><strong class="text-emerald-400">Email:</strong> <%= user.email || 'Not linked' %></p>
+                        <p class="text-lg"><strong class="text-emerald-400">Joined:</strong> <%= user.joinDate %></p>
+                        <p class="text-lg"><strong class="text-emerald-400">Server Rank:</strong> <%= user.rank || 'Member' %></p>
+                    </div>
 
-                <!-- Role Badge -->
-                <span class="mt-2 inline-block px-4 py-1 rounded-full text-sm font-medium"
-                      style="background-color: <%= user.roleColor || '#4CAF50' %>;">
-                    <%= user.role %>
-                </span>
-
-                <!-- User Details -->
-                <div class="mt-6 space-y-4 text-left">
-                    <p><strong class="text-emerald-400">Email:</strong> <%= user.email || 'Not linked' %></p>
-                    <p><strong class="text-emerald-400">Joined:</strong> <%= user.joinDate %></p>
-                    <p><strong class="text-emerald-400">Server Rank:</strong> <%= user.rank || 'Member' %></p>
-                </div>
-
-                <!-- Buttons -->
-                <div class="mt-6 flex justify-center space-x-4">
-                    <a href="/logout" class="bg-red-600 hover:bg-red-700 px-6 py-2 rounded-lg shadow-md">
-                        Logout
-                    </a>
-                    <a href="/media" class="bg-green-500 hover:bg-green-800 px-6 py-2 rounded-lg shadow-md">
-                        Media
-                    </a>
-                    <a href="/profile/manage/media" class="bg-emerald-600 hover:bg-emerald-800 px-6 py-2 rounded-lg shadow-md">
-                        Manage Media
-                    </a>
-                    <a href="/profile/tickets" class="bg-yellow-500 hover:bg-yellow-600 px-6 py-2 rounded-lg shadow-md">
-                        📝 Tickets
-                    </a>
+                    <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <a href="/logout" class="flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 px-6 py-3 rounded-lg shadow-md transition-all duration-300">
+                            <i class="ph ph-sign-out"></i> Logout
+                        </a>
+                        <a href="/media" class="flex items-center justify-center gap-2 bg-green-500 hover:bg-green-700 px-6 py-3 rounded-lg shadow-md transition-all duration-300">
+                            <i class="ph ph-images"></i> Media
+                        </a>
+                        <a href="/profile/manage/media" class="flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-800 px-6 py-3 rounded-lg shadow-md transition-all duration-300">
+                            <i class="ph ph-gear"></i> Manage Media
+                        </a>
+                        <a href="/profile/tickets" class="flex items-center justify-center gap-2 bg-yellow-500 hover:bg-yellow-600 px-6 py-3 rounded-lg shadow-md transition-all duration-300">
+                            <i class="ph ph-note"></i> Tickets
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
     <%- include('partials/footer') %>
+
+    <style>
+        @media (max-width: 640px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            .w-36, .h-36 {
+                width: 5.5rem;
+                height: 5.5rem;
+            }
+        }
+    </style>
 </body>
 </html>
