@@ -59,4 +59,33 @@ router.post("/shot/ticket/:ticketId/reply", upload.single("image"), async (req, 
   res.redirect(`/shot/ticket/${ticketId}`);
 });
 
+// ✅ Admin close a ticket 
+
+router.post("/shot/ticket/:ticketId/close", async (req, res) => {
+
+  const { ticketId } = req.params;
+
+  const ticket = await Ticket.findOne({ ticketId });
+  
+  if (!ticket) return res.status(404).send("Ticket not found");
+  ticket.status = "closed";
+  ticket.closedReason = req.body.reason || "Closed by admin";
+  await ticket.save();
+  res.redirect(`/shot/ticket/${ticketId}`);
+});
+
+// ✅ Admin reopen a ticket
+router.post("/shot/ticket/:ticketId/reopen", async (req, res) => {
+  const { ticketId } = req.params;
+
+  const ticket = await Ticket.findOne({ ticketId });
+  if (!ticket) return res.status(404).send("Ticket not found");
+
+  ticket.status = "reopened";
+  ticket.closedReason = ""; 
+  await ticket.save();
+
+  res.redirect(`/shot/ticket/${ticketId}`);
+});
+
 module.exports = router;
