@@ -162,6 +162,22 @@ router.post("/media/comment/:mediaId", async (req, res) => {
     }
 });
 
+// Delete a comment (Only media owner can do this)
+router.post("/profile/manage/media/:commentId/comment/delete", isAuthenticated, async (req, res) => {
+    const { commentId } = req.params;
+    const comment = await Comment.findById(commentId);
+    if (!comment) return res.status(404).send("Comment not found");
+
+    const media = await Media.findById(comment.mediaId);
+    if (!media || media.discordId !== req.user.discordId) {
+        return res.status(403).send("Unauthorized to delete this comment");
+    }
+
+    await Comment.findByIdAndDelete(commentId);
+    res.redirect("/profile/manage/media");
+});
+
+
 
 
 module.exports = router;
