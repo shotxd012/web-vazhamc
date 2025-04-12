@@ -17,6 +17,8 @@ const { startBot } = require("./config/bot");
 const homeRoute = require("./routes/home");
 const msgDataRoutes = require("./routes/msgData");
 const mediaRoutes = require("./routes/media");
+const ticketRoutes = require('./routes/tickets');
+
 
 
 require("dotenv").config();
@@ -60,6 +62,7 @@ app.use(announcementRoutes);
 app.use("/", homeRoute);
 app.use(msgDataRoutes);
 app.use(mediaRoutes);
+app.use(ticketRoutes);
 
 // Start Server
 const PORT = process.env.PORT || 3000;
