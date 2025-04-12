@@ -89,7 +89,7 @@ router.post("/shot/ticket/:ticketId/reopen", async (req, res) => {
   const ticket = await Ticket.findOne({ ticketId });
   if (!ticket) return res.status(404).send("Ticket not found");
 
-  ticket.status = "reopened";
+  ticket.status = "open";
   ticket.closedReason = ""; 
   await ticket.save();
 
