@@ -2,8 +2,8 @@ const { EmbedBuilder } = require("discord.js");
 
 function createTicketEmbed(ticket, type = "created") {
   const colors = {
-    created: 0x00c48c,   // Emerald green
-    updated: 0xffbf00,   // Yellow
+    created: 0x00c48c,
+    updated: 0xffbf00,
   };
 
   return new EmbedBuilder()

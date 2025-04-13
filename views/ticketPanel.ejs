@@ -2,81 +2,299 @@
 <html lang="en">
 <head>
     <%- include('partials/head') %>
+    <style>
+        /* Animations and effects */
+        .ticket-card {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .ticket-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+        }
+        
+        .create-btn {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .create-btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: 0.5s;
+        }
+        
+        .create-btn:hover::after {
+            left: 100%;
+        }
+        
+        /* Form animations */
+        .ticket-form-container {
+            transition: all 0.3s ease;
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+        }
+        
+        .ticket-form-container.active {
+            max-height: 500px;
+            opacity: 1;
+            margin: 2rem auto;
+        }
+        
+        /* Status badges */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .priority-high {
+            background-color: rgba(239, 68, 68, 0.2);
+            color: #EF4444;
+        }
+        
+        .priority-medium {
+            background-color: rgba(245, 158, 11, 0.2);
+            color: #F59E0B;
+        }
+        
+        .priority-low {
+            background-color: rgba(16, 185, 129, 0.2);
+            color: #10B981;
+        }
+        
+        .priority-suggestion {
+            background-color: rgba(139, 92, 246, 0.2);
+            color: #8B5CF6;
+        }
+        
+        /* Form inputs */
+        .form-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background-color: rgba(55, 65, 81, 0.5);
+            border: 1px solid rgba(75, 85, 99, 0.5);
+            border-radius: 0.5rem;
+            color: white;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: rgba(16, 185, 129, 0.5);
+            box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.25);
+        }
+        
+        .form-select {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 0.5rem center;
+            background-repeat: no-repeat;
+            background-size: 1.5em 1.5em;
+            padding-right: 2.5rem;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+    </style>
 </head>
 <body class="bg-gray-900 text-white font-sans">
 <%- include('partials/nav') %>
 
-<section class="py-20">
-    <div class="container mx-auto px-4">
-        <h1 class="text-4xl font-bold mb-20 text-center text-emerald-400">
-            🎫 My Tickets
-        </h1>
-
-        <!-- Create Ticket Button -->
-        <div class="flex justify-center mb-6">
-            <button onclick="document.getElementById('ticket-form').classList.toggle('hidden')" class="bg-emerald-600 hover:bg-emerald-700 px-4 py-2 rounded">
-                ➕ Create Ticket
+<section class="py-12 md:py-20">
+    <div class="container mx-auto px-4 max-w-7xl">
+        <div class="flex flex-col items-center justify-center mb-12">
+            <h1 class="text-3xl md:text-4xl font-bold mb-4 text-white">
+                My Support Tickets
+            </h1>
+            <p class="text-gray-400 text-center max-w-2xl mb-8">
+                Create and manage your support tickets. Our team will respond as soon as possible.
+            </p>
+            
+            <!-- Create Ticket Button -->
+            <button id="create-ticket-btn" class="create-btn bg-emerald-600 hover:bg-emerald-700 px-6 py-3 rounded-lg text-white font-semibold transition duration-200 flex items-center gap-2 shadow-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                </svg>
+                Create New Ticket
             </button>
         </div>
 
         <!-- Ticket Form -->
-        <div id="ticket-form" class="max-w-xl mx-auto bg-gray-800 p-6 rounded-lg shadow-md border border-gray-700 hidden">
-            <form action="/profile/tickets/create" method="POST" class="space-y-4">
-                <input type="text" name="title" placeholder="Title" required class="w-full p-2 bg-gray-700 rounded">
-                <input type="text" name="reason" placeholder="Reason" required class="w-full p-2 bg-gray-700 rounded">
-                <textarea name="description" placeholder="Description..." rows="3" class="w-full bg-gray-700 p-2 rounded resize-none"></textarea>
-                <select name="type" required class="w-full bg-gray-700 p-2 rounded">
-                    <option value="low">Low</option>
-                    <option value="medium">Medium</option>
-                    <option value="high">High</option>
-                    <option value="suggestion">Suggestion</option>
-                </select>
-                <button type="submit" class="bg-blue-500 hover:bg-blue-600 w-full py-2 rounded">Submit Ticket</button>
-            </form>
-        </div>
-
- <!-- Ticket List -->
-<div class="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-    <% tickets.forEach(ticket => { %>
-        <div class="bg-gray-800 p-4 rounded-lg border border-gray-700 shadow">
-            <div class="flex items-center space-x-3 mb-3">
-                <img src="https://cdn.discordapp.com/avatars/<%= ticket.userId %>/<%= ticket.avatar %>.png" class="w-10 h-10 rounded-full">
-                <div>
-                    <p class="text-sm font-semibold text-emerald-400"><%= ticket.username %></p>
-                    <p class="text-xs text-gray-400"><%= new Date(ticket.createdAt).toLocaleString() %></p>
+        <div id="ticket-form-container" class="ticket-form-container max-w-xl mx-auto">
+            <div class="bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-700/50">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-semibold text-emerald-400">Create Support Ticket</h2>
+                    <button id="close-form-btn" class="text-gray-400 hover:text-white">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                        </svg>
+                    </button>
                 </div>
-            </div>
-
-            <h3 class="text-lg font-bold mb-1">
-                <%= ticket.title %>
-                <span class="block text-xs text-gray-400">TicketId = #<%= ticket.ticketId %></span>
-            </h3>
-
-            <p class="text-sm mb-2 text-gray-300">Reason = <%= ticket.reason %></p>
-            <p class="text-sm italic text-gray-400">Description = <%= ticket.description %></p>
-
-            <div class="mt-3 text-xs text-right">
-                <span class="inline-block px-3 py-1 rounded-full font-semibold
-                    <%= ticket.type === 'high' ? 'bg-red-600' :
-                        ticket.type === 'medium' ? 'bg-yellow-500' :
-                        ticket.type === 'suggestion' ? 'bg-purple-600' : 'bg-green-600' %>">
-                    <%= ticket.type.charAt(0).toUpperCase() + ticket.type.slice(1) %>
-                </span>
-                <span class="ml-2 text-gray-400">Status: <%= ticket.status %></span>
-            </div>
-
-            <!-- 🔽 View Details Button -->
-            <div class="mt-4 text-right">
-                <a href="/profile/ticket/<%= ticket.ticketId %>" class="text-blue-400 hover:underline text-sm">
-                    🔍 View Details
-                </a>
+                
+                <form action="/profile/tickets/create" method="POST" class="space-y-4">
+                    <div>
+                        <label for="title" class="block text-sm font-medium text-gray-300 mb-1">Title</label>
+                        <input type="text" id="title" name="title" placeholder="Brief summary of your issue" required class="form-input">
+                    </div>
+                    
+                    <div>
+                        <label for="reason" class="block text-sm font-medium text-gray-300 mb-1">Reason</label>
+                        <input type="text" id="reason" name="reason" placeholder="Main reason for this ticket" required class="form-input">
+                    </div>
+                    
+                    <div>
+                        <label for="description" class="block text-sm font-medium text-gray-300 mb-1">Description</label>
+                        <textarea id="description" name="description" placeholder="Provide details about your issue..." rows="3" class="form-input resize-none"></textarea>
+                    </div>
+                    
+                    <div>
+                        <label for="type" class="block text-sm font-medium text-gray-300 mb-1">Priority</label>
+                        <select id="type" name="type" required class="form-input form-select">
+                            <option value="low">Low Priority</option>
+                            <option value="medium">Medium Priority</option>
+                            <option value="high">High Priority</option>
+                            <option value="suggestion">Suggestion</option>
+                        </select>
+                    </div>
+                    
+                    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 py-3 rounded-lg text-white font-semibold transition duration-200 mt-2">
+                        Submit Ticket
+                    </button>
+                </form>
             </div>
         </div>
-    <% }) %>
-</div>
 
+        <!-- Ticket List -->
+        <div class="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <% tickets.forEach(ticket => { %>
+                <div class="ticket-card bg-gray-800 rounded-xl overflow-hidden shadow-lg border border-gray-700/30">
+                    <!-- Card Header -->
+                    <div class="bg-gray-700/50 p-4">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-3">
+                                <img src="https://cdn.discordapp.com/avatars/<%= ticket.userId %>/<%= ticket.avatar %>.png" class="w-10 h-10 rounded-full border border-gray-600/50">
+                                <div>
+                                    <p class="font-semibold text-emerald-400"><%= ticket.username %></p>
+                                    <p class="text-xs text-gray-400"><%= new Date(ticket.createdAt).toLocaleString() %></p>
+                                </div>
+                            </div>
+                            <span class="status-badge 
+                                <%= ticket.type === 'high' ? 'priority-high' : 
+                                   ticket.type === 'medium' ? 'priority-medium' : 
+                                   ticket.type === 'suggestion' ? 'priority-suggestion' : 'priority-low' %>">
+                                <%= ticket.type.charAt(0).toUpperCase() + ticket.type.slice(1) %>
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <!-- Card Body -->
+                    <div class="p-4">
+                        <div class="mb-4">
+                            <h3 class="text-lg font-bold mb-1 text-white">
+                                <%= ticket.title %>
+                            </h3>
+                            <p class="text-xs text-gray-400 mb-2">
+                                Ticket #<%= ticket.ticketId %> • 
+                                <span class="<%= ticket.status === 'closed' ? 'text-red-400' : 'text-green-400' %>">
+                                    <%= ticket.status.charAt(0).toUpperCase() + ticket.status.slice(1) %>
+                                </span>
+                            </p>
+                        </div>
+                        
+                        <div class="space-y-2 mb-4">
+                            <div>
+                                <p class="text-xs text-gray-400">Reason:</p>
+                                <p class="text-sm text-gray-300"><%= ticket.reason %></p>
+                            </div>
+                            
+                            <% if (ticket.description) { %>
+                                <div>
+                                    <p class="text-xs text-gray-400">Description:</p>
+                                    <p class="text-sm text-gray-300 line-clamp-2"><%= ticket.description %></p>
+                                </div>
+                            <% } %>
+                        </div>
+                    </div>
+                    
+                    <!-- Card Footer -->
+                    <div class="bg-gray-700/30 p-4 flex justify-between items-center">
+                        <div class="flex items-center text-xs text-gray-400">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16" class="mr-1">
+                                <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
+                            </svg>
+                            <%= ticket.status === 'closed' ? 'Closed' : 'Active' %>
+                        </div>
+                        
+                        <a href="/profile/ticket/<%= ticket.ticketId %>" class="inline-flex items-center gap-1 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium py-1.5 px-3 rounded-lg transition duration-200">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
+                                <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/>
+                            </svg>
+                            View Details
+                        </a>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+        
+        <!-- Empty State -->
+        <% if (tickets.length === 0) { %>
+            <div class="mt-10 text-center py-16 bg-gray-800/50 rounded-xl border border-gray-700/30">
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" viewBox="0 0 16 16" class="mx-auto text-gray-600 mb-4">
+                    <path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z"/>
+                    <path d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52l-.094-.319zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115l.094-.319z"/>
+                </svg>
+                <h3 class="text-xl font-semibold text-gray-300 mb-2">No Tickets Found</h3>
+                <p class="text-gray-400 max-w-md mx-auto mb-6">You haven't created any support tickets yet. Click the button above to create your first ticket.</p>
+                <button id="empty-create-btn" class="bg-emerald-600 hover:bg-emerald-700 px-6 py-2 rounded-lg text-white font-medium transition duration-200">
+                    Create Your First Ticket
+                </button>
+            </div>
+        <% } %>
+    </div>
 </section>
 
 <%- include('partials/footer') %>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const createBtn = document.getElementById('create-ticket-btn');
+        const emptyCreateBtn = document.getElementById('empty-create-btn');
+        const closeFormBtn = document.getElementById('close-form-btn');
+        const formContainer = document.getElementById('ticket-form-container');
+        
+        function toggleForm() {
+            formContainer.classList.toggle('active');
+            
+            // Scroll to form if it's opened
+            if (formContainer.classList.contains('active')) {
+                setTimeout(() => {
+                    formContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }, 100);
+            }
+        }
+        
+        if (createBtn) {
+            createBtn.addEventListener('click', toggleForm);
+        }
+        
+        if (emptyCreateBtn) {
+            emptyCreateBtn.addEventListener('click', toggleForm);
+        }
+        
+        if (closeFormBtn) {
+            closeFormBtn.addEventListener('click', toggleForm);
+        }
+    });
+</script>
 </body>
 </html>

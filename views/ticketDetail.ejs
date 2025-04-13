@@ -2,86 +2,316 @@
 <html lang="en">
 <head>
   <%- include('partials/head') %>
+  <style>
+    /* Keep mobile styles unchanged */
+    .chat-scroll::-webkit-scrollbar {
+      width: 6px;
+    }
+    .chat-scroll::-webkit-scrollbar-thumb {
+      background-color: #4b5563;
+      border-radius: 9999px;
+    }
+
+    /* Mobile layout - unchanged */
+    @media (max-width: 767px) {
+      .ticket-details, .chat-messages {
+        width: 100%;
+      }
+    }
+
+    /* New desktop layout */
+    @media (min-width: 768px) {
+      .ticket-container {
+        display: grid;
+        grid-template-columns: 350px 1fr;
+        gap: 1.5rem;
+        height: calc(100vh - 200px);
+        min-height: 600px;
+      }
+      
+      .ticket-details {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+      }
+      
+      .chat-messages {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+      }
+      
+      .messages-container {
+        flex-grow: 1;
+        overflow-y: auto;
+      }
+      
+      .message-form-container {
+        margin-top: auto;
+        padding-top: 1rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      
+      /* Animations */
+      .message-bubble {
+        transition: transform 0.2s ease;
+      }
+      
+      .message-bubble:hover {
+        transform: translateY(-2px);
+      }
+      
+      .send-button {
+        position: relative;
+        overflow: hidden;
+      }
+      
+      .send-button::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+        transition: 0.5s;
+      }
+      
+      .send-button:hover::after {
+        left: 100%;
+      }
+    }
+
+    /* Shared styles */
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    
+    .status-open {
+      background-color: rgba(16, 185, 129, 0.2);
+      color: #10B981;
+    }
+    
+    .status-closed {
+      background-color: rgba(239, 68, 68, 0.2);
+      color: #EF4444;
+    }
+    
+    .ticket-rule {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+      padding: 0.5rem;
+    }
+    
+    .ticket-rule:not(:last-child) {
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    
+    .ticket-rule-icon {
+      flex-shrink: 0;
+    }
+  </style>
 </head>
 <body class="bg-gray-900 text-white font-sans">
   <%- include('partials/nav') %>
 
-  <section class="py-16 px-4">
-    <div class="max-w-4xl mx-auto bg-gray-800 p-6 rounded-lg shadow-lg">
-      <!-- Ticket Info -->
+  <section class="py-6 px-4 md:py-10">
+    <div class="max-w-7xl mx-auto">
+      <!-- Back to Tickets Button - Moved to top for better UX -->
       <div class="mb-6">
-        <h1 class="text-3xl font-bold text-emerald-400 mb-2">🎟️ Ticket: <%= ticket.ticketId %></h1>
-        <p><span class="font-semibold text-gray-300">Title:</span> <%= ticket.title %></p>
-        <p><span class="font-semibold text-gray-300">Type:</span> <%= ticket.type %></p>
-        <p><span class="font-semibold text-gray-300">Status:</span> 
-          <span class="<%= ticket.status === 'Closed' ? 'text-red-400' : 'text-green-400' %>">
-            <%= ticket.status %>
-          </span>
-        </p>
-        <% if (ticket.closedReason) { %>
-          <p class="text-red-400 italic mt-1">Reason: <%= ticket.closedReason %></p>
-        <% } %>
+        <a href="/profile/tickets" class="inline-flex items-center gap-2 bg-gray-800 hover:bg-gray-700 text-white text-sm font-medium py-2 px-4 rounded-lg transition duration-200">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+          </svg>
+          Back to Tickets
+        </a>
       </div>
 
-      <!-- Ticket Rules -->
-      <div class="bg-gray-900 p-4 rounded-md mb-6 text-sm text-gray-300 border border-gray-700">
-        <h1>✅ Be respectful and patient while communicating with staff.</h1>
-        <h1>❗ Inappropriate language will result in a ban.  </h1>
-        <h1>📌 Ticket replies can take a few minutes to a few hours.</h1>
-      </div>
+      <!-- Main container with grid layout on desktop -->
+      <div class="ticket-container flex flex-col md:grid">
 
-      <!-- Message List -->
-      <div class="bg-gray-700 p-4 rounded-md space-y-4 max-h-96 overflow-y-auto mb-6">
-        <% messages.forEach(msg => { %>
-          <div class="flex <%= msg.userId === user.discordId ? 'justify-end' : 'justify-start' %>">
-            <div class="max-w-xs bg-gray-800 p-3 rounded-lg shadow text-sm">
-              <div class="flex items-center space-x-2 mb-1">
-                <img src="https://cdn.discordapp.com/avatars/<%= msg.userId %>/<%= msg.avatar %>.png" class="w-6 h-6 rounded-full">
-                <span class="text-emerald-400 font-semibold"><%= msg.username %></span>
+        <!-- Ticket Details (Left Side) -->
+        <div class="ticket-details bg-gray-800 p-6 rounded-xl shadow-lg mb-6 md:mb-0">
+          
+          <!-- Ticket Header -->
+          <div class="space-y-4 mb-6">
+            <div class="flex items-center justify-between">
+              <h1 class="text-2xl font-bold text-white">Ticket Details</h1>
+              <span class="status-badge <%= ticket.status === 'Closed' ? 'status-closed' : 'status-open' %>">
+                <%= ticket.status %>
+              </span>
+            </div>
+            
+            <div class="bg-gray-700/50 p-4 rounded-lg">
+              <div class="flex items-center gap-2 mb-3">
+                <span class="text-emerald-400 text-2xl">🎟️</span>
+                <h2 class="text-xl font-semibold text-white"><%= ticket.title %></h2>
               </div>
-              <% if (msg.message) { %>
-                <p class="text-gray-200"><%= msg.message %></p>
-              <% } %>
-              <% if (msg.image) { %>
-                <img src="<%= msg.image %>" class="mt-2 rounded-md max-h-48 border border-gray-600">
-              <% } %>
+              
+              <div class="grid grid-cols-1 gap-3 text-sm">
+                <p class="flex justify-between">
+                  <span class="text-gray-400">Ticket ID:</span>
+                  <span class="font-mono text-emerald-400"><%= ticket.ticketId %></span>
+                </p>
+                <p class="flex justify-between">
+                  <span class="text-gray-400">Type:</span>
+                  <span><%= ticket.type %></span>
+                </p>
+                <% if (ticket.closedReason) { %>
+                  <div class="mt-2 p-3 bg-red-900/20 border border-red-800/30 rounded-lg">
+                    <p class="text-gray-300 font-medium mb-1">Closed Reason:</p>
+                    <p class="text-red-400 italic"><%= ticket.closedReason %></p>
+                  </div>
+                <% } %>
+              </div>
             </div>
           </div>
-        <% }) %>
+
+          <!-- Ticket Rules -->
+          <div class="bg-gray-900/70 rounded-lg border border-gray-700/50 mb-6">
+            <h3 class="text-sm font-semibold text-emerald-400 p-3 border-b border-gray-700/50">Ticket Guidelines</h3>
+            <div class="text-sm text-gray-300">
+              <div class="ticket-rule">
+                <span class="ticket-rule-icon">✅</span>
+                <span>Be respectful and patient while communicating with staff.</span>
+              </div>
+              <div class="ticket-rule">
+                <span class="ticket-rule-icon">❗</span>
+                <span>Inappropriate language will result in a ban.</span>
+              </div>
+              <div class="ticket-rule">
+                <span class="ticket-rule-icon">📌</span>
+                <span>Ticket replies can take a few minutes to a few hours.</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Close Ticket Form -->
+          <% if (ticket.status !== 'closed') { %>
+            <div class="mt-auto">
+              <form action="/profile/ticket/<%= ticket.ticketId %>/close" method="POST" class="space-y-3">
+                <h3 class="text-sm font-semibold text-red-400">Close This Ticket</h3>
+                <textarea name="reason" rows="3" required placeholder="Explain why you're closing the ticket..." class="w-full p-3 rounded-lg bg-gray-700 text-white text-sm resize-none focus:outline-none focus:ring-2 focus:ring-red-500/50"></textarea>
+                <button type="submit" class="w-full bg-red-600 hover:bg-red-700 py-2 px-4 rounded-lg text-white font-semibold transition duration-200 flex items-center justify-center gap-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+                  </svg>
+                  Close Ticket
+                </button>
+              </form>
+            </div>
+          <% } %>
+
+        </div>
+
+        <!-- Chat Messages (Right Side) -->
+        <div class="chat-messages bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+          <h2 class="text-xl font-bold p-4 border-b border-gray-700/50 bg-gray-800 sticky top-0 z-10">Conversation</h2>
+          
+          <!-- Message List -->
+          <div class="messages-container p-4 space-y-4 chat-scroll">
+            <% messages.forEach(msg => { %>
+              <div class="flex <%= msg.userId === user.discordId ? 'justify-end' : 'justify-start' %>">
+                <div class="max-w-[75%] <%= msg.userId === user.discordId ? 'bg-emerald-900/30 border-emerald-800/30' : 'bg-gray-700/70 border-gray-600/30' %> p-3 rounded-lg shadow-sm text-sm border message-bubble">
+                  <div class="flex items-center gap-2 mb-2">
+                    <img src="https://cdn.discordapp.com/avatars/<%= msg.userId %>/<%= msg.avatar %>.png" class="w-7 h-7 rounded-full border border-gray-600/50">
+                    <span class="<%= msg.userId === user.discordId ? 'text-emerald-400' : 'text-blue-400' %> font-medium"><%= msg.username %></span>
+                  </div>
+                  <% if (msg.message) { %>
+                    <p class="text-gray-200 whitespace-pre-line"><%= msg.message %></p>
+                  <% } %>
+                  <% if (msg.image) { %>
+                    <div class="mt-2">
+                      <img src="<%= msg.image %>" class="rounded-md max-h-48 border border-gray-600/50 hover:opacity-95 transition-opacity cursor-pointer" onclick="window.open(this.src)">
+                    </div>
+                  <% } %>
+                  <div class="text-right mt-1">
+                    <span class="text-xs text-gray-500">
+                      <!-- You can add timestamp here if available -->
+                    </span>
+                  </div>
+                </div>
+              </div>
+            <% }) %>
+          </div>
+
+          <!-- Send Message Form -->
+          <% if (ticket.status !== 'closed') { %>
+            <div class="message-form-container p-4 bg-gray-800">
+              <form action="/profile/ticket/<%= ticket.ticketId %>/message" method="POST" enctype="multipart/form-data" class="space-y-3">
+                <div class="relative">
+                  <input type="text" name="message" placeholder="Type your message..." class="w-full p-3 pr-12 rounded-lg bg-gray-700 text-white text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/50">
+                  <label for="file-upload" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-emerald-400 cursor-pointer">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                      <path d="M4.502 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/>
+                      <path d="M14.002 13a2 2 0 0 1-2 2h-10a2 2 0 0 1-2-2V5A2 2 0 0 1 2 3a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v8a2 2 0 0 1-1.998 2zM14 2H4a1 1 0 0 0-1 1h9.002a2 2 0 0 1 2 2v7A1 1 0 0 0 15 11V3a1 1 0 0 0-1-1zM2.002 4a1 1 0 0 0-1 1v8l2.646-2.354a.5.5 0 0 1 .63-.062l2.66 1.773 3.71-3.71a.5.5 0 0 1 .577-.094l1.777 1.947V5a1 1 0 0 0-1-1h-10z"/>
+                    </svg>
+                  </label>
+                  <input id="file-upload" type="file" name="image" accept="image/*" class="hidden">
+                </div>
+                <div id="file-preview" class="hidden p-2 bg-gray-700/50 rounded-lg">
+                  <div class="flex items-center justify-between">
+                    <span id="file-name" class="text-sm text-gray-300 truncate"></span>
+                    <button type="button" id="remove-file" class="text-red-400 hover:text-red-300">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+                <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 py-3 rounded-lg text-white font-semibold transition duration-200 send-button">
+                  Send Message
+                </button>
+              </form>
+            </div>
+          <% } else { %>
+            <div class="p-4 bg-gray-800 text-center border-t border-gray-700/50">
+              <p class="text-red-400">This ticket is closed. You cannot send any more messages.</p>
+            </div>
+          <% } %>
+
+        </div>
+
       </div>
-
-      <!-- Send Message -->
-<% if (ticket.status !== 'closed') { %>
-    <form action="/profile/ticket/<%= ticket.ticketId %>/message" method="POST" enctype="multipart/form-data" class="mb-4 space-y-2">
-      <input type="text" name="message" placeholder="Your message..." class="w-full p-2 rounded bg-gray-700 text-white">
-      <input type="file" name="image" accept="image/*" class="text-sm text-gray-300">
-      <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 py-2 rounded text-white font-semibold">
-        📤 Send
-      </button>
-    </form>
-  <% } %>
-  
-  <!-- Close Ticket -->
-  <% if (ticket.status !== 'closed') { %>
-    <form action="/profile/ticket/<%= ticket.ticketId %>/close" method="POST" class="mt-6 space-y-2">
-      <label for="reason" class="text-sm text-gray-300">Reason for closing:</label>
-      <textarea name="reason" rows="2" required placeholder="Explain why you're closing the ticket..." class="w-full p-2 rounded bg-gray-700 text-white resize-none"></textarea>
-      <button type="submit" class="w-full bg-red-600 hover:bg-red-700 py-2 rounded text-white font-semibold">
-        ❌ Close Ticket
-      </button>
-    </form>
-  <% } %>
-  <div class="mt-4 text-right">
-    <a href="/profile/tickets" class="text-blue-400 hover:underline text-sm">
-        🔍 ticket panel
-    </a>
-</div>
     </div>
-
-    </div>
-    
   </section>
 
   <%- include('partials/footer') %>
+  
+  <script>
+    // File upload preview
+    document.addEventListener('DOMContentLoaded', function() {
+      const fileUpload = document.getElementById('file-upload');
+      const filePreview = document.getElementById('file-preview');
+      const fileName = document.getElementById('file-name');
+      const removeFile = document.getElementById('remove-file');
+      
+      if (fileUpload && filePreview && fileName && removeFile) {
+        fileUpload.addEventListener('change', function() {
+          if (this.files && this.files[0]) {
+            fileName.textContent = this.files[0].name;
+            filePreview.classList.remove('hidden');
+          }
+        });
+        
+        removeFile.addEventListener('click', function() {
+          fileUpload.value = '';
+          filePreview.classList.add('hidden');
+        });
+      }
+      
+      // Auto-scroll to bottom of chat on page load
+      const messagesContainer = document.querySelector('.messages-container');
+      if (messagesContainer) {
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+      }
+    });
+  </script>
 </body>
 </html>
