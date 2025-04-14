@@ -11,6 +11,6 @@ client.once("ready", () => {
     console.log(`✅ Bot Logged in as ${client.user.tag}`);
 });   
 
-client.login(process.env.DISCORD_TOKEN);
+client.login(process.env.DISCORD_BOT_TOKEN);
 
 module.exports = client;

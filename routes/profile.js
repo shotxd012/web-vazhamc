@@ -5,6 +5,7 @@ const { CloudinaryStorage } = require("multer-storage-cloudinary");
 const cloudinary = require("cloudinary").v2;
 const Media = require("../models/Media");
 
+
 router.get("/profile", (req, res) => {
     if (!req.isAuthenticated()) return res.redirect("/login");
     res.render("profile", { user: req.user });

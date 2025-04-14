@@ -121,6 +121,15 @@
 <body class="bg-gray-900 text-white font-sans">
   <%- include('partials/nav') %>
 
+  <main class="container mx-auto px-4 py-16">
+    <!-- Profile Header -->
+             <!-- Header Section -->
+    <div class="container mx-auto px-4 py-10 flex flex-col items-center gap-4">
+        <h1 class="text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-teal-400 via-emerald-500 to-green-600">
+            Ticket #<%= ticket.ticketId %>
+        </h1>
+    </div>
+
   <section class="py-6 px-4 md:py-10">
     <div class="max-w-7xl mx-auto">
       <!-- Back to Tickets Button - Moved to top for better UX -->
@@ -234,6 +243,7 @@
                   <div class="text-right mt-1">
                     <span class="text-xs text-gray-500">
                       <!-- You can add timestamp here if available -->
+                      <%= new Date(msg.timestamp).toLocaleString('en-US', { dateStyle: 'short', timeStyle: 'short' }) %> 
                     </span>
                   </div>
                 </div>

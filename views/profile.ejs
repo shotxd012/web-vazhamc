@@ -4,70 +4,173 @@
     <%- include('partials/head') %>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        .stat-card {
+            transition: all 0.3s ease;
+        }
+        .stat-card:hover {
+            transform: translateY(-4px);
+        }
+        .action-button {
+            transition: all 0.2s ease;
+        }
+        .action-button:hover {
+            transform: scale(1.02);
+        }
+        .profile-section {
+            backdrop-filter: blur(12px);
+        }
+    </style>
 </head>
 <body class="bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white min-h-screen font-sans">
     <%- include('partials/nav') %>
 
-    <section class="py-20">
+    <main class="container mx-auto px-4 py-16">
+        <!-- Profile Header -->
+                 <!-- Header Section -->
         <div class="container mx-auto px-4 py-10 flex flex-col items-center gap-12">
             <h1 class="text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-teal-400 via-emerald-500 to-green-600">
-                User Profile
+                User Dashboard
             </h1>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 w-full max-w-5xl items-start">
-                <!-- Avatar + Name + Role -->
-                <div class="flex flex-col items-center md:items-start text-center md:text-left">
-                    <div class="relative w-36 h-36">
-                        <img src="https://cdn.discordapp.com/avatars/<%= user.discordId %>/<%= user.avatar %>.png" alt="Avatar"
-                                class="rounded-full border-4 border-gray-900 shadow-lg object-cover w-full h-full">
-                        <div class="absolute bottom-2 right-2 w-6 h-6 rounded-full border-2 border-gray-900"
-                             style="background-color: <%= user.statusColor || 'gray' %>;"></div>
+        </div>
+        <div class="relative mb-16">
+            <div class="absolute inset-0 bg-emerald-500 opacity-10 blur-3xl"></div>
+            <div class="relative z-10 flex flex-col md:flex-row items-center gap-8 p-8 rounded-2xl bg-gray-800 bg-opacity-50 profile-section border border-gray-700 shadow-xl">
+                <!-- Avatar Section -->
+                <div class="relative">
+                    <div class="relative w-32 h-32 md:w-40 md:h-40">
+                        <img 
+                            src="https://cdn.discordapp.com/avatars/<%= user.discordId %>/<%= user.avatar %>.png" 
+                            alt="Avatar"
+                            class="rounded-full border-4 border-emerald-500 shadow-2xl object-cover w-full h-full"
+                        >
+                        <div 
+                            class="absolute bottom-2 right-2 w-6 h-6 rounded-full border-2 border-gray-900 shadow-lg"
+                            style="background-color: <%= user.statusColor || 'gray' %>;"
+                        ></div>
                     </div>
-                    <h2 class="text-3xl font-bold mt-6">@<%= user.username %></h2>
-                    <p class="text-lg text-gray-400"><%= user.discordTag %></p>
-                    <span class="mt-3 inline-block px-5 py-1.5 rounded-full text-sm font-semibold text-white shadow-lg"
-                          style="background-color: <%= user.roleColor || '#4CAF50' %>;"><%= user.role %></span>
                 </div>
 
-                <!-- User Info + Buttons -->
-                <div class="bg-gray-900 bg-opacity-80 backdrop-blur-xl p-6 rounded-2xl shadow-xl border border-gray-700 w-full">
-                    <div class="space-y-4">
-                        <p class="text-lg"><strong class="text-emerald-400">Email:</strong> <%= user.email || 'Not linked' %></p>
-                        <p class="text-lg"><strong class="text-emerald-400">Joined:</strong> <%= user.joinDate %></p>
-                        <p class="text-lg"><strong class="text-emerald-400">Server Rank:</strong> <%= user.rank || 'Member' %></p>
+                <!-- User Info -->
+                <div class="flex-1 text-center md:text-left">
+                    <div class="flex flex-col md:flex-row items-center gap-4 mb-4">
+                        <h1 class="text-4xl font-bold">@<%= user.username %></h1>
+                        <span 
+                            class="px-4 py-1 rounded-full text-sm font-semibold shadow-lg"
+                            style="background-color: <%= user.roleColor || '#4CAF50' %>;"
+                        >
+                            <%= user.role %>
+                        </span>
                     </div>
-
-                    <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <a href="/logout" class="flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 px-6 py-3 rounded-lg shadow-md transition-all duration-300">
-                            <i class="ph ph-sign-out"></i> Logout
-                        </a>
-                        <a href="/media" class="flex items-center justify-center gap-2 bg-green-500 hover:bg-green-700 px-6 py-3 rounded-lg shadow-md transition-all duration-300">
-                            <i class="ph ph-images"></i> Media
-                        </a>
-                        <a href="/profile/manage/media" class="flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-800 px-6 py-3 rounded-lg shadow-md transition-all duration-300">
-                            <i class="ph ph-gear"></i> Manage Media
-                        </a>
-                        <a href="/profile/tickets" class="flex items-center justify-center gap-2 bg-yellow-500 hover:bg-yellow-600 px-6 py-3 rounded-lg shadow-md transition-all duration-300">
-                            <i class="ph ph-note"></i> Tickets
-                        </a>
+                    <p class="text-gray-400 mb-2"><%= user.discordTag %></p>
+                    <div class="flex flex-wrap gap-4 justify-center md:justify-start mt-4">
+                        <div class="bg-gray-700 bg-opacity-50 px-4 py-2 rounded-lg">
+                            <i class="ph ph-envelope mr-2"></i>
+                            <%= user.email || 'Not linked' %>
+                        </div>
+                        <div class="bg-gray-700 bg-opacity-50 px-4 py-2 rounded-lg">
+                            <i class="ph ph-calendar mr-2"></i>
+                            Joined <%= user.joinDate %>
+                        </div>
+                        <div class="bg-gray-700 bg-opacity-50 px-4 py-2 rounded-lg">
+                            <i class="ph ph-star mr-2"></i>
+                            <%= user.role %>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+
+        <!-- Stats Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+            <div class="stat-card bg-gray-800 bg-opacity-50 p-6 rounded-xl border border-gray-700 shadow-lg">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-400">Total Media</p>
+                        <h3 class="text-2xl font-bold text-emerald-400" id="media-count">...</h3>
+                    </div>
+                    <div class="bg-emerald-500 bg-opacity-20 p-3 rounded-lg">
+                        <i class="ph ph-images text-2xl text-emerald-400"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="stat-card bg-gray-800 bg-opacity-50 p-6 rounded-xl border border-gray-700 shadow-lg">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-400">Active Tickets</p>
+                        <h3 class="text-2xl font-bold text-yellow-400" id="ticket-count">...</h3>
+                    </div>
+                    <div class="bg-yellow-500 bg-opacity-20 p-3 rounded-lg">
+                        <i class="ph ph-ticket text-2xl text-yellow-400"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="stat-card bg-gray-800 bg-opacity-50 p-6 rounded-xl border border-gray-700 shadow-lg">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-400">Total Likes</p>
+                        <h3 class="text-2xl font-bold text-blue-400" id="like-count">...</h3>
+                    </div>
+                    <div class="bg-blue-500 bg-opacity-20 p-3 rounded-lg">
+                        <i class="ph ph-heart text-2xl text-blue-400"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="stat-card bg-gray-800 bg-opacity-50 p-6 rounded-xl border border-gray-700 shadow-lg">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-400">Comments</p>
+                        <h3 class="text-2xl font-bold text-purple-400" id="comment-count">...</h3>
+                    </div>
+                    <div class="bg-purple-500 bg-opacity-20 p-3 rounded-lg">
+                        <i class="ph ph-chat-circle text-2xl text-purple-400"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <a href="/media" class="action-button flex items-center justify-center gap-3 bg-emerald-600 hover:bg-emerald-700 px-6 py-4 rounded-xl shadow-lg transition-all">
+                <i class="ph ph-images text-xl"></i>
+                <span class="font-medium">View Gallery</span>
+            </a>
+            
+            <a href="/profile/manage/media" class="action-button flex items-center justify-center gap-3 bg-blue-600 hover:bg-blue-700 px-6 py-4 rounded-xl shadow-lg transition-all">
+                <i class="ph ph-gear text-xl"></i>
+                <span class="font-medium">Manage Media</span>
+            </a>
+            
+            <a href="/profile/tickets" class="action-button flex items-center justify-center gap-3 bg-yellow-600 hover:bg-yellow-700 px-6 py-4 rounded-xl shadow-lg transition-all">
+                <i class="ph ph-note text-xl"></i>
+                <span class="font-medium">View Tickets</span>
+            </a>
+            
+            <a href="/logout" class="action-button flex items-center justify-center gap-3 bg-red-600 hover:bg-red-700 px-6 py-4 rounded-xl shadow-lg transition-all">
+                <i class="ph ph-sign-out text-xl"></i>
+                <span class="font-medium">Logout</span>
+            </a>
+        </div>
+    </main>
 
     <%- include('partials/footer') %>
-
-    <style>
-        @media (max-width: 640px) {
-            h1 {
-                font-size: 2.5rem;
-            }
-            .w-36, .h-36 {
-                width: 5.5rem;
-                height: 5.5rem;
-            }
-        }
-    </style>
 </body>
+<script>
+    window.addEventListener("DOMContentLoaded", async () => {
+        try {
+            const res = await fetch("/api/profile/stats");
+            const data = await res.json();
+
+            document.getElementById("media-count").textContent = data.mediaCount;
+            document.getElementById("ticket-count").textContent = data.activeTickets;
+            document.getElementById("like-count").textContent = data.totalLikes;
+            document.getElementById("comment-count").textContent = data.commentCount;
+        } catch (err) {
+            console.error("Failed to load profile stats:", err);
+        }
+    });
+</script>
 </html>
