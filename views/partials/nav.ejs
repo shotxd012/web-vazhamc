@@ -94,80 +94,72 @@
 </nav>
 
 <style>
-    .nav-link {
-        @apply text-gray-300 hover:text-emerald-500 transition-colors duration-200;
-    }
-
     .mobile-nav-link {
         @apply block px-4 py-2 text-gray-300 hover:bg-gray-700/50 hover:text-emerald-500 rounded-lg transition-colors duration-200;
     }
 
+    #mobile-menu {
+        transition: max-height 0.3s ease;
+        overflow: hidden;
+    }
+
     .hamburger-line {
-        @apply w-full h-0.5 bg-emerald-500 rounded-full transition-all duration-300 transform;
+        @apply w-full h-0.5 bg-emerald-500 rounded-full transition-all duration-300;
     }
 
     #mobile-menu-button.open .hamburger-line:nth-child(1) {
-        @apply translate-y-2.5 rotate-45;
+        transform: translateY(9px) rotate(45deg);
     }
 
     #mobile-menu-button.open .hamburger-line:nth-child(2) {
-        @apply opacity-0;
+        opacity: 0;
     }
 
     #mobile-menu-button.open .hamburger-line:nth-child(3) {
-        @apply -translate-y-2.5 -rotate-45;
+        transform: translateY(-9px) rotate(-45deg);
     }
 </style>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const mobileMenuButton = document.getElementById('mobile-menu-button');
+    document.addEventListener('DOMContentLoaded', () => {
+        const mobileMenuBtn = document.getElementById('mobile-menu-button');
         const mobileMenu = document.getElementById('mobile-menu');
-        const userMenuButton = document.getElementById('user-menu-button');
+        const userMenuBtn = document.getElementById('user-menu-button');
         const userMenu = document.getElementById('user-menu');
 
-        // Mobile menu toggle with smooth animation
-        mobileMenuButton?.addEventListener('click', function() {
-            this.classList.toggle('open');
-            if (mobileMenu) {
-                if (mobileMenu.classList.contains('hidden')) {
-                    mobileMenu.classList.remove('hidden');
-                    requestAnimationFrame(() => {
-                        mobileMenu.style.maxHeight = mobileMenu.scrollHeight + 'px';
-                    });
-                } else {
-                    mobileMenu.style.maxHeight = '0';
-                    setTimeout(() => {
-                        mobileMenu.classList.add('hidden');
-                    }, 300);
-                }
+        // Toggle mobile menu
+        mobileMenuBtn?.addEventListener('click', () => {
+            const isOpen = mobileMenuBtn.classList.toggle('open');
+            if (isOpen) {
+                mobileMenu.classList.remove('hidden');
+                mobileMenu.style.maxHeight = mobileMenu.scrollHeight + 'px';
+            } else {
+                mobileMenu.style.maxHeight = '0px';
+                setTimeout(() => mobileMenu.classList.add('hidden'), 300);
             }
         });
 
-        // User menu toggle with click outside to close
-        if (userMenuButton && userMenu) {
-            userMenuButton.addEventListener('click', function(event) {
-                event.stopPropagation();
+        // Close mobile menu on resize if desktop
+        window.addEventListener('resize', () => {
+            if (window.innerWidth >= 768) {
+                mobileMenu?.classList.add('hidden');
+                mobileMenuBtn?.classList.remove('open');
+                mobileMenu.style.maxHeight = '';
+            }
+        });
+
+        // Toggle user menu
+        if (userMenuBtn && userMenu) {
+            userMenuBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
                 userMenu.classList.toggle('hidden');
             });
 
-            document.addEventListener('click', function(event) {
-                if (!userMenu.contains(event.target as Node) && 
-                    !userMenuButton.contains(event.target as Node)) {
+            document.addEventListener('click', (e) => {
+                if (!userMenu.contains(e.target) && !userMenuBtn.contains(e.target)) {
                     userMenu.classList.add('hidden');
                 }
             });
         }
-
-        // Close menus on window resize
-        window.addEventListener('resize', function() {
-            if (window.innerWidth >= 768) {
-                mobileMenu?.classList.add('hidden');
-                mobileMenuButton?.classList.remove('open');
-                if (mobileMenu) {
-                    mobileMenu.style.maxHeight = '';
-                }
-            }
-        });
     });
 </script>

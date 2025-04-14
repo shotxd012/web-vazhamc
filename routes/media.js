@@ -5,6 +5,8 @@ const multer = require("multer");
 const { CloudinaryStorage } = require("multer-storage-cloudinary");
 const cloudinary = require("cloudinary").v2;
 const Comment = require("../models/Comment");
+const { EmbedBuilder, ButtonBuilder, ActionRowBuilder, ButtonStyle } = require("discord.js");
+const client = require("../config/discordClient");
 
 // Cloudinary config
 cloudinary.config({
@@ -58,13 +60,65 @@ router.get("/profile/manage/media", isAuthenticated, async (req, res) => {
 router.post("/profile/manage/media/upload", isAuthenticated, upload.single("image"), async (req, res) => {
     const imageUrl = req.file.path;
     const description = req.body.description;
-    await new Media({
+
+    const media = await new Media({
         username: req.user.username,
         avatar: req.user.avatar,
         discordId: req.user.discordId,
         imageUrl,
         description,
     }).save();
+
+    // --- Discord Embed using Bot Client ---
+    try {
+        const channel = await client.channels.fetch(process.env.DISCORD_MEDIA_CHANNEL_ID);
+        if (!channel) {
+            console.error("❌ Media channel not found.");
+            return res.redirect("/profile/manage/media");
+        }
+
+        const embed = new EmbedBuilder()
+            .setTitle(`Web Media Uploaded`)
+            .setAuthor({
+                name: req.user.username,
+                iconURL: `https://cdn.discordapp.com/avatars/${req.user.discordId}/${req.user.avatar}.png`
+              })  
+            .setImage(imageUrl)
+            .setColor(0x00c48c)
+            .setDescription(description || "*No description provided*")
+            .addFields([
+                {
+                    name: "Media ID",
+                    value: `\`${media._id}\``,
+                    inline: true,
+                },
+                {
+                    name: "Likes",
+                    value: `\`${media.likes || 0}\``,
+                    inline: true,
+                },
+                {
+                    name: "Dislikes",
+                    value: `\`${media.dislikes || 0}\``,
+                    inline: true,
+                },
+            ])
+
+            .setFooter({ text: `User ID: ${req.user.discordId}` })
+            .setTimestamp()
+        const viewBtn = new ButtonBuilder()
+            .setLabel("📷 View in Media Gallery")
+            .setStyle(ButtonStyle.Link)
+            .setURL(`${process.env.BASE_URL}/media`);
+
+        const row = new ActionRowBuilder().addComponents(viewBtn);
+
+        await channel.send({ embeds: [embed], components: [row] });
+        console.log(`✅ Media uploaded and embed sent to Discord.`);
+    } catch (err) {
+        console.error("❌ Failed to send media embed:", err);
+    }
+
     res.redirect("/profile/manage/media");
 });
 
