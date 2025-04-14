@@ -58,7 +58,7 @@ router.post("/shot/ticket/:ticketId/reply", upload.single("image"), async (req, 
 
   await Message.create({
     ticketId,
-    userId: "admin",
+    userId: "1196320815260651682",
     username: "Admin", 
     message,
     image: imageUrl
