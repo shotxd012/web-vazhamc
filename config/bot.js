@@ -2,6 +2,7 @@ const { Client, GatewayIntentBits, SlashCommandBuilder, ButtonBuilder } = requir
 const mongoose = require("mongoose");
 const Announcement = require("../models/Announcement"); 
 
+
 const bot = new Client({
     intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages]
 });
