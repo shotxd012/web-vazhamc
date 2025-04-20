@@ -37,7 +37,7 @@ router.get("/api/profile/stats", isAuthenticated, async (req, res) => {
     }
 });
 
-// 🏆 GET /api/top-users - Public API showing top 10 users by media + likes + comments
+// 🏆 GET /api/top-users - Public API showing top 10 users by media + likes + comments + username
 router.get("/api/top-users", async (req, res) => {
     try {
         const mediaData = await Media.aggregate([
@@ -83,9 +83,28 @@ router.get("/api/top-users", async (req, res) => {
             }
         });
 
-        const topUsers = Array.from(userMap.values())
+        let topUsers = Array.from(userMap.values())
             .sort((a, b) => (b.mediaCount + b.totalLikes + b.commentCount) - (a.mediaCount + a.totalLikes + a.commentCount))
             .slice(0, 10);
+
+        const userIds = topUsers.map(u => u.discordId);
+        const userDocs = await User.find({ discordId: { $in: userIds } });
+
+        // Map discordId => username
+        const userInfoMap = new Map();
+        userDocs.forEach(user => {
+            userInfoMap.set(user.discordId, {
+                username: user.username,
+                avatar: user.avatar, // optional
+            });
+        });
+
+        // Attach username (and avatar optionally)
+        topUsers = topUsers.map(u => ({
+            ...u,
+            username: userInfoMap.get(u.discordId)?.username || "Unknown",
+            avatar: userInfoMap.get(u.discordId)?.avatar || null,
+        }));
 
         res.json(topUsers);
     } catch (err) {
