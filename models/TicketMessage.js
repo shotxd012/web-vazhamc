@@ -7,6 +7,7 @@ const TicketMessageSchema = new mongoose.Schema({
   avatar: String,
   message: String,
   image: String,
+  role: String,
   timestamp: { type: Date, default: Date.now }
 });
 

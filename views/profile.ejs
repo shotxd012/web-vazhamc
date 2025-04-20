@@ -132,29 +132,36 @@
             </div>
         </div>
 
-        <!-- Action Buttons -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <a href="/media" class="action-button flex items-center justify-center gap-3 bg-emerald-600 hover:bg-emerald-700 px-6 py-4 rounded-xl shadow-lg transition-all">
-                <i class="ph ph-images text-xl"></i>
-                <span class="font-medium">View Gallery</span>
-            </a>
-            
-            <a href="/profile/manage/media" class="action-button flex items-center justify-center gap-3 bg-blue-600 hover:bg-blue-700 px-6 py-4 rounded-xl shadow-lg transition-all">
-                <i class="ph ph-gear text-xl"></i>
-                <span class="font-medium">Manage Media</span>
-            </a>
-            
-            <a href="/profile/tickets" class="action-button flex items-center justify-center gap-3 bg-yellow-600 hover:bg-yellow-700 px-6 py-4 rounded-xl shadow-lg transition-all">
-                <i class="ph ph-note text-xl"></i>
-                <span class="font-medium">View Tickets</span>
-            </a>
-            
-            <a href="/logout" class="action-button flex items-center justify-center gap-3 bg-red-600 hover:bg-red-700 px-6 py-4 rounded-xl shadow-lg transition-all">
-                <i class="ph ph-sign-out text-xl"></i>
-                <span class="font-medium">Logout</span>
-            </a>
-        </div>
-    </main>
+<!-- Action Buttons -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+    <a href="/media" class="action-button flex items-center justify-center gap-3 bg-emerald-600 hover:bg-emerald-700 px-6 py-4 rounded-xl shadow-lg transition-all">
+        <i class="ph ph-images text-xl"></i>
+        <span class="font-medium">View Gallery</span>
+    </a>
+
+    <a href="/profile/manage/media" class="action-button flex items-center justify-center gap-3 bg-blue-600 hover:bg-blue-700 px-6 py-4 rounded-xl shadow-lg transition-all">
+        <i class="ph ph-gear text-xl"></i>
+        <span class="font-medium">Manage Media</span>
+    </a>
+
+    <a href="/profile/tickets" class="action-button flex items-center justify-center gap-3 bg-yellow-600 hover:bg-yellow-700 px-6 py-4 rounded-xl shadow-lg transition-all">
+        <i class="ph ph-note text-xl"></i>
+        <span class="font-medium">View Tickets</span>
+    </a>
+
+    <a href="/logout" class="action-button flex items-center justify-center gap-3 bg-red-600 hover:bg-red-700 px-6 py-4 rounded-xl shadow-lg transition-all">
+        <i class="ph ph-sign-out text-xl"></i>
+        <span class="font-medium">Logout</span>
+    </a>
+
+    <% if (["ꜰᴏᴜɴᴅᴇʀ", "ᴄᴏᴍᴍᴜɴɪᴛʏ ᴍᴀɴᴀɢᴇʀ", "ᴀᴅᴍɪɴ", "ᴅᴇᴠ"].includes(user.role)) { %>
+        <a href="/admin/tickets" class="action-button flex items-center justify-center gap-3 bg-purple-600 hover:bg-purple-700 px-6 py-4 rounded-xl shadow-lg transition-all">
+            <i class="ph ph-shield-check text-xl"></i>
+            <span class="font-medium">Admin Panel</span>
+        </a>
+    <% } %>
+</div>
+</main>
 
     <%- include('partials/footer') %>
 </body>

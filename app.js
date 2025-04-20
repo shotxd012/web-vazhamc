@@ -20,6 +20,7 @@ const mediaRoutes = require("./routes/media");
 const ticketRoutes = require('./routes/tickets');
 const adminticket = require('./routes/shot/tickets');
 const apiRoutes = require("./routes/api");
+const adminTicketRoutes = require("./routes/admin/tickets");
 
 
 
@@ -67,6 +68,8 @@ app.use(mediaRoutes);
 app.use(ticketRoutes);
 app.use(adminticket);
 app.use(apiRoutes);
+app.use("/admin/tickets", adminTicketRoutes);
+app.use("/admin", require("./routes/admin/tickets"));
 
 // Start Server
 const PORT = process.env.PORT || 3000;
