@@ -25,8 +25,24 @@ async function fetchServerStatus() {
 fetchServerStatus();
 setInterval(fetchServerStatus, 60000);
 
-router.get("/", (req, res) => {
-    res.render("index", { user: req.user, serverStatus });
+router.get("/", async (req, res) => {
+    try {
+        const topUsersRes = await axios.get(`${process.env.BASE_URL}/api/top-users`);
+        const topUsers = topUsersRes.data;
+
+        res.render("index", {
+            user: req.user,
+            serverStatus,
+            topUsers
+        });
+    } catch (err) {
+        console.error("Failed to fetch top users:", err.message);
+        res.render("index", {
+            user: req.user,
+            serverStatus,
+            topUsers: []
+        });
+    }
 });
 
 module.exports = router;
