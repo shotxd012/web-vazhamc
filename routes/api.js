@@ -3,6 +3,7 @@ const router = express.Router();
 const Media = require("../models/Media");
 const Ticket = require("../models/Ticket");
 const Comment = require("../models/Comment");
+const User = require("../models/User");
 
 // 🛡️ Middleware to protect routes
 function isAuthenticated(req, res, next) {
@@ -35,5 +36,63 @@ router.get("/api/profile/stats", isAuthenticated, async (req, res) => {
         res.status(500).json({ error: "Failed to fetch stats" });
     }
 });
+
+// 🏆 GET /api/top-users - Public API showing top 10 users by media + likes + comments
+router.get("/api/top-users", async (req, res) => {
+    try {
+        const mediaData = await Media.aggregate([
+            {
+                $group: {
+                    _id: "$discordId",
+                    mediaCount: { $sum: 1 },
+                    totalLikes: { $sum: { $ifNull: ["$likes", 0] } },
+                }
+            }
+        ]);
+
+        const commentData = await Comment.aggregate([
+            {
+                $group: {
+                    _id: "$userId",
+                    commentCount: { $sum: 1 }
+                }
+            }
+        ]);
+
+        const userMap = new Map();
+
+        mediaData.forEach(doc => {
+            userMap.set(doc._id, {
+                discordId: doc._id,
+                mediaCount: doc.mediaCount,
+                totalLikes: doc.totalLikes,
+                commentCount: 0,
+            });
+        });
+
+        commentData.forEach(doc => {
+            if (userMap.has(doc._id)) {
+                userMap.get(doc._id).commentCount = doc.commentCount;
+            } else {
+                userMap.set(doc._id, {
+                    discordId: doc._id,
+                    mediaCount: 0,
+                    totalLikes: 0,
+                    commentCount: doc.commentCount,
+                });
+            }
+        });
+
+        const topUsers = Array.from(userMap.values())
+            .sort((a, b) => (b.mediaCount + b.totalLikes + b.commentCount) - (a.mediaCount + a.totalLikes + a.commentCount))
+            .slice(0, 10);
+
+        res.json(topUsers);
+    } catch (err) {
+        console.error("❌ Failed to fetch top users:", err);
+        res.status(500).json({ error: "Failed to fetch top users" });
+    }
+});
+
 
 module.exports = router;
