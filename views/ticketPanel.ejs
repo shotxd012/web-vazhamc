@@ -128,53 +128,65 @@
             </button>
         </div>
 
-        <!-- Ticket Form -->
-        <div id="ticket-form-container" class="ticket-form-container max-w-xl mx-auto">
-            <div class="bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-700/50">
-                <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-xl font-semibold text-emerald-400">Create Support Ticket</h2>
-                    <button id="close-form-btn" class="text-gray-400 hover:text-white">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
-                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
-                        </svg>
-                    </button>
-                </div>
-                
-                <form action="/profile/tickets/create" method="POST" class="space-y-4">
-                    <div>
-                        <label for="title" class="block text-sm font-medium text-gray-300 mb-1">Title</label>
-                        <input type="text" id="title" name="title" placeholder="Brief summary of your issue" required class="form-input">
-                    </div>
-                    
-                    <div>
-                        <label for="reason" class="block text-sm font-medium text-gray-300 mb-1">Reason</label>
-                        <input type="text" id="reason" name="reason" placeholder="Main reason for this ticket" required class="form-input">
-                    </div>
-                    
-                    <div>
-                        <label for="description" class="block text-sm font-medium text-gray-300 mb-1">Description</label>
-                        <textarea id="description" name="description" placeholder="Provide details about your issue..." rows="3" class="form-input resize-none"></textarea>
-                    </div>
-                    
-                    <div>
-                        <label for="type" class="block text-sm font-medium text-gray-300 mb-1">Priority</label>
-                        <select id="type" name="type" required class="form-input form-select">
-                            <option value="low">Low Priority</option>
-                            <option value="medium">Medium Priority</option>
-                            <option value="high">High Priority</option>
-                            <option value="suggestion">Suggestion</option>
-                        </select>
-                    </div>
-                    
-                    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 py-3 rounded-lg text-white font-semibold transition duration-200 mt-2">
-                        Submit Ticket
-                    </button>
-                </form>
-            </div>
+<!-- Overlay -->
+<div id="ticket-form-overlay" class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center">
+    <!-- Modal Form Container -->
+    <div class="bg-gray-800 w-full max-w-xl max-h-[90vh] mx-4 rounded-xl shadow-xl border border-gray-700 overflow-hidden flex flex-col">
+        
+        <!-- Header -->
+        <div class="flex justify-between items-center p-4 border-b border-gray-700">
+            <h2 class="text-xl font-semibold text-emerald-400">Create Support Ticket</h2>
+            <button id="close-form-btn" class="text-gray-400 hover:text-white">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                </svg>
+            </button>
         </div>
 
+        <!-- Scrollable Form Body -->
+        <div class="overflow-y-auto p-6 space-y-4 flex-1">
+            <form id="ticket-form" action="/profile/tickets/create" method="POST" class="space-y-4">
+                <div>
+                    <label for="title" class="block text-sm font-medium text-gray-300 mb-1">Title</label>
+                    <input type="text" id="title" name="title" placeholder="Brief summary of your issue" required class="w-full px-3 py-2 rounded-md bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring focus:ring-emerald-500">
+                </div>
+
+                <div>
+                    <label for="reason" class="block text-sm font-medium text-gray-300 mb-1">Reason</label>
+                    <input type="text" id="reason" name="reason" placeholder="Main reason for this ticket" required class="w-full px-3 py-2 rounded-md bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring focus:ring-emerald-500">
+                </div>
+
+                <div>
+                    <label for="description" class="block text-sm font-medium text-gray-300 mb-1">Description</label>
+                    <textarea id="description" name="description" placeholder="Provide details about your issue..." rows="4" class="w-full px-3 py-2 rounded-md bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring focus:ring-emerald-500 resize-none"></textarea>
+                </div>
+
+                <div>
+                    <label for="type" class="block text-sm font-medium text-gray-300 mb-1">Priority</label>
+                    <select id="type" name="type" required class="w-full px-3 py-2 rounded-md bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring focus:ring-emerald-500">
+                        <option value="low">Low Priority</option>
+                        <option value="medium">Medium Priority</option>
+                        <option value="high">High Priority</option>
+                        <option value="suggestion">Suggestion</option>
+                    </select>
+                </div>
+            </form>
+        </div>
+
+        <!-- Submit Button Fixed at Bottom -->
+        <div class="p-4 border-t border-gray-700">
+            <button form="ticket-form" type="submit" class="w-full bg-blue-600 hover:bg-blue-700 py-3 rounded-lg text-white font-semibold transition duration-200">
+                Submit Ticket
+            </button>
+        </div>
+    </div>
+</div>
+
+
+
+
         <!-- Ticket List -->
-        <div class="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="mt-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             <% tickets.forEach(ticket => { %>
                 <div class="ticket-card bg-gray-800 rounded-xl overflow-hidden shadow-lg border border-gray-700/30">
                     <!-- Card Header -->
@@ -266,33 +278,27 @@
 <%- include('partials/footer') %>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const createBtn = document.getElementById('create-ticket-btn');
-        const emptyCreateBtn = document.getElementById('empty-create-btn');
-        const closeFormBtn = document.getElementById('close-form-btn');
-        const formContainer = document.getElementById('ticket-form-container');
-        
-        function toggleForm() {
-            formContainer.classList.toggle('active');
-            
-            // Scroll to form if it's opened
-            if (formContainer.classList.contains('active')) {
-                setTimeout(() => {
-                    formContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                }, 100);
-            }
-        }
-        
-        if (createBtn) {
-            createBtn.addEventListener('click', toggleForm);
-        }
-        
-        if (emptyCreateBtn) {
-            emptyCreateBtn.addEventListener('click', toggleForm);
-        }
-        
-        if (closeFormBtn) {
-            closeFormBtn.addEventListener('click', toggleForm);
+    const openBtn = document.getElementById("create-ticket-btn");
+    const closeBtn = document.getElementById("close-form-btn");
+    const overlay = document.getElementById("ticket-form-overlay");
+
+    // Hide modal by default
+    overlay.style.display = "none";
+
+    // Open modal on button click
+    openBtn.addEventListener("click", () => {
+        overlay.style.display = "flex";
+    });
+
+    // Close modal on X button click
+    closeBtn.addEventListener("click", () => {
+        overlay.style.display = "none";
+    });
+
+    // Optional: close when clicking outside the form
+    overlay.addEventListener("click", (e) => {
+        if (e.target === overlay) {
+            overlay.style.display = "none";
         }
     });
 </script>
