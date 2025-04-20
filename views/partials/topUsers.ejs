@@ -1,0 +1,19 @@
+<div class="bg-gray-800 border border-gray-700 rounded-xl p-6 shadow-lg">
+  <h2 class="text-2xl font-bold text-emerald-400 mb-4">🏆 Top Users</h2>
+  <ul class="space-y-4">
+    <% topUsers.forEach((user, index) => { %>
+      <li class="flex items-center space-x-4">
+        <span class="text-2xl font-bold text-gray-400 w-6"><%= index + 1 %>.</span>
+        <img src="https://cdn.discordapp.com/avatars/<%= user.discordId %>/<%= user.avatar %>.png" class="w-10 h-10 rounded-full border border-emerald-500">
+        <div class="flex-1">
+          <p class="text-white font-semibold"><%= user.username %></p>
+          <p class="text-sm text-gray-400">
+            <span class="text-emerald-300">Media:</span> <%= user.mediaCount %> • 
+            <span class="text-pink-400">Likes:</span> <%= user.totalLikes %> • 
+            <span class="text-blue-400">Comments:</span> <%= user.commentCount %>
+          </p>
+        </div>
+      </li>
+    <% }) %>
+  </ul>
+</div>
