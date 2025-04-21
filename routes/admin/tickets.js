@@ -87,4 +87,15 @@ router.post("/ticket/:ticketId/reopen", isStaff, async (req, res) => {
   res.redirect(`/admin/ticket/${ticket.ticketId}`);
 });
 
+// POST /admin/ticket/:ticketId/delete
+router.post("/ticket/:ticketId/delete", isStaff, async (req, res) => {
+  const ticket = await Ticket.findOne({ ticketId: req.params.ticketId });
+  if (!ticket) return res.status(404).send("Ticket not found");
+
+  await Message.deleteMany({ ticketId: ticket.ticketId });
+  await Ticket.deleteOne({ ticketId: ticket.ticketId });
+
+  res.redirect("/admin/tickets");
+});
+
 module.exports = router;
