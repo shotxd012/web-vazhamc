@@ -168,7 +168,7 @@
 <script>
     window.addEventListener("DOMContentLoaded", async () => {
         try {
-            const res = await fetch("/api/profile/stats");
+            const res = await fetch("/api/v1/profile/stats");
             const data = await res.json();
 
             document.getElementById("media-count").textContent = data.mediaCount;

@@ -12,7 +12,7 @@ function isAuthenticated(req, res, next) {
 }
 
 // 📊 GET /api/profile/stats - Returns user statistics
-router.get("/api/profile/stats", isAuthenticated, async (req, res) => {
+router.get("/api/v1/profile/stats", isAuthenticated, async (req, res) => {
     const userId = req.user.discordId;
 
     try {
@@ -38,7 +38,7 @@ router.get("/api/profile/stats", isAuthenticated, async (req, res) => {
 });
 
 // 🏆 GET /api/top-users - Public API showing top 10 users by media + likes + comments + username
-router.get("/api/top-users", async (req, res) => {
+router.get("/api/v1/top-users", async (req, res) => {
     try {
         const mediaData = await Media.aggregate([
             {
@@ -112,6 +112,38 @@ router.get("/api/top-users", async (req, res) => {
         res.status(500).json({ error: "Failed to fetch top users" });
     }
 });
+
+router.get("/api/v1/media", async (req, res) => {
+    try {
+        const media = await Media.find();
+        res.json(media);
+    } catch (err) {
+        console.error("❌ Failed to fetch media:", err);
+        res.status(500).json({ error: "Failed to fetch media" });
+    }
+}); 
+
+// ticket api
+router.get("/api/v1/tickets", async (req, res) => {
+    try {
+        const tickets = await Ticket.find();
+        res.json(tickets);
+    } catch (err) {
+        console.error("❌ Failed to fetch tickets:", err);
+        res.status(500).json({ error: "Failed to fetch tickets" });
+    }
+}); 
+
+// comment api
+router.get("/api/v1/comments", async (req, res) => {
+    try {
+        const comments = await Comment.find();
+        res.json(comments);
+    } catch (err) {
+        console.error("❌ Failed to fetch comments:", err);
+        res.status(500).json({ error: "Failed to fetch comments" });
+    }
+}); 
 
 
 module.exports = router;
