@@ -27,7 +27,7 @@ setInterval(fetchServerStatus, 60000);
 
 router.get("/", async (req, res) => {
     try {
-        const topUsersRes = await axios.get(`${process.env.BASE_URL}/api/top-users`);
+        const topUsersRes = await axios.get(`${process.env.BASE_URL}/api/v1/top-users`);
         const topUsers = topUsersRes.data;
 
         res.render("index", {
