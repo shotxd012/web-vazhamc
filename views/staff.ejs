@@ -50,7 +50,28 @@
             </div>
         </div>
     </section>
-    
+
+    <!-- status message -->
+    <div class="status-message">
+        <p></p>
+    </div>
+
+    <script>
+        const statuses = [
+            " \u003Cspan style=\"color: #FFFFFF;\"\u003EJoin...\u003C/span\u003E",
+      " \u003Cspan style=\"color: #55FF55;\"\u003EVazha\u003C/span\u003E\u003Cspan style=\"color: #FFFFFF;\"\u003EMC \u003C/span\u003E\u003Cspan style=\"color: #55FF55;\"\u003ENetwork\u003C/span\u003E\u003Cspan style=\"color: #FFFFFF;\"\u003E! \u003C/span\u003E",
+      " \u003Cspan style=\"color: #FFFFFF;\"\u003ESupport Version: \u003C/span\u003E\u003Cspan style=\"color: #55FF55;\"\u003E1.8.x - 1.21.x \u003C/span\u003E",
+      "\u003Cspan style=\"color: #AAAAAA;\"\u003E- \u003C/span\u003E\u003Cspan style=\"color: #55FF55;\"\u003EDEVADARSH212\u003C/span\u003E",
+      "\u003Cspan style=\"color: #AAAAAA;\"\u003E- \u003C/span\u003E\u003Cspan style=\"color: #55FF55;\"\u003ETEJOPii\u003C/span\u003E",
+      "\u003Cspan style=\"color: #AAAAAA;\"\u003E- \u003C/span\u003E\u003Cspan style=\"color: #55FF55;\"\u003Eitmegaming\u003C/span\u003E",
+      "\u003Cspan style=\"color: #AAAAAA;\"\u003E- \u003C/span\u003E\u003Cspan style=\"color: #55FF55;\"\u003Ebravo\u003C/span\u003E",
+      "\u003Cspan style=\"color: #AAAAAA;\"\u003E- \u003C/span\u003E\u003Cspan style=\"color: #55FF55;\"\u003ENKBRO\u003C/span\u003E",
+      " \u003Cspan style=\"color: #AAAAAA;\"\u003E+\u003C/span\u003E\u003Cspan style=\"color: #55FF55;\"\u003E21 \u003C/span\u003E\u003Cspan style=\"color: #AAAAAA;\"\u003Eplayers. \u003C/span\u003E"
+    ];
+    const randomStatus = statuses[Math.floor(Math.random() * statuses.length)];
+    document.querySelector('.status-message').innerHTML = randomStatus;
+    </script>
+
     <%- include('partials/footer') %>
 </body>
 </html>

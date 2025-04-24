@@ -403,8 +403,12 @@
                 <span class="w-3 h-3 bg-emerald-500 rounded-full"></span>
                 <span class="text-lg">Online - Join now <b>play.vazha.fun</b></span>
             </div>
-            <p class="mt-4 text-gray-300">Players Online: <b><%= serverStatus.players.online %></b> / <%= serverStatus.players.max %></p>
-        <% } else { %>
+            <div class="flex justify-center">
+                <div class="w-full max-w-3xl">
+                    <img src="http://status.mclive.eu/Vazha MC/play.vazha.fun/25572/banner.png" alt="Vazha MC Server Status" class="w-full h-auto">
+                </div>
+                </div>
+            <% } else { %>
             <div class="inline-flex items-center space-x-2 bg-gray-900 px-6 py-3 rounded-lg">
                 <span class="w-3 h-3 bg-red-500 rounded-full"></span>
                 <span class="text-lg">Offline - Check back later</span>

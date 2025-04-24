@@ -4,6 +4,7 @@ const Media = require("../models/Media");
 const Ticket = require("../models/Ticket");
 const Comment = require("../models/Comment");
 const User = require("../models/User");
+const axios = require("axios");
 
 // 🛡️ Middleware to protect routes
 function isAuthenticated(req, res, next) {
@@ -142,6 +143,17 @@ router.get("/api/v1/comments", async (req, res) => {
     } catch (err) {
         console.error("❌ Failed to fetch comments:", err);
         res.status(500).json({ error: "Failed to fetch comments" });
+    }
+}); 
+
+// make a mcserver status api use https://api.mcsrvstat.us/3/play.vazha.fun:25572
+router.get("/api/v1/vazha-status", async (req, res) => {
+    try {
+        const response = await axios.get("https://api.mcsrvstat.us/3/play.vazha.fun:25572");
+        res.json(response.data);
+    } catch (err) {
+        console.error("❌ Failed to fetch Minecraft server status:", err);
+        res.status(500).json({ error: "Failed to fetch Minecraft server status" });
     }
 }); 
 
