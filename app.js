@@ -22,12 +22,10 @@ const adminticket = require('./routes/shot/tickets');
 const apiRoutes = require("./routes/api");
 const adminTicketRoutes = require("./routes/admin/tickets");
 const path = require('path');
-
-
+const { loadEvents } = require('./events');
 
 require("dotenv").config();
 require("./config/passport");
-
 
 const app = express();
 app.set("view engine", "ejs");
@@ -35,10 +33,12 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static("public"));
 
-
 // connect to database
 connectDB();
 startBot();
+
+// Load Discord events
+loadEvents();
 
 // Session
 app.use(session({

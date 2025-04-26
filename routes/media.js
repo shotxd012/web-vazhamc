@@ -8,48 +8,41 @@ const Comment = require("../models/Comment");
 const { EmbedBuilder, ButtonBuilder, ActionRowBuilder, ButtonStyle } = require("discord.js");
 const client = require("../config/discordClient");
 
-// Cloudinary config
+// Cloudinary setup
 cloudinary.config({
-    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-    api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_API_SECRET,
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-// Middleware to check authentication via Passport.js
 function isAuthenticated(req, res, next) {
-    if (req.isAuthenticated && req.isAuthenticated()) {
-        return next();
-    }
-    return res.status(401).json({ success: false, message: "Unauthorized" });
+  if (req.isAuthenticated && req.isAuthenticated()) return next();
+  return res.status(401).json({ success: false, message: "Unauthorized" });
 }
 
-// Multer setup
 const storage = new CloudinaryStorage({
-    cloudinary,
-    params: {
-        folder: "media_uploads",
-        allowed_formats: ["jpg", "jpeg", "png", "webp", "gif"],
-        public_id: (req, file) => `${Date.now()}_${file.originalname}`,
-    },
+  cloudinary,
+  params: {
+    folder: "media_uploads",
+    allowed_formats: ["jpg", "jpeg", "png", "webp", "gif"],
+    public_id: (req, file) => `${Date.now()}_${file.originalname}`,
+  },
 });
 const upload = multer({ storage });
 
-
 // GET /media
 router.get("/media", async (req, res) => {
-    try {
-        const media = await Media.find().sort({ timestamp: -1 });
-        const comments = await Comment.find().sort({ timestamp: 1 }); // oldest first
-
-        res.render("media", { user: req.user, media, comments });
-    } catch (err) {
-        console.error("Error loading media:", err);
-        res.status(500).send("Server Error");
-    }
+  try {
+    const media = await Media.find().sort({ timestamp: -1 });
+    const comments = await Comment.find().sort({ timestamp: 1 });
+    res.render("media", { user: req.user, media, comments });
+  } catch (err) {
+    console.error("Error loading media:", err);
+    res.status(500).send("Server Error");
+  }
 });
 
-
-// Manage media page
+// GET /manage/media
 router.get("/profile/manage/media", isAuthenticated, async (req, res) => {
     const media = await Media.find({ discordId: req.user.discordId }).sort({ timestamp: -1 });
     const comments = await Comment.find().sort({ timestamp: 1 }); // include all comments
@@ -58,68 +51,60 @@ router.get("/profile/manage/media", isAuthenticated, async (req, res) => {
 
 // Upload new media
 router.post("/profile/manage/media/upload", isAuthenticated, upload.single("image"), async (req, res) => {
-    const imageUrl = req.file.path;
-    const description = req.body.description;
+  const imageUrl = req.file.path;
+  const description = req.body.description;
 
-    const media = await new Media({
-        username: req.user.username,
-        avatar: req.user.avatar,
-        discordId: req.user.discordId,
-        imageUrl,
-        description,
-    }).save();
+  const media = await new Media({
+    username: req.user.username,
+    avatar: req.user.avatar,
+    discordId: req.user.discordId,
+    imageUrl,
+    description,
+  }).save();
 
-    // --- Discord Embed using Bot Client ---
-    try {
-        const channel = await client.channels.fetch(process.env.DISCORD_MEDIA_CHANNEL_ID);
-        if (!channel) {
-            console.error("❌ Media channel not found.");
-            return res.redirect("/profile/manage/media");
-        }
-
-        const embed = new EmbedBuilder()
-            .setTitle(`Web Media Uploaded`)
-            .setAuthor({
-                name: req.user.username,
-                iconURL: `https://cdn.discordapp.com/avatars/${req.user.discordId}/${req.user.avatar}.png`
-              })  
-            .setImage(imageUrl)
-            .setColor(0x00c48c)
-            .setDescription(description || "*No description provided*")
-            .addFields([
-                {
-                    name: "Media ID",
-                    value: `\`${media._id}\``,
-                    inline: true,
-                },
-                {
-                    name: "Likes",
-                    value: `\`${media.likes || 0}\``,
-                    inline: true,
-                },
-                {
-                    name: "Dislikes",
-                    value: `\`${media.dislikes || 0}\``,
-                    inline: true,
-                },
-            ])
-
-            .setFooter({ text: `User ID: ${req.user.discordId}` })
-            .setTimestamp()
-        const viewBtn = new ButtonBuilder()
-            .setLabel("📷 View in Media Gallery")
-            .setStyle(ButtonStyle.Link)
-            .setURL(`${process.env.BASE_URL}/media`);
-
-        const row = new ActionRowBuilder().addComponents(viewBtn);
-
-        await channel.send({ embeds: [embed], components: [row] });
-        console.log(`✅ Media uploaded and embed sent to Discord.`);
-    } catch (err) {
-        console.error("❌ Failed to send media embed:", err);
+  try {
+    const channel = await client.channels.fetch(process.env.DISCORD_MEDIA_CHANNEL_ID);
+    if (!channel) {
+      console.error("❌ Media channel not found.");
+      return res.redirect("/profile/manage/media");
     }
 
-    res.redirect("/profile/manage/media");
+    const embed = new EmbedBuilder()
+      .setTitle(`Web Media Uploaded`)
+      .setAuthor({
+        name: req.user.username,
+        iconURL: `https://cdn.discordapp.com/avatars/${req.user.discordId}/${req.user.avatar}.png`
+      })
+      .setImage(imageUrl)
+      .setColor(0x00c48c)
+      .setDescription(description || "*No description provided*")
+      .addFields([
+        { name: "Media ID", value: `\`${media._id}\``, inline: true },
+      ])
+      .setFooter({ text: `User ID: ${req.user.discordId}` })
+      .setTimestamp();
+
+    const likeBtn = new ButtonBuilder()
+      .setCustomId(`like_${media._id}`)
+      .setLabel("👍 Like")
+      .setStyle(ButtonStyle.Success);
+
+    const viewBtn = new ButtonBuilder()
+      .setLabel("📷 View in Media Gallery")
+      .setStyle(ButtonStyle.Link)
+      .setURL(`${process.env.BASE_URL}/media`);
+
+    const row = new ActionRowBuilder().addComponents(likeBtn, viewBtn);
+    const sent = await channel.send({ embeds: [embed], components: [row] });
+
+    media.messageId = sent.id;
+    await media.save();
+    console.log("✅ Embed sent to Discord with like button.");
+  } catch (err) {
+    console.error("❌ Failed to send media embed:", err);
+  }
+
+  res.redirect("/profile/manage/media");
 });
 
 // Edit description

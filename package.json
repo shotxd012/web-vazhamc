@@ -1,6 +1,6 @@
 {
   "name": "vazhamc",
-  "version": "3.6.4",
+  "version": "3.9.1",
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
