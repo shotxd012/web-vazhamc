@@ -1,7 +1,7 @@
 {
   "name": "vazhamc",
   "version": "3.6.4",
-  "main": "app.js",
+  "main": "index.js",
   "scripts": {
     "start": "node app.js",
     "dev": "nodemon app.js",
