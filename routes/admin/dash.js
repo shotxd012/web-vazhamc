@@ -3,6 +3,7 @@ const router = express.Router();
 const Ticket = require("../../models/Ticket");
 const Message = require("../../models/TicketMessage");
 const User = require("../../models/User");
+const ShotUser = require("../../models/ShotUser");
 const ActivityLog = require("../../models/ActivityLog");
 const isStaff = require("../../middleware/isStaff");
 const { Client, GatewayIntentBits } = require('discord.js');
@@ -27,6 +28,7 @@ router.get("/", isStaff, async (req, res) => {
 
     // Get user statistics
     const totalUsers = await User.countDocuments();
+    const shotusersCount = await ShotUser.countDocuments();
     const userDistribution = {
       founder: await User.countDocuments({ role: "ꜰᴏᴜɴᴅᴇʀ" }),
       communityManager: await User.countDocuments({ role: "ᴄᴏᴍᴍᴜɴɪᴛʏ ᴍᴀɴᴀɢᴇʀ" }),
@@ -57,6 +59,7 @@ router.get("/", isStaff, async (req, res) => {
       openTickets,
       closedTickets,
       totalUsers,
+      shotusersCount,
       userDistribution,
       discordStats,
       recentActivities
