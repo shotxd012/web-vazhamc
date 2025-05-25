@@ -25,77 +25,133 @@ const storage = new CloudinaryStorage({
 const upload = multer({ storage });
 
 // GET /admin/tickets - List all tickets
-router.get("/tickets", isStaff, async (req, res) => {
-  const tickets = await Ticket.find().sort({ createdAt: -1 });
-  res.render("admin/tickets", { user: req.user, tickets });
+router.get("/", isStaff, async (req, res) => {
+  try {
+    const tickets = await Ticket.find().sort({ createdAt: -1 });
+    res.render("admin/tickets", { user: req.user, tickets });
+  } catch (error) {
+    console.error("Error fetching tickets:", error);
+    res.status(500).send("Error loading tickets");
+  }
 });
 
-// GET /admin/ticket/:ticketId - Ticket details
-router.get("/ticket/:ticketId", isStaff, async (req, res) => {
-  const ticket = await Ticket.findOne({ ticketId: req.params.ticketId });
-  const messages = await Message.find({ ticketId: req.params.ticketId }).sort({ timestamp: 1 });
+// GET /admin/tickets/:ticketId - Ticket details
+router.get("/:ticketId", isStaff, async (req, res) => {
+  try {
+    const ticket = await Ticket.findOne({ ticketId: req.params.ticketId });
+    if (!ticket) {
+      return res.status(404).render("error", { 
+        message: "Ticket not found",
+        error: { status: 404 }
+      });
+    }
 
-  if (!ticket) return res.status(404).send("Ticket not found");
-
-  res.render("admin/ticketDetail", { user: req.user, ticket, messages });
+    const messages = await Message.find({ ticketId: req.params.ticketId }).sort({ timestamp: 1 });
+    res.render("admin/ticketDetail", { user: req.user, ticket, messages });
+  } catch (error) {
+    console.error("Error fetching ticket details:", error);
+    res.status(500).send("Error loading ticket details");
+  }
 });
 
-// POST /admin/ticket/:ticketId/reply
-router.post("/ticket/:ticketId/reply", isStaff, upload.single("image"), async (req, res) => {
-  const ticket = await Ticket.findOne({ ticketId: req.params.ticketId });
-  if (!ticket) return res.status(404).send("Ticket not found");
+// POST /admin/tickets/:ticketId/reply
+router.post("/:ticketId/reply", isStaff, upload.single("image"), async (req, res) => {
+  try {
+    const ticket = await Ticket.findOne({ ticketId: req.params.ticketId });
+    if (!ticket) {
+      return res.status(404).render("error", { 
+        message: "Ticket not found",
+        error: { status: 404 }
+      });
+    }
 
-  const message = req.body.message?.trim();
-  if (!message && !req.file) return res.redirect(`/admin/ticket/${ticket.ticketId}`);
+    const message = req.body.message?.trim();
+    if (!message && !req.file) {
+      return res.redirect(`/admin/tickets/${ticket.ticketId}`);
+    }
 
-  const imageUrl = req.file ? req.file.path : null;
+    const imageUrl = req.file ? req.file.path : null;
 
-  await Message.create({
-    ticketId: ticket.ticketId,
-    userId: req.user.discordId,
-    username: req.user.username,
-    avatar: req.user.avatar,
-    message,
-    image: imageUrl,
-    role: req.user.role
-  });
+    await Message.create({
+      ticketId: ticket.ticketId,
+      userId: req.user.discordId,
+      username: req.user.username,
+      avatar: req.user.avatar,
+      message,
+      image: imageUrl,
+      role: req.user.role
+    });
 
-  res.redirect(`/admin/ticket/${ticket.ticketId}`);
+    res.redirect(`/admin/tickets/${ticket.ticketId}`);
+  } catch (error) {
+    console.error("Error replying to ticket:", error);
+    res.status(500).send("Error sending reply");
+  }
 });
 
-// POST /admin/ticket/:ticketId/close
-router.post("/ticket/:ticketId/close", isStaff, async (req, res) => {
-  const ticket = await Ticket.findOne({ ticketId: req.params.ticketId });
-  if (!ticket) return res.status(404).send("Ticket not found");
+// POST /admin/tickets/:ticketId/close
+router.post("/:ticketId/close", isStaff, async (req, res) => {
+  try {
+    const ticket = await Ticket.findOne({ ticketId: req.params.ticketId });
+    if (!ticket) {
+      return res.status(404).render("error", { 
+        message: "Ticket not found",
+        error: { status: 404 }
+      });
+    }
 
-  ticket.status = "closed";
-  ticket.closedReason = req.body.reason || "Closed by staff";
-  await ticket.save();
+    ticket.status = "closed";
+    ticket.closedReason = req.body.reason || "Closed by staff";
+    await ticket.save();
 
-  res.redirect(`/admin/ticket/${ticket.ticketId}`);
+    res.redirect(`/admin/tickets/${ticket.ticketId}`);
+  } catch (error) {
+    console.error("Error closing ticket:", error);
+    res.status(500).send("Error closing ticket");
+  }
 });
 
-// POST /admin/ticket/:ticketId/reopen
-router.post("/ticket/:ticketId/reopen", isStaff, async (req, res) => {
-  const ticket = await Ticket.findOne({ ticketId: req.params.ticketId });
-  if (!ticket) return res.status(404).send("Ticket not found");
+// POST /admin/tickets/:ticketId/reopen
+router.post("/:ticketId/reopen", isStaff, async (req, res) => {
+  try {
+    const ticket = await Ticket.findOne({ ticketId: req.params.ticketId });
+    if (!ticket) {
+      return res.status(404).render("error", { 
+        message: "Ticket not found",
+        error: { status: 404 }
+      });
+    }
 
-  ticket.status = "open";
-  ticket.closedReason = null;
-  await ticket.save();
+    ticket.status = "open";
+    ticket.closedReason = null;
+    await ticket.save();
 
-  res.redirect(`/admin/ticket/${ticket.ticketId}`);
+    res.redirect(`/admin/tickets/${ticket.ticketId}`);
+  } catch (error) {
+    console.error("Error reopening ticket:", error);
+    res.status(500).send("Error reopening ticket");
+  }
 });
 
-// POST /admin/ticket/:ticketId/delete
-router.post("/ticket/:ticketId/delete", isStaff, async (req, res) => {
-  const ticket = await Ticket.findOne({ ticketId: req.params.ticketId });
-  if (!ticket) return res.status(404).send("Ticket not found");
+// POST /admin/tickets/:ticketId/delete
+router.post("/:ticketId/delete", isStaff, async (req, res) => {
+  try {
+    const ticket = await Ticket.findOne({ ticketId: req.params.ticketId });
+    if (!ticket) {
+      return res.status(404).render("error", { 
+        message: "Ticket not found",
+        error: { status: 404 }
+      });
+    }
 
-  await Message.deleteMany({ ticketId: ticket.ticketId });
-  await Ticket.deleteOne({ ticketId: ticket.ticketId });
+    await Message.deleteMany({ ticketId: ticket.ticketId });
+    await Ticket.deleteOne({ ticketId: ticket.ticketId });
 
-  res.redirect("/admin/tickets");
+    res.redirect("/admin/tickets");
+  } catch (error) {
+    console.error("Error deleting ticket:", error);
+    res.status(500).send("Error deleting ticket");
+  }
 });
 
 module.exports = router;
