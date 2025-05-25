@@ -11,7 +11,7 @@
     "adm-zip": "^0.5.16",
     "axios": "1.8.4",
     "bcrypt": "^5.1.1",
-    "cloudinary": "^2.6.0",
+    "cloudinary": "^1.41.3",
     "discord.js": "^14.18.0",
     "dotenv": "^16.5.0",
     "ejs": "^3.1.10",

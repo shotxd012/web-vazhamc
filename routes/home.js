@@ -10,7 +10,7 @@ let serverStatus = {
 // Function to fetch server status every 1 minute
 async function fetchServerStatus() {
     try {
-        const response = await axios.get("https://api.mcsrvstat.us/3/play.vazha.fun:25572");
+        const response = await axios.get("https://api.mcsrvstat.us/3/play.vazha.fun:25017");
         serverStatus = {
             online: response.data.online,
             players: response.data.players || { online: 0, max: 0 }

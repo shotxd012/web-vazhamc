@@ -1,38 +1,66 @@
-<div class="top-users-container">
-  <div class="top-users-header">
-    <h2 class="top-users-title">🏆 Top Users</h2>
-    <a href="/media" class="media-button">
-      <svg xmlns="http://www.w3.org/2000/svg" class="media-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 5 4 4-4 4"></path><path d="M19 9H5"></path><path d="M5 15h8"></path></svg>
-      View Media
-    </a>
-  </div>
-  
-  <ul class="users-list">
-    <% topUsers.forEach((user, index) => { %>
-      <li class="user-item">
-        <div class="rank-badge"><%= index + 1 %></div>
-        <img src="https://cdn.discordapp.com/avatars/<%= user.discordId %>/<%= user.avatar %>.png" alt="<%= user.username %>'s avatar" class="user-avatar">
-        <div class="user-info">
-          <p class="username"><%= user.username %></p>
-          <div class="user-stats">
-            <span class="stat media-stat">
-              <svg xmlns="http://www.w3.org/2000/svg" class="stat-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"></rect><circle cx="9" cy="9" r="2"></circle><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"></path></svg>
-              <%= user.mediaCount %>
-            </span>
-            <span class="stat likes-stat">
-              <svg xmlns="http://www.w3.org/2000/svg" class="stat-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path></svg>
-              <%= user.totalLikes %>
-            </span>
-            <span class="stat comments-stat">
-              <svg xmlns="http://www.w3.org/2000/svg" class="stat-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-              <%= user.commentCount %>
-            </span>
-          </div>
+<div class="container mx-auto px-4 py-12">
+    <div class="relative mb-16">
+        <div class="absolute inset-0 bg-emerald-500 opacity-10 blur-3xl"></div>
+        <div class="relative z-10 p-8 rounded-2xl bg-gray-800 bg-opacity-50 border border-gray-700 shadow-xl backdrop-blur-sm">
+            <!-- Header Section -->
+            <div class="flex items-center justify-between mb-8">
+                <h2 class="text-2xl font-bold text-emerald-400 flex items-center gap-2">
+                    <i class="ph ph-trophy"></i>
+                    Top Users
+                </h2>
+                <a href="/media" class="bg-emerald-600 hover:bg-emerald-700 px-6 py-2 rounded-lg transition-all duration-300 flex items-center gap-2 hover:shadow-lg hover:shadow-emerald-500/20">
+                    <i class="ph ph-images"></i>
+                    <span class="text-white font-medium">View Media</span>
+                </a>
+            </div>
+
+            <!-- Users List -->
+            <div class="space-y-4">
+                <% topUsers.forEach((user, index) => { %>
+                    <div class="bg-gray-800 bg-opacity-50 p-4 rounded-xl border border-gray-700 shadow-lg hover:transform hover:translate-x-2 transition-all duration-300 hover:shadow-emerald-500/10 hover:border-emerald-500/50">
+                        <div class="flex items-center gap-4">
+                            <!-- Rank Badge -->
+                            <div class="bg-emerald-600 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold flex-shrink-0 shadow-lg shadow-emerald-500/20">
+                                <%= index + 1 %>
+                            </div>
+
+                            <!-- User Avatar -->
+                            <img 
+                                src="https://cdn.discordapp.com/avatars/<%= user.discordId %>/<%= user.avatar %>.png" 
+                                alt="<%= user.username %>'s avatar" 
+                                class="w-12 h-12 rounded-full border-2 border-emerald-500 object-cover flex-shrink-0 shadow-lg shadow-emerald-500/20"
+                            >
+
+                            <!-- User Info -->
+                            <div class="flex-1">
+                                <h3 class="text-lg font-semibold text-white"><%= user.username %></h3>
+                                <div class="flex items-center gap-4 mt-1">
+                                    <!-- Media Count -->
+                                    <div class="flex items-center gap-1 text-emerald-400 hover:text-emerald-300 transition-colors">
+                                        <i class="ph ph-images"></i>
+                                        <span><%= user.mediaCount %></span>
+                                    </div>
+                                    <!-- Likes Count -->
+                                    <div class="flex items-center gap-1 text-yellow-400 hover:text-yellow-300 transition-colors">
+                                        <i class="ph ph-heart"></i>
+                                        <span><%= user.totalLikes %></span>
+                                    </div>
+                                    <!-- Comments Count -->
+                                    <div class="flex items-center gap-1 text-blue-400 hover:text-blue-300 transition-colors">
+                                        <i class="ph ph-chat-circle"></i>
+                                        <span><%= user.commentCount %></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
         </div>
-      </li>
-    <% }) %>
-  </ul>
+    </div>
 </div>
+
+<script src="https://unpkg.com/@phosphor-icons/web"></script>
 
 <style>
   .top-users-container {
