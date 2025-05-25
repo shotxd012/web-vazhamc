@@ -23,6 +23,7 @@ const apiRoutes = require("./routes/api");
 const adminTicketRoutes = require("./routes/admin/tickets");
 const admin = require("./routes/admin/dash");
 const legalRoutes = require("./routes/legal");
+const statusRoutes = require("./routes/status");
 const path = require('path');
 const { loadEvents } = require('./events');
 
@@ -74,6 +75,7 @@ app.use(apiRoutes);
 app.use("/admin/tickets", adminTicketRoutes);
 app.use("/admin", admin);
 app.use("/legal", legalRoutes);
+app.use("/status", statusRoutes);
 
 // Error handling routes
 app.use((req, res, next) => {
