@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('partials/head') %>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        .terms-section {
+            backdrop-filter: blur(12px);
+        }
+        .terms-card {
+            transition: all 0.3s ease;
+        }
+        .terms-card:hover {
+            transform: translateY(-4px);
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white min-h-screen font-sans">
+    <%- include('partials/nav') %>
+
+    <main class="container mx-auto px-4 py-16">
+        <!-- Header Section -->
+        <div class="container mx-auto px-4 py-10 flex flex-col items-center gap-12">
+            <h1 class="text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-teal-400 via-emerald-500 to-green-600">
+                Terms of Service
+            </h1>
+        </div>
+
+        <!-- Terms Content -->
+        <div class="relative mb-16">
+            <div class="absolute inset-0 bg-emerald-500 opacity-10 blur-3xl"></div>
+            <div class="relative z-10 p-8 rounded-2xl bg-gray-800 bg-opacity-50 terms-section border border-gray-700 shadow-xl">
+                <div class="space-y-8">
+                    <!-- Introduction -->
+                    <div class="terms-card bg-gray-800 bg-opacity-50 p-6 rounded-xl border border-gray-700 shadow-lg">
+                        <h2 class="text-2xl font-bold text-emerald-400 mb-4">1. Introduction</h2>
+                        <p class="text-gray-300">Welcome to VazhamC. By accessing our website and using our services, you agree to these terms of service. Please read them carefully.</p>
+                    </div>
+
+                    <!-- User Responsibilities -->
+                    <div class="terms-card bg-gray-800 bg-opacity-50 p-6 rounded-xl border border-gray-700 shadow-lg">
+                        <h2 class="text-2xl font-bold text-emerald-400 mb-4">2. User Responsibilities</h2>
+                        <ul class="list-disc list-inside text-gray-300 space-y-2">
+                            <li>Maintain accurate account information</li>
+                            <li>Protect your account credentials</li>
+                            <li>Comply with all applicable laws and regulations</li>
+                            <li>Respect other users' rights and privacy</li>
+                        </ul>
+                    </div>
+
+                    <!-- Content Guidelines -->
+                    <div class="terms-card bg-gray-800 bg-opacity-50 p-6 rounded-xl border border-gray-700 shadow-lg">
+                        <h2 class="text-2xl font-bold text-emerald-400 mb-4">3. Content Guidelines</h2>
+                        <ul class="list-disc list-inside text-gray-300 space-y-2">
+                            <li>No illegal content</li>
+                            <li>No harassment or hate speech</li>
+                            <li>No spam or unauthorized advertising</li>
+                            <li>No impersonation of others</li>
+                        </ul>
+                    </div>
+
+                    <!-- Service Usage -->
+                    <div class="terms-card bg-gray-800 bg-opacity-50 p-6 rounded-xl border border-gray-700 shadow-lg">
+                        <h2 class="text-2xl font-bold text-emerald-400 mb-4">4. Service Usage</h2>
+                        <p class="text-gray-300">Our services are provided "as is" and we make no warranties about their availability, reliability, or security. We reserve the right to modify or discontinue services at any time.</p>
+                    </div>
+
+                    <!-- Termination -->
+                    <div class="terms-card bg-gray-800 bg-opacity-50 p-6 rounded-xl border border-gray-700 shadow-lg">
+                        <h2 class="text-2xl font-bold text-emerald-400 mb-4">5. Account Termination</h2>
+                        <p class="text-gray-300">We reserve the right to terminate or suspend accounts that violate these terms or for any other reason at our discretion.</p>
+                    </div>
+
+                    <!-- Changes to Terms -->
+                    <div class="terms-card bg-gray-800 bg-opacity-50 p-6 rounded-xl border border-gray-700 shadow-lg">
+                        <h2 class="text-2xl font-bold text-emerald-400 mb-4">6. Changes to Terms</h2>
+                        <p class="text-gray-300">We may update these terms at any time. Continued use of our services after changes constitutes acceptance of the new terms.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <%- include('partials/footer') %>
+</body>
+</html> 
