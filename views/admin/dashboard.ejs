@@ -1,12 +1,12 @@
 <%- include('../partials/head') %>
 <%- include('../partials/message') %>
 
-<div class="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
+<body class="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white">
     <%- include('../partials/nav') %>
 
     <main class="container mx-auto px-4 pt-24 pb-16">
         <!-- Admin Dashboard Header -->
-        <div class="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-8 mb-8 border border-gray-700/50 shadow-xl">
+        <div class="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-8 mb-8 border border-gray-700/50 shadow-xl mt-16">
             <div class="flex items-center justify-between">
                 <div>
                     <h1 class="text-3xl font-bold text-white mb-2">Admin Dashboard</h1>
@@ -139,38 +139,6 @@
                 <p class="text-sm text-gray-400">Registered users</p>
             </div>
         </div>
-
-        <!-- Recent Activity -->
-        <div class="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-8 border border-gray-700/50 mb-8">
-            <div class="flex items-center justify-between mb-6">
-                <h2 class="text-xl font-bold text-white">Recent Activity</h2>
-                <a href="/admin/tickets" class="text-emerald-400 hover:text-emerald-300 transition-colors">
-                    View All <i class="ph ph-arrow-right ml-1"></i>
-                </a>
-            </div>
-            
-            <div class="space-y-4">
-                <% recentActivities.forEach(activity => { %>
-                    <div class="bg-gray-700/30 rounded-xl p-4 hover:bg-gray-700/50 transition-all duration-300">
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center space-x-4">
-                                <div class="w-10 h-10 rounded-full bg-gray-600 flex items-center justify-center">
-                                    <i class="ph ph-activity text-xl text-emerald-400"></i>
-                                </div>
-                                <div>
-                                    <h3 class="text-white font-medium"><%= activity.type %></h3>
-                                    <p class="text-sm text-gray-400"><%= activity.description %></p>
-                                </div>
-                            </div>
-                            <div class="text-sm text-gray-400">
-                                <%= new Date(activity.timestamp).toLocaleString() %>
-                            </div>
-                        </div>
-                    </div>
-                <% }); %>
-            </div>
-        </div>
-
         <!-- Quick Actions -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <!-- View All Tickets -->
@@ -186,10 +154,10 @@
                 </div>
             </a>
 
-            <!-- System Status -->
-            <div class="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50">
+            <!-- System Status to /status -->
+            <a href="/status" class="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 hover:border-emerald-500/50 transition-all duration-300 group">
                 <div class="flex items-center space-x-4">
-                    <div class="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center">
+                    <div class="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center group-hover:bg-emerald-500/20 transition-colors">
                         <i class="ph ph-gauge text-2xl text-emerald-400"></i>
                     </div>
                     <div>
@@ -197,12 +165,12 @@
                         <p class="text-sm text-gray-400">All systems operational</p>
                     </div>
                 </div>
-            </div>
+            </a>
         </div>
     </main>
 
     <%- include('../partials/footer') %>
-</div>
+</body>
 
 <script src="https://unpkg.com/@phosphor-icons/web"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
