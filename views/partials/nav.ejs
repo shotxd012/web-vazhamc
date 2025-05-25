@@ -24,6 +24,14 @@
                         <a href="/announcements" class="nav-link py-2 px-4 rounded-full hover:bg-emerald-500/10 transition-all duration-300">
                             <i class="ph ph-megaphone mr-2"></i>Announcements
                         </a>
+                        <% if (user) { %>
+                            <a href="/profile" class="nav-link py-2 px-4 rounded-full hover:bg-emerald-500/10 transition-all duration-300">
+                                <i class="ph ph-user mr-2"></i>Profile
+                            </a>
+                            <a href="/logout" class="nav-link py-2 px-4 rounded-full hover:bg-red-500/10 transition-all duration-300 text-red-400">
+                                <i class="ph ph-sign-out mr-2"></i>Logout
+                            </a>
+                        <% } %>
                     </div>
                 </div>
                 
@@ -38,16 +46,6 @@
                                 <span class="absolute bottom-0 right-0 w-3 h-3 bg-emerald-500 rounded-full border-2 border-gray-800"></span>
                             </div>
                         </button>
-                        <div id="user-menu" class="hidden absolute right-0 mt-2 w-48 bg-gray-800/90 backdrop-blur-md rounded-[1.5rem] border border-gray-700 shadow-xl overflow-hidden">
-                            <a href="/profile" class="block px-4 py-3 text-gray-300 hover:bg-emerald-500/10 transition-all duration-300 flex items-center gap-2">
-                                <i class="ph ph-user"></i>
-                                Profile
-                            </a>
-                            <a href="/logout" class="block px-4 py-3 text-red-400 hover:bg-red-500/10 transition-all duration-300 flex items-center gap-2">
-                                <i class="ph ph-sign-out"></i>
-                                Logout
-                            </a>
-                        </div>
                     <% } else { %>
                         <a href="/login" class="bg-emerald-600 hover:bg-emerald-700 px-6 py-2 rounded-full text-white font-medium transition-all duration-300 flex items-center gap-2 hover:shadow-lg hover:shadow-emerald-500/20">
                             <i class="ph ph-discord-logo"></i>
@@ -68,6 +66,22 @@
             
             <!-- Mobile Navigation Links -->
             <div id="mobile-menu" class="md:hidden hidden p-4 space-y-2 border-t border-gray-700">
+                <!-- Mobile User Profile Section -->
+                <% if (user) { %>
+                    <div class="flex items-center space-x-3 mb-4 p-3 bg-gray-800/50 rounded-[1.5rem] border border-gray-700">
+                        <div class="relative">
+                            <img src="https://cdn.discordapp.com/avatars/<%= user.discordId %>/<%= user.avatar %>.png" 
+                                 alt="Avatar" 
+                                 class="w-12 h-12 rounded-full border-2 border-emerald-500 shadow-lg shadow-emerald-500/20">
+                            <span class="absolute bottom-0 right-0 w-3 h-3 bg-emerald-500 rounded-full border-2 border-gray-800"></span>
+                        </div>
+                        <div class="flex-1">
+                            <p class="text-emerald-500 font-medium"><%= user.username %></p>
+                            <p class="text-gray-400 text-sm">Online</p>
+                        </div>
+                    </div>
+                <% } %>
+
                 <a href="/" class="block nav-link py-2 px-4 rounded-full hover:bg-emerald-500/10 transition-all duration-300">
                     <i class="ph ph-house mr-2"></i>Home
                 </a>
@@ -84,8 +98,18 @@
                     <i class="ph ph-megaphone mr-2"></i>Announcements
                 </a>
                 
-                <!-- Mobile Login Button -->
-                <% if (!user) { %>
+                <!-- Mobile User Actions -->
+                <% if (user) { %>
+                    <div class="pt-4 mt-4 border-t border-gray-700 space-y-2">
+                        <a href="/profile" class="block nav-link py-2 px-4 rounded-full hover:bg-emerald-500/10 transition-all duration-300">
+                            <i class="ph ph-user mr-2"></i>Profile
+                        </a>
+                        <a href="/logout" class="block nav-link py-2 px-4 rounded-full hover:bg-red-500/10 transition-all duration-300 text-red-400">
+                            <i class="ph ph-sign-out mr-2"></i>Logout
+                        </a>
+                    </div>
+                <% } else { %>
+                    <!-- Mobile Login Button -->
                     <div class="pt-4 mt-4 border-t border-gray-700">
                         <a href="/login" class="block w-full bg-emerald-600 hover:bg-emerald-700 px-4 py-2 rounded-full text-white text-sm font-medium transition-all duration-300 flex items-center justify-center gap-2 hover:shadow-lg hover:shadow-emerald-500/20">
                             <i class="ph ph-discord-logo"></i>
@@ -135,7 +159,7 @@
     }
     
     #mobile-menu.open {
-        max-height: 300px;
+        max-height: 500px;
     }
 </style>
 

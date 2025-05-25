@@ -74,6 +74,42 @@ app.use("/admin/tickets", adminTicketRoutes);
 app.use("/admin", require("./routes/admin/tickets"));
 app.use("/legal", legalRoutes);
 
+// Error handling routes
+app.use((req, res, next) => {
+    res.status(404).render('errors/404', {
+        title: '404 - Page Not Found',
+        user: req.user
+    });
+});
+
+app.get('/500', (req, res) => {
+    res.status(500).render('errors/500', {
+        title: '500 - Server Error',
+        user: req.user
+    });
+}); 
+
+app.get('/403', (req, res) => {
+    res.status(403).render('errors/403', {
+        title: '403 - Forbidden',
+        user: req.user
+    });
+});
+
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    if (err.status === 403) {
+        return res.status(403).render('errors/403', {
+            title: '403 - Forbidden',
+            user: req.user
+        });
+    }
+    res.status(500).render('errors/500', {
+        title: '500 - Server Error',
+        user: req.user
+    });
+});
+
 // Start Server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
