@@ -1,75 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
     <%- include('partials/head') %>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <style>
         .staff-card {
-            background-color: #1F2937;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(12px);
         }
-        
         .staff-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-4px);
             box-shadow: 0 10px 25px rgba(15, 190, 29, 0.2);
+        }
+        .profile-section {
+            backdrop-filter: blur(12px);
         }
     </style>
 </head>
 <%- include('partials/message') %>
-<body class="bg-gray-900 text-white min-h-screen font-sans">
+<body class="bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white min-h-screen font-sans">
     <%- include('partials/nav') %>
     
-    <section class="py-20 bg-gray-800">
-        <div class="container mx-auto px-4 py-20 text-center">
-            <h1 class="text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-green-700">
+    <main class="container mx-auto px-4 py-16">
+        <!-- Header Section -->
+        <div class="container mx-auto px-4 py-10 flex flex-col items-center gap-12">
+            <h1 class="text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-teal-400 via-emerald-500 to-green-600">
                 Meet Our Staff
             </h1>
-            <p class="text-xl text-gray-300 mb-12">
+            <p class="text-xl text-gray-300 text-center max-w-2xl">
                 Our dedicated team ensures the best experience for players.
             </p>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <% staffs.forEach(staff => { %>
-                    <div class="staff-card rounded-xl p-6 text-center">
-                        <img src="<%= staff.avatar %>" alt="<%= staff.name %>" class="w-24 h-24 rounded-full mx-auto mb-4">
-                        
+        </div>
+
+        <!-- Staff Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <% staffs.forEach(staff => { %>
+                <div class="staff-card bg-gray-800 bg-opacity-50 p-6 rounded-xl border border-gray-700 shadow-lg">
+                    <div class="flex flex-col items-center">
+                        <!-- Avatar with Status -->
+                        <div class="relative mb-4">
+                            <img src="<%= staff.avatar %>" alt="<%= staff.name %>" 
+                                class="w-24 h-24 rounded-full border-4 border-emerald-500 shadow-xl object-cover">
+                            <div class="absolute bottom-2 right-2 w-4 h-4 rounded-full border-2 border-gray-900 shadow-lg"
+                                 style="background-color: <%= staff.status === 'online' ? '#34D399' : staff.status === 'idle' ? '#FACC15' : staff.status === 'dnd' ? '#EF4444' : '#6B7280' %>;">
+                            </div>
+                        </div>
+
+                        <!-- Staff Info -->
                         <h3 class="text-xl font-bold mb-2"><%= staff.name %></h3>
-                        <p class="text-gray-400"><%= staff.position %></p>
-                        <p class="text-gray-500 mb-4">Top Roles: <%= staff.roles.join(', ') %></p>
+                        <p class="text-emerald-400 font-medium mb-2"><%= staff.position %></p>
                         
+                        <!-- Roles -->
+                        <div class="flex flex-wrap gap-2 justify-center mb-4">
+                            <% staff.roles.forEach(role => { %>
+                                <span class="px-3 py-1 rounded-full text-sm bg-gray-700 bg-opacity-50 text-gray-300">
+                                    <%= role %>
+                                </span>
+                            <% }); %>
+                        </div>
+
                         <!-- Status Badge -->
-                        <p class="mb-2">
-                            Status: 
-                            <span class="inline-block px-3 py-1 rounded-full text-white text-sm font-medium"
-                                  style="background-color: <%= staff.status === 'online' ? '#34D399' : staff.status === 'idle' ? '#FACC15' : staff.status === 'dnd' ? '#EF4444' : '#6B7280' %>;">
+                        <div class="flex items-center gap-2 bg-gray-700 bg-opacity-50 px-4 py-2 rounded-lg">
+                            <i class="ph ph-circle-fill text-sm"
+                               style="color: <%= staff.status === 'online' ? '#34D399' : staff.status === 'idle' ? '#FACC15' : staff.status === 'dnd' ? '#EF4444' : '#6B7280' %>;">
+                            </i>
+                            <span class="text-sm font-medium">
                                 <%= staff.status.charAt(0).toUpperCase() + staff.status.slice(1) %>
                             </span>
-                        </p>
+                        </div>
                     </div>
-                <% }); %>
-            </div>
+                </div>
+            <% }); %>
         </div>
-    </section>
+    </main>
 
-    <!-- status message -->
-    <div class="status-message">
+    <!-- Status Message -->
+    <div class="status-message fixed bottom-4 right-4 bg-gray-800 bg-opacity-90 px-4 py-2 rounded-lg shadow-lg">
         <p></p>
     </div>
 
     <script>
         const statuses = [
             " \u003Cspan style=\"color: #FFFFFF;\"\u003EJoin...\u003C/span\u003E",
-      " \u003Cspan style=\"color: #55FF55;\"\u003EVazha\u003C/span\u003E\u003Cspan style=\"color: #FFFFFF;\"\u003EMC \u003C/span\u003E\u003Cspan style=\"color: #55FF55;\"\u003ENetwork\u003C/span\u003E\u003Cspan style=\"color: #FFFFFF;\"\u003E! \u003C/span\u003E",
-      " \u003Cspan style=\"color: #FFFFFF;\"\u003ESupport Version: \u003C/span\u003E\u003Cspan style=\"color: #55FF55;\"\u003E1.8.x - 1.21.x \u003C/span\u003E",
-      "\u003Cspan style=\"color: #AAAAAA;\"\u003E- \u003C/span\u003E\u003Cspan style=\"color: #55FF55;\"\u003EDEVADARSH212\u003C/span\u003E",
-      "\u003Cspan style=\"color: #AAAAAA;\"\u003E- \u003C/span\u003E\u003Cspan style=\"color: #55FF55;\"\u003ETEJOPii\u003C/span\u003E",
-      "\u003Cspan style=\"color: #AAAAAA;\"\u003E- \u003C/span\u003E\u003Cspan style=\"color: #55FF55;\"\u003Eitmegaming\u003C/span\u003E",
-      "\u003Cspan style=\"color: #AAAAAA;\"\u003E- \u003C/span\u003E\u003Cspan style=\"color: #55FF55;\"\u003Ebravo\u003C/span\u003E",
-      "\u003Cspan style=\"color: #AAAAAA;\"\u003E- \u003C/span\u003E\u003Cspan style=\"color: #55FF55;\"\u003ENKBRO\u003C/span\u003E",
-      " \u003Cspan style=\"color: #AAAAAA;\"\u003E+\u003C/span\u003E\u003Cspan style=\"color: #55FF55;\"\u003E21 \u003C/span\u003E\u003Cspan style=\"color: #AAAAAA;\"\u003Eplayers. \u003C/span\u003E"
-    ];
-    const randomStatus = statuses[Math.floor(Math.random() * statuses.length)];
-    document.querySelector('.status-message').innerHTML = randomStatus;
+            " \u003Cspan style=\"color: #55FF55;\"\u003EVazha\u003C/span\u003E\u003Cspan style=\"color: #FFFFFF;\"\u003EMC \u003C/span\u003E\u003Cspan style=\"color: #55FF55;\"\u003ENetwork\u003C/span\u003E\u003Cspan style=\"color: #FFFFFF;\"\u003E! \u003C/span\u003E",
+            " \u003Cspan style=\"color: #FFFFFF;\"\u003ESupport Version: \u003C/span\u003E\u003Cspan style=\"color: #55FF55;\"\u003E1.8.x - 1.21.x \u003C/span\u003E",
+            "\u003Cspan style=\"color: #AAAAAA;\"\u003E- \u003C/span\u003E\u003Cspan style=\"color: #55FF55;\"\u003EDEVADARSH212\u003C/span\u003E",
+            "\u003Cspan style=\"color: #AAAAAA;\"\u003E- \u003C/span\u003E\u003Cspan style=\"color: #55FF55;\"\u003ETEJOPii\u003C/span\u003E",
+            "\u003Cspan style=\"color: #AAAAAA;\"\u003E- \u003C/span\u003E\u003Cspan style=\"color: #55FF55;\"\u003Eitmegaming\u003C/span\u003E",
+            "\u003Cspan style=\"color: #AAAAAA;\"\u003E- \u003C/span\u003E\u003Cspan style=\"color: #55FF55;\"\u003Ebravo\u003C/span\u003E",
+            "\u003Cspan style=\"color: #AAAAAA;\"\u003E- \u003C/span\u003E\u003Cspan style=\"color: #55FF55;\"\u003ENKBRO\u003C/span\u003E",
+            " \u003Cspan style=\"color: #AAAAAA;\"\u003E+\u003C/span\u003E\u003Cspan style=\"color: #55FF55;\"\u003E21 \u003C/span\u003E\u003Cspan style=\"color: #AAAAAA;\"\u003Eplayers. \u003C/span\u003E"
+        ];
+        const randomStatus = statuses[Math.floor(Math.random() * statuses.length)];
+        document.querySelector('.status-message').innerHTML = randomStatus;
     </script>
 
     <%- include('partials/footer') %>
