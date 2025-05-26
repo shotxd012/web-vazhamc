@@ -119,28 +119,45 @@
                 <p class="text-sm text-gray-400">Currently active tickets</p>
             </div>
 
-            <!-- Closed Tickets -->
+            <!-- Total Media -->
             <div class="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 hover:border-emerald-500/50 transition-all duration-300">
                 <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-lg font-semibold text-white">Closed Tickets</h3>
-                    <i class="ph ph-check-circle text-2xl text-emerald-400"></i>
+                    <h3 class="text-lg font-semibold text-white">Total Media</h3>
+                    <i class="ph ph-image text-2xl text-emerald-400"></i>
                 </div>
-                <p class="text-3xl font-bold text-white mb-2"><%= closedTickets %></p>
-                <p class="text-sm text-gray-400">Resolved tickets</p>
+                <p class="text-3xl font-bold text-white mb-2"><%= totalMedia %></p>
+                <p class="text-sm text-gray-400">Uploaded media files</p>
             </div>
 
-            <!-- Website Users -->
+            <!-- Total Comments -->
             <div class="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 hover:border-emerald-500/50 transition-all duration-300">
                 <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-lg font-semibold text-white">Website Users</h3>
-                    <i class="ph ph-users text-2xl text-emerald-400"></i>
+                    <h3 class="text-lg font-semibold text-white">Total Comments</h3>
+                    <i class="ph ph-chat-circle text-2xl text-emerald-400"></i>
                 </div>
-                <p class="text-3xl font-bold text-white mb-2"><%= totalUsers %></p>
-                <p class="text-sm text-gray-400">Registered users</p>
+                <p class="text-3xl font-bold text-white mb-2"><%= totalComments %></p>
+                <p class="text-sm text-gray-400">Media comments</p>
             </div>
         </div>
+
+        <!-- Top Media Users -->
+        <div class="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 mb-8">
+            <h3 class="text-lg font-semibold text-white mb-4">Top Media Contributors</h3>
+            <div class="space-y-4">
+                <% topMediaUsers.forEach((user, index) => { %>
+                    <div class="flex items-center justify-between p-3 bg-gray-700/30 rounded-xl">
+                        <div class="flex items-center space-x-3">
+                            <span class="text-emerald-400 font-medium">#<%= index + 1 %></span>
+                            <span class="text-white"><%= user.username || 'Unknown User' %></span>
+                        </div>
+                        <span class="text-gray-400"><%= user.count %> uploads</span>
+                    </div>
+                <% }); %>
+            </div>
+        </div>
+
         <!-- Quick Actions -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             <!-- View All Tickets -->
             <a href="/admin/tickets" class="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 hover:border-emerald-500/50 transition-all duration-300 group">
                 <div class="flex items-center space-x-4">
@@ -154,7 +171,20 @@
                 </div>
             </a>
 
-            <!-- System Status to /status -->
+            <!-- Manage Media -->
+            <a href="/admin/media" class="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 hover:border-emerald-500/50 transition-all duration-300 group">
+                <div class="flex items-center space-x-4">
+                    <div class="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center group-hover:bg-emerald-500/20 transition-colors">
+                        <i class="ph ph-image text-2xl text-emerald-400"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-white mb-1">Manage Media</h3>
+                        <p class="text-sm text-gray-400">Manage media uploads and comments</p>
+                    </div>
+                </div>
+            </a>
+
+            <!-- System Status -->
             <a href="/status" class="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 hover:border-emerald-500/50 transition-all duration-300 group">
                 <div class="flex items-center space-x-4">
                     <div class="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center group-hover:bg-emerald-500/20 transition-colors">

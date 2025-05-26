@@ -5,6 +5,8 @@ const Message = require("../../models/TicketMessage");
 const User = require("../../models/User");
 const ShotUser = require("../../models/ShotUser");
 const ActivityLog = require("../../models/ActivityLog");
+const Media = require("../../models/Media");
+const Comment = require("../../models/Comment");
 const isStaff = require("../../middleware/isStaff");
 const { Client, GatewayIntentBits } = require('discord.js');
 
@@ -37,6 +39,15 @@ router.get("/", isStaff, async (req, res) => {
       member: await User.countDocuments({ role: "Member" })
     };
 
+    // Get media statistics
+    const totalMedia = await Media.countDocuments();
+    const totalComments = await Comment.countDocuments();
+    const topMediaUsers = await Media.aggregate([
+      { $group: { _id: "$discordId", count: { $sum: 1 } } },
+      { $sort: { count: -1 } },
+      { $limit: 5 }
+    ]);
+
     // Get Discord server statistics
     const guild = await client.guilds.fetch('1130133112920219769');
     const discordStats = {
@@ -62,7 +73,10 @@ router.get("/", isStaff, async (req, res) => {
       shotusersCount,
       userDistribution,
       discordStats,
-      recentActivities
+      recentActivities,
+      totalMedia,
+      totalComments,
+      topMediaUsers
     });
   } catch (error) {
     console.error("Dashboard Error:", error);

@@ -74,6 +74,7 @@ app.use(adminticket);
 app.use(apiRoutes);
 app.use("/admin/tickets", adminTicketRoutes);
 app.use("/admin", admin);
+app.use("/admin/media", require("./routes/admin/media"));
 app.use("/legal", legalRoutes);
 app.use("/status", statusRoutes);
 
