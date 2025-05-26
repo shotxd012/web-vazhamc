@@ -86,10 +86,6 @@
                         <span class="text-gray-400">Collections</span>
                         <span class="text-white font-medium"><%= mongoStats?.collections || 'N/A' %></span>
                     </div>
-                    <div class="flex justify-between items-center">
-                        <span class="text-gray-400">Database Size</span>
-                        <span class="text-white font-medium"><%= mongoStats?.dbSize || 'N/A' %></span>
-                    </div>
                 </div>
             </div>
 
@@ -106,14 +102,7 @@
                         <span class="text-gray-400">Ping</span>
                         <span class="text-white"><%= botStats?.ping || 'N/A' %>ms</span>
                     </div>
-                    <div class="flex justify-between items-center">
-                        <span class="text-gray-400">Commands</span>
-                        <span class="text-white font-medium"><%= botStats?.commands || 'N/A' %></span>
-                    </div>
-                    <div class="flex justify-between items-center">
-                        <span class="text-gray-400">Uptime</span>
-                        <span class="text-white"><%= formatUptime(botStats?.uptime / 1000) %></span>
-                    </div>
+                </div>
                 </div>
             </div>
 
@@ -132,7 +121,7 @@
                     </div>
                     <div class="flex justify-between items-center">
                         <span class="text-gray-400">Version</span>
-                        <span class="text-white">1.8 to 1.21</span>
+                        <span class="text-white">1.13 to 1.21</span>
                     </div>
                     <div class="mt-4">
                         <span class="text-gray-400 block mb-2">MOTD</span>
@@ -183,10 +172,6 @@
                     <div class="flex justify-between items-center">
                         <span class="text-gray-400">Memory Usage</span>
                         <span class="text-white font-medium"><%= systemStats?.memory || 'N/A' %>%</span>
-                    </div>
-                    <div class="flex justify-between items-center">
-                        <span class="text-gray-400">Disk Usage</span>
-                        <span class="text-white font-medium"><%= systemStats?.disk || 'N/A' %></span>
                     </div>
                 </div>
             </div>
