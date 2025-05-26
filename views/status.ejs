@@ -10,25 +10,30 @@
 
     <main class="container mx-auto px-4 py-16">
         <!-- Page Header -->
-        <div class="container mx-auto px-4 py-10 flex flex-col items-center gap-12">
+        <div class="container mx-auto px-4 py-10 flex flex-col items-center gap-8">
             <h1 class="text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-teal-400 via-emerald-500 to-green-600">
                 System Status
             </h1>
-            <p class="text-gray-400 text-center">Real-time monitoring of all system components</p>
+            <p class="text-gray-400 text-center max-w-2xl">Real-time monitoring of all system components and services</p>
         </div>
 
         <!-- Status Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
             <!-- Discord Server Status -->
-            <div class="bg-gray-800 rounded-xl p-6 border border-gray-700 shadow-lg">
-                <div class="flex items-center justify-between mb-4">
-                    <h2 class="text-xl font-semibold text-emerald-400">Discord Server</h2>
+            <div class="bg-gray-800/50 backdrop-blur-md rounded-[1.5rem] border border-gray-700 p-6 transition-all duration-300 hover:border-gray-600 hover:shadow-lg hover:shadow-emerald-500/5">
+                <div class="flex items-center justify-between mb-6">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center">
+                            <i class="ph ph-discord-logo text-xl text-emerald-400"></i>
+                        </div>
+                        <h2 class="text-xl font-semibold text-emerald-400">Discord Server</h2>
+                    </div>
                     <div class="flex items-center space-x-2">
                         <span class="w-3 h-3 <%= discordStats ? 'bg-emerald-500 animate-pulse' : 'bg-red-500' %> rounded-full"></span>
                         <span class="text-sm text-gray-300"><%= discordStats ? 'Online' : 'Offline' %></span>
                     </div>
                 </div>
-                <div class="space-y-3">
+                <div class="space-y-4">
                     <div class="flex justify-between items-center">
                         <span class="text-gray-400">Members</span>
                         <span class="text-white font-medium"><%= discordStats?.memberCount || 'N/A' %></span>
@@ -45,15 +50,20 @@
             </div>
 
             <!-- Web Server Status -->
-            <div class="bg-gray-800 rounded-xl p-6 border border-gray-700 shadow-lg">
-                <div class="flex items-center justify-between mb-4">
-                    <h2 class="text-xl font-semibold text-emerald-400">Web Server</h2>
+            <div class="bg-gray-800/50 backdrop-blur-md rounded-[1.5rem] border border-gray-700 p-6 transition-all duration-300 hover:border-gray-600 hover:shadow-lg hover:shadow-emerald-500/5">
+                <div class="flex items-center justify-between mb-6">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center">
+                            <i class="ph ph-globe text-xl text-emerald-400"></i>
+                        </div>
+                        <h2 class="text-xl font-semibold text-emerald-400">Web Server</h2>
+                    </div>
                     <div class="flex items-center space-x-2">
                         <span class="w-3 h-3 bg-emerald-500 rounded-full animate-pulse"></span>
                         <span class="text-sm text-gray-300">Online</span>
                     </div>
                 </div>
-                <div class="space-y-3">
+                <div class="space-y-4">
                     <div class="flex justify-between items-center">
                         <span class="text-gray-400">Response Time</span>
                         <span class="text-white font-medium"><%= webStats?.responseTime?.toFixed(2) || 'N/A' %>ms</span>
@@ -70,14 +80,19 @@
             </div>
 
             <!-- ShotDB Status -->
-            <div class="bg-gray-800/50 backdrop-blur-md rounded-[1.5rem] border border-gray-700 p-6">
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-xl font-semibold text-emerald-500">ShotDB V6</h3>
+            <div class="bg-gray-800/50 backdrop-blur-md rounded-[1.5rem] border border-gray-700 p-6 transition-all duration-300 hover:border-gray-600 hover:shadow-lg hover:shadow-emerald-500/5">
+                <div class="flex items-center justify-between mb-6">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center">
+                            <i class="ph ph-database text-xl text-emerald-400"></i>
+                        </div>
+                        <h2 class="text-xl font-semibold text-emerald-400">ShotDB V6</h2>
+                    </div>
                     <span class="px-3 py-1 rounded-full text-sm font-medium <%= mongoStats?.status === 'Connected' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-red-500/20 text-red-400' %>">
                         <%= mongoStats?.status || 'Disconnected' %>
                     </span>
                 </div>
-                <div class="space-y-3">
+                <div class="space-y-4">
                     <div class="flex justify-between items-center">
                         <span class="text-gray-400">Status</span>
                         <span class="text-white font-medium"><%= mongoStats?.status || 'N/A' %></span>
@@ -90,81 +105,69 @@
             </div>
 
             <!-- Discord Bot Status -->
-            <div class="bg-gray-800/50 backdrop-blur-md rounded-[1.5rem] border border-gray-700 p-6">
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-xl font-semibold text-emerald-500">Discord Bot</h3>
+            <div class="bg-gray-800/50 backdrop-blur-md rounded-[1.5rem] border border-gray-700 p-6 transition-all duration-300 hover:border-gray-600 hover:shadow-lg hover:shadow-emerald-500/5">
+                <div class="flex items-center justify-between mb-6">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center">
+                            <i class="ph ph-robot text-xl text-emerald-400"></i>
+                        </div>
+                        <h2 class="text-xl font-semibold text-emerald-400">Discord Bot</h2>
+                    </div>
                     <span class="px-3 py-1 rounded-full text-sm font-medium <%= botStats?.status === 'Online' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-red-500/20 text-red-400' %>">
                         <%= botStats?.status || 'Offline' %>
                     </span>
                 </div>
-                <div class="space-y-3">
+                <div class="space-y-4">
                     <div class="flex justify-between items-center">
                         <span class="text-gray-400">Ping</span>
-                        <span class="text-white"><%= botStats?.ping || 'N/A' %>ms</span>
+                        <span class="text-white font-medium"><%= botStats?.ping || 'N/A' %>ms</span>
                     </div>
-                </div>
                 </div>
             </div>
 
             <!-- Minecraft Server Status -->
-            <div class="bg-gray-800/50 backdrop-blur-md rounded-[1.5rem] border border-gray-700 p-6">
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-xl font-semibold text-emerald-500">Minecraft Server</h3>
+            <div class="bg-gray-800/50 backdrop-blur-md rounded-[1.5rem] border border-gray-700 p-6 transition-all duration-300 hover:border-gray-600 hover:shadow-lg hover:shadow-emerald-500/5">
+                <div class="flex items-center justify-between mb-6">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center">
+                            <i class="ph ph-game-controller text-xl text-emerald-400"></i>
+                        </div>
+                        <h2 class="text-xl font-semibold text-emerald-400">Minecraft Server</h2>
+                    </div>
                     <span class="px-3 py-1 rounded-full text-sm font-medium <%= mcStatus.status === 'online' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-red-500/20 text-red-400' %>">
                         <%= mcStatus.status %>
                     </span>
                 </div>
-                <div class="space-y-3">
+                <div class="space-y-4">
                     <div class="flex justify-between items-center">
                         <span class="text-gray-400">Players</span>
-                        <span class="text-white"><%= mcStatus.players.online %>/<%= mcStatus.players.max %></span>
+                        <span class="text-white font-medium"><%= mcStatus.players.online %>/<%= mcStatus.players.max %></span>
                     </div>
                     <div class="flex justify-between items-center">
                         <span class="text-gray-400">Version</span>
-                        <span class="text-white">1.13 to 1.21</span>
+                        <span class="text-white font-medium">1.13 to 1.21</span>
                     </div>
-                    <div class="mt-4">
+                    <div>
                         <span class="text-gray-400 block mb-2">MOTD</span>
-                        <p class="text-white text-sm whitespace-pre-line"><%= mcStatus.motd %></p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Last Updated -->
-            <!-- Last Updated -->
-            <div class="bg-gray-800/50 backdrop-blur-md rounded-[1.5rem] border border-gray-700 p-6">
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-xl font-semibold text-emerald-500">Last Updated</h3>
-                </div>
-                <div class="space-y-3">
-                    <div class="flex justify-between items-center">
-                        <span class="text-gray-400">Timestamp</span>
-                        <span class="text-white font-medium" id="lastUpdated"><%= new Date().toLocaleString() %></span>
-                    </div>
-                    <div class="flex justify-between items-center">
-                        <span class="text-gray-400">Auto Refresh</span>
-                        <span class="text-white font-medium">Every 30s</span>
+                        <p class="text-white text-sm whitespace-pre-line bg-gray-900/50 p-3 rounded-lg"><%= mcStatus.motd %></p>
                     </div>
                 </div>
             </div>
 
             <!-- System Status -->
-            <div class="bg-gray-800/50 backdrop-blur-md rounded-[1.5rem] border border-gray-700 p-6">
-                <div class="flex items-center justify-between mb-4">
-                    <div class="flex items-center space-x-4">
-                        <div class="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center">
-                            <i class="ph ph-gauge text-2xl text-emerald-400"></i>
+            <div class="bg-gray-800/50 backdrop-blur-md rounded-[1.5rem] border border-gray-700 p-6 transition-all duration-300 hover:border-gray-600 hover:shadow-lg hover:shadow-emerald-500/5">
+                <div class="flex items-center justify-between mb-6">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center">
+                            <i class="ph ph-gauge text-xl text-emerald-400"></i>
                         </div>
-                        <div>
-                            <h3 class="text-xl font-semibold text-emerald-500">System Status</h3>
-                            <p class="text-sm text-gray-400">All systems operational</p>
-                        </div>
+                        <h2 class="text-xl font-semibold text-emerald-400">System Status</h2>
                     </div>
                     <span class="px-3 py-1 rounded-full text-sm font-medium bg-emerald-500/20 text-emerald-400">
                         <i class="ph ph-check-circle mr-1"></i>Healthy
                     </span>
                 </div>
-                <div class="space-y-3">
+                <div class="space-y-4">
                     <div class="flex justify-between items-center">
                         <span class="text-gray-400">CPU Usage</span>
                         <span class="text-white font-medium"><%= systemStats?.cpu || 'N/A' %>%</span>
@@ -172,6 +175,28 @@
                     <div class="flex justify-between items-center">
                         <span class="text-gray-400">Memory Usage</span>
                         <span class="text-white font-medium"><%= systemStats?.memory || 'N/A' %>%</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Last Updated -->
+            <div class="bg-gray-800/50 backdrop-blur-md rounded-[1.5rem] border border-gray-700 p-6 transition-all duration-300 hover:border-gray-600 hover:shadow-lg hover:shadow-emerald-500/5">
+                <div class="flex items-center justify-between mb-6">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center">
+                            <i class="ph ph-clock text-xl text-emerald-400"></i>
+                        </div>
+                        <h2 class="text-xl font-semibold text-emerald-400">Last Updated</h2>
+                    </div>
+                </div>
+                <div class="space-y-4">
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-400">Timestamp</span>
+                        <span class="text-white font-medium" id="lastUpdated"><%= new Date().toLocaleString() %></span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-400">Auto Refresh</span>
+                        <span class="text-white font-medium">Every 30s</span>
                     </div>
                 </div>
             </div>

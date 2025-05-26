@@ -6,158 +6,183 @@
 
     <main class="container mx-auto px-4 pt-24 pb-16">
         <!-- Header -->
-        <div class="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-8 mb-8 border border-gray-700/50 shadow-xl">
-            <div class="flex items-center justify-between">
-                <div>
-                    <h1 class="text-3xl font-bold text-white mb-2">Ticket #<%= ticket.ticketId %></h1>
-                    <p class="text-gray-400">View and manage ticket details</p>
-                </div>
-                <div class="flex items-center space-x-4">
-                    <a href="/admin/tickets" class="px-4 py-2 bg-emerald-500/10 text-emerald-400 rounded-full text-sm font-medium hover:bg-emerald-500/20 transition-all flex items-center gap-2">
+        <div class="container mx-auto px-4 py-10 flex flex-col items-center gap-4">
+            <h1 class="text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-teal-400 via-emerald-500 to-green-600">
+                Ticket #<%= ticket.ticketId %>
+            </h1>
+        </div>
+
+        <section class="py-6 px-4 md:py-10">
+            <div class="max-w-7xl mx-auto">
+                <div class="mb-6">
+                    <a href="/admin/tickets" class="inline-flex items-center gap-2 bg-gray-800 hover:bg-gray-700 text-white text-sm font-medium py-2 px-4 rounded-lg transition duration-200">
                         <i class="ph ph-arrow-left"></i>
                         Back to Tickets
                     </a>
                 </div>
-            </div>
-        </div>
 
-        <!-- Ticket Info -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <!-- Ticket Details -->
-            <div class="md:col-span-2 bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50">
-                <div class="flex items-center justify-between mb-6">
-                    <h2 class="text-xl font-bold text-white">Ticket Information</h2>
-                    <span class="px-3 py-1 rounded-full text-sm font-medium <%= ticket.status === 'open' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-red-500/10 text-red-400' %>">
-                        <%= ticket.status.toUpperCase() %>
-                    </span>
-                </div>
-                
-                <div class="space-y-4">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <p class="text-sm text-gray-400 mb-1">Title</p>
-                            <p class="text-white font-medium"><%= ticket.title %></p>
-                        </div>
-                        <div>
-                            <p class="text-sm text-gray-400 mb-1">Type</p>
-                            <p class="text-white font-medium"><%= ticket.type %></p>
-                        </div>
-                        <div>
-                            <p class="text-sm text-gray-400 mb-1">User</p>
-                            <div class="flex items-center gap-2">
-                                <img src="https://cdn.discordapp.com/avatars/<%= ticket.userId %>/<%= ticket.avatar %>.png" 
-                                     class="w-6 h-6 rounded-full"
-                                     onerror="this.src='https://ui-avatars.com/api/?name=<%= encodeURIComponent(ticket.username) %>&background=10b981&color=fff'"/>
-                                <span class="text-white font-medium"><%= ticket.username %></span>
-                            </div>
-                        </div>
-                        <div>
-                            <p class="text-sm text-gray-400 mb-1">Created</p>
-                            <p class="text-white font-medium"><%= new Date(ticket.createdAt).toLocaleString() %></p>
-                        </div>
-                    </div>
-                    
-                    <div>
-                        <p class="text-sm text-gray-400 mb-1">Description</p>
-                        <p class="text-white whitespace-pre-wrap"><%= ticket.description %></p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Quick Actions -->
-            <div class="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50">
-                <h2 class="text-xl font-bold text-white mb-6">Quick Actions</h2>
-                
-                <% if (ticket.status === 'closed') { %>
-                    <form action="/admin/tickets/<%= ticket.ticketId %>/reopen" method="POST" class="mb-4">
-                        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg text-white font-medium transition-colors flex items-center justify-center gap-2">
-                            <i class="ph ph-arrow-counter-clockwise"></i>
-                            Reopen Ticket
-                        </button>
-                    </form>
-                <% } else { %>
-                    <form action="/admin/tickets/<%= ticket.ticketId %>/close" method="POST" class="mb-4">
-                        <input type="text" 
-                               name="reason" 
-                               required 
-                               placeholder="Reason for closing..." 
-                               class="w-full p-2 mb-2 bg-gray-700 border border-gray-600 rounded-lg text-sm text-white focus:border-red-500 focus:ring focus:ring-red-500 focus:ring-opacity-20 transition-all" 
-                        />
-                        <button type="submit" class="w-full bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg text-white font-medium transition-colors flex items-center justify-center gap-2">
-                            <i class="ph ph-lock"></i>
-                            Close Ticket
-                        </button>
-                    </form>
-                <% } %>
-
-                <form action="/admin/tickets/<%= ticket.ticketId %>/delete" method="POST" class="mb-4">
-                    <button type="submit" class="w-full bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-lg text-white font-medium transition-colors flex items-center justify-center gap-2">
-                        <i class="ph ph-trash"></i>
-                        Delete Ticket
-                    </button>
-                </form>
-            </div>
-        </div>
-
-        <!-- Messages -->
-        <div class="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50">
-            <h2 class="text-xl font-bold text-white mb-6">Conversation</h2>
-            
-            <div id="chat-box" class="space-y-4 mb-6 max-h-[500px] overflow-y-auto pr-4">
-                <% messages.forEach(msg => { %>
-                    <div class="flex <%= msg.userId === ticket.userId ? 'justify-end' : 'justify-start' %>">
-                        <div class="bg-gray-700/50 backdrop-blur-sm rounded-lg p-4 max-w-[80%]">
-                            <div class="flex items-center gap-2 mb-2">
-                                <img src="https://cdn.discordapp.com/avatars/<%= msg.userId %>/<%= msg.avatar %>.png" 
-                                     class="w-6 h-6 rounded-full"
-                                     onerror="this.src='https://ui-avatars.com/api/?name=<%= encodeURIComponent(msg.username) %>&background=10b981&color=fff'"/>
-                                <span class="text-emerald-400 text-sm font-medium">
-                                    <%= msg.userId === ticket.userId ? msg.username : (msg.role || "Admin") %>
-                                </span>
-                                <span class="text-gray-400 text-xs">
-                                    <%= new Date(msg.timestamp).toLocaleString() %>
+                <div class="ticket-container flex flex-col md:grid">
+                    <!-- Ticket Details Panel -->
+                    <div class="ticket-details bg-gray-800 p-6 rounded-xl shadow-lg mb-6 md:mb-0">
+                        <div class="space-y-4 mb-6">
+                            <div class="flex items-center justify-between">
+                                <h1 class="text-2xl font-bold text-white">Ticket Details</h1>
+                                <span class="status-badge <%= ticket.status === 'closed' ? 'status-closed' : 'status-open' %>">
+                                    <%= ticket.status.toUpperCase() %>
                                 </span>
                             </div>
-                            <% if (msg.message) { %>
-                                <p class="text-white text-sm whitespace-pre-wrap"><%= msg.message %></p>
-                            <% } %>
-                            <% if (msg.image) { %>
-                                <div class="mt-2">
-                                    <img src="<%= msg.image %>" 
-                                         class="rounded-lg max-h-64 cursor-pointer hover:opacity-90 transition-opacity"
-                                         onclick="openImageModal(this.src)">
+                            
+                            <div class="bg-gray-700/50 p-4 rounded-lg">
+                                <div class="flex items-center gap-2 mb-3">
+                                    <span class="text-emerald-400 text-2xl">🎟️</span>
+                                    <h2 class="text-xl font-semibold text-white"><%= ticket.title %></h2>
                                 </div>
-                            <% } %>
-                        </div>
-                    </div>
-                <% }); %>
-            </div>
+                                
+                                <div class="grid grid-cols-1 gap-3 text-sm">
+                                    <div class="flex items-center gap-2">
+                                        <img src="https://cdn.discordapp.com/avatars/<%= ticket.userId %>/<%= ticket.avatar %>.png" 
+                                             class="w-6 h-6 rounded-full"
+                                             onerror="this.src='https://ui-avatars.com/api/?name=<%= encodeURIComponent(ticket.username) %>&background=10b981&color=fff'"/>
+                                        <span class="text-gray-400">User:</span>
+                                        <span class="text-white font-medium"><%= ticket.username %></span>
+                                    </div>
+                                    <p class="flex justify-between">
+                                        <span class="text-gray-400">Ticket ID:</span>
+                                        <span class="font-mono text-emerald-400"><%= ticket.ticketId %></span>
+                                    </p>
+                                    <p class="flex justify-between">
+                                        <span class="text-gray-400">Type:</span>
+                                        <span><%= ticket.type %></span>
+                                    </p>
+                                    <p class="flex justify-between">
+                                        <span class="text-gray-400">Created:</span>
+                                        <span><%= new Date(ticket.createdAt).toLocaleString() %></span>
+                                    </p>
+                                    <% if (ticket.closedReason) { %>
+                                        <div class="mt-2 p-3 bg-red-900/20 border border-red-800/30 rounded-lg">
+                                            <p class="text-gray-300 font-medium mb-1">Closed Reason:</p>
+                                            <p class="text-red-400 italic"><%= ticket.closedReason %></p>
+                                        </div>
+                                    <% } %>
+                                </div>
+                            </div>
 
-            <% if (ticket.status !== 'closed') { %>
-                <form action="/admin/tickets/<%= ticket.ticketId %>/reply" method="POST" enctype="multipart/form-data" class="space-y-4">
-                    <div>
-                        <textarea name="message" 
-                                  placeholder="Write your reply..." 
-                                  class="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg text-white text-sm focus:border-emerald-500 focus:ring focus:ring-emerald-500 focus:ring-opacity-20 transition-all resize-none"
-                                  rows="4"
-                                  required></textarea>
-                    </div>
-                    
-                    <div class="flex items-center gap-4">
-                        <div class="flex-grow">
-                            <input type="file" 
-                                   name="image" 
-                                   accept="image/*" 
-                                   class="w-full p-2 bg-gray-700 border border-gray-600 rounded-lg text-sm text-white file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:bg-gray-600 file:text-white hover:file:bg-gray-500 cursor-pointer"/>
+                            <div>
+                                <p class="text-sm text-gray-400 mb-1">Description</p>
+                                <p class="text-white whitespace-pre-wrap bg-gray-700/50 p-4 rounded-lg"><%= ticket.description %></p>
+                            </div>
                         </div>
-                        <button type="submit" class="bg-emerald-600 hover:bg-emerald-700 px-6 py-2 rounded-lg text-white font-medium transition-colors flex items-center gap-2">
-                            <i class="ph ph-paper-plane-right"></i>
-                            Send Reply
-                        </button>
+
+                        <!-- Quick Actions -->
+                        <div class="bg-gray-900/70 rounded-lg border border-gray-700/50 mb-6">
+                            <h3 class="text-sm font-semibold text-emerald-400 p-3 border-b border-gray-700/50">Quick Actions</h3>
+                            <div class="p-4 space-y-4">
+                                <% if (ticket.status === 'closed') { %>
+                                    <form action="/admin/tickets/<%= ticket.ticketId %>/reopen" method="POST">
+                                        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg text-white font-medium transition-colors flex items-center justify-center gap-2">
+                                            <i class="ph ph-arrow-counter-clockwise"></i>
+                                            Reopen Ticket
+                                        </button>
+                                    </form>
+                                <% } else { %>
+                                    <form action="/admin/tickets/<%= ticket.ticketId %>/close" method="POST" class="space-y-3">
+                                        <input type="text" 
+                                               name="reason" 
+                                               required 
+                                               placeholder="Reason for closing..." 
+                                               class="w-full p-2 bg-gray-700 border border-gray-600 rounded-lg text-sm text-white focus:border-red-500 focus:ring focus:ring-red-500 focus:ring-opacity-20 transition-all" 
+                                        />
+                                        <button type="submit" class="w-full bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg text-white font-medium transition-colors flex items-center justify-center gap-2">
+                                            <i class="ph ph-lock"></i>
+                                            Close Ticket
+                                        </button>
+                                    </form>
+                                <% } %>
+
+                                <form action="/admin/tickets/<%= ticket.ticketId %>/delete" method="POST">
+                                    <button type="submit" class="w-full bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-lg text-white font-medium transition-colors flex items-center justify-center gap-2">
+                                        <i class="ph ph-trash"></i>
+                                        Delete Ticket
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
                     </div>
-                </form>
-            <% } %>
-        </div>
+
+                    <!-- Chat Messages Panel -->
+                    <div class="chat-messages bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+                        <h2 class="text-xl font-bold p-4 border-b border-gray-700/50 bg-gray-800 sticky top-0 z-10">Conversation</h2>
+                        
+                        <div class="messages-container p-4 space-y-4 chat-scroll max-h-[500px] overflow-y-auto">
+                            <% messages.forEach(msg => { %>
+                                <div class="flex <%= msg.userId === ticket.userId ? 'justify-end' : 'justify-start' %>">
+                                    <div class="max-w-[75%] <%= msg.userId === ticket.userId ? 'bg-emerald-900/30 border-emerald-800/30' : 'bg-gray-700/70 border-gray-600/30' %> p-3 rounded-lg shadow-sm text-sm border message-bubble">
+                                        <div class="flex items-center gap-2 mb-2">
+                                            <img src="https://cdn.discordapp.com/avatars/<%= msg.userId %>/<%= msg.avatar %>.png" 
+                                                 class="w-7 h-7 rounded-full border border-gray-600/50"
+                                                 onerror="this.src='https://ui-avatars.com/api/?name=<%= encodeURIComponent(msg.username) %>&background=10b981&color=fff'"/>
+                                            <span class="<%= msg.userId === ticket.userId ? 'text-emerald-400' : 'text-blue-400' %> font-medium">
+                                                <%= msg.userId === ticket.userId ? msg.username : (msg.role || "Admin") %>
+                                            </span>
+                                        </div>
+                                        <% if (msg.message) { %>
+                                            <p class="text-gray-200 whitespace-pre-line"><%= msg.message %></p>
+                                        <% } %>
+                                        <% if (msg.image) { %>
+                                            <div class="mt-2">
+                                                <img src="<%= msg.image %>" 
+                                                     class="rounded-md max-h-48 border border-gray-600/50 hover:opacity-95 transition-opacity cursor-pointer"
+                                                     onclick="openImageModal(this.src)">
+                                            </div>
+                                        <% } %>
+                                        <div class="text-right mt-1">
+                                            <span class="text-xs text-gray-500">
+                                                <%= new Date(msg.timestamp).toLocaleString('en-US', { dateStyle: 'short', timeStyle: 'short' }) %>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            <% }); %>
+                        </div>
+
+                        <% if (ticket.status !== 'closed') { %>
+                            <div class="message-form-container p-4 bg-gray-800">
+                                <form action="/admin/tickets/<%= ticket.ticketId %>/reply" method="POST" enctype="multipart/form-data" class="space-y-3">
+                                    <div class="relative">
+                                        <textarea name="message" 
+                                                  placeholder="Write your reply..." 
+                                                  class="w-full p-3 pr-12 rounded-lg bg-gray-700 text-white text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/50 resize-none"
+                                                  rows="4"
+                                                  required></textarea>
+                                    </div>
+                                    
+                                    <div class="flex items-center gap-4">
+                                        <div class="flex-grow">
+                                            <input type="file" 
+                                                   name="image" 
+                                                   accept="image/*" 
+                                                   class="w-full p-2 bg-gray-700 border border-gray-600 rounded-lg text-sm text-white file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:bg-gray-600 file:text-white hover:file:bg-gray-500 cursor-pointer"/>
+                                        </div>
+                                        <button type="submit" class="bg-emerald-600 hover:bg-emerald-700 px-6 py-2 rounded-lg text-white font-medium transition-colors flex items-center gap-2">
+                                            <i class="ph ph-paper-plane-right"></i>
+                                            Send Reply
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        <% } else { %>
+                            <div class="p-4 text-center">
+                                <div class="bg-red-500 bg-opacity-20 p-4 rounded-md">
+                                    <i class="ph ph-lock text-4xl mx-auto mb-2 text-red-400"></i>
+                                    <p class="text-red-300">This ticket is closed</p>
+                                    <p class="text-sm text-gray-400 mt-2">The ticket will be deleted soon</p>
+                                </div>
+                            </div>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
 
     <!-- Image Modal -->
@@ -173,11 +198,89 @@
     <%- include('../partials/footer') %>
 </div>
 
+<style>
+    .chat-scroll::-webkit-scrollbar {
+        width: 6px;
+    }
+    .chat-scroll::-webkit-scrollbar-thumb {
+        background-color: #4b5563;
+        border-radius: 9999px;
+    }
+
+    @media (max-width: 767px) {
+        .ticket-details, .chat-messages {
+            width: 100%;
+        }
+    }
+
+    @media (min-width: 768px) {
+        .ticket-container {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 1.5rem;
+            height: calc(100vh - 200px);
+            min-height: 600px;
+        }
+        
+        .ticket-details {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .chat-messages {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .messages-container {
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+        
+        .message-form-container {
+            margin-top: auto;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    }
+
+    .status-badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.25rem 0.75rem;
+        border-radius: 9999px;
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+    
+    .status-open {
+        background-color: rgba(16, 185, 129, 0.2);
+        color: #10B981;
+    }
+    
+    .status-closed {
+        background-color: rgba(239, 68, 68, 0.2);
+        color: #EF4444;
+    }
+
+    .message-bubble {
+        transition: transform 0.2s ease;
+    }
+    
+    .message-bubble:hover {
+        transform: translateY(-2px);
+    }
+</style>
+
 <script src="https://unpkg.com/@phosphor-icons/web"></script>
 <script>
     // Scroll to bottom of chat
-    const chatBox = document.getElementById('chat-box');
-    chatBox.scrollTop = chatBox.scrollHeight;
+    const chatBox = document.querySelector('.messages-container');
+    if (chatBox) {
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
 
     // Image modal functionality
     const imageModal = document.getElementById('imageModal');
