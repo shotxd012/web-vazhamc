@@ -94,6 +94,16 @@ router.get('/', async (req, res) => {
             console.error('Error fetching Minecraft server status:', error);
         }
 
+        // Get media service status
+        let mediaStatus = 'operational';
+        try {
+            const mediaResponse = await axios.get(`${process.env.BASE_URL}/api/v1/status/media`);
+            mediaStatus = mediaResponse.data.status === 'connected' ? 'operational' : 'error';
+        } catch (error) {
+            console.error('Error fetching media service status:', error);
+            mediaStatus = 'error';
+        }
+
         res.render('status', {
             discordStats,
             webStats,
@@ -101,6 +111,7 @@ router.get('/', async (req, res) => {
             botStats,
             systemStats,
             mcStatus,
+            mediaStatus,
             user: req.user,
             lastUpdate: new Date().toLocaleString(),
             formatUptime,

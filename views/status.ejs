@@ -119,13 +119,15 @@
                 </div>
                 <div class="space-y-4">
                     <div class="flex justify-between items-center">
+                        <span class="text-gray-400">Uptime</span>
+                        <span class="text-white font-medium"><%= botStats?.uptime ? formatUptime(botStats.uptime / 1000) : 'N/A' %></span>
+                    </div>
+                    <div class="flex justify-between items-center">
                         <span class="text-gray-400">Ping</span>
                         <span class="text-white font-medium"><%= botStats?.ping || 'N/A' %>ms</span>
                     </div>
                 </div>
             </div>
-
-            <!-- Minecraft Server Status -->
             <div class="bg-gray-800/50 backdrop-blur-md rounded-[1.5rem] border border-gray-700 p-6 transition-all duration-300 hover:border-gray-600 hover:shadow-lg hover:shadow-emerald-500/5">
                 <div class="flex items-center justify-between mb-6">
                     <div class="flex items-center space-x-3">
@@ -153,14 +155,27 @@
                     </div>
                 </div>
             </div>
-            <!-- Cloudinary Status -->
+            <!-- Media Service Status -->
             <div class="bg-gray-800/50 backdrop-blur-md rounded-[1.5rem] border border-gray-700 p-6 transition-all duration-300 hover:border-gray-600 hover:shadow-lg hover:shadow-emerald-500/5">
                 <div class="flex items-center justify-between mb-6">
                     <div class="flex items-center space-x-3">
                         <div class="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center">
                             <i class="ph ph-cloud-lightning text-xl text-emerald-400"></i>
                         </div>  
-                        <h2 class="text-xl font-semibold text-emerald-400">Cloudinary</h2>
+                        <h2 class="text-xl font-semibold text-emerald-400">Media Service</h2>
+                    </div>
+                    <span id="mediaStatus" class="px-3 py-1 rounded-full text-sm font-medium <%= mediaStatus === 'operational' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-red-500/20 text-red-400' %>">
+                        <%= mediaStatus === 'operational' ? 'Connected' : (mediaStatus === 'error' ? 'Disconnected' : 'Unknown') %>
+                    </span>
+                </div>
+                <div class="space-y-4">
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-400">Status</span>
+                        <span id="mediaStatusText" class="text-white font-medium"><%= mediaStatus === 'operational' ? 'Operational' : (mediaStatus === 'error' ? 'Failed to check status' : 'Unknown') %></span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-400">Last Check</span>
+                        <span class="text-white font-medium" id="mediaLastCheck"><%= new Date().toLocaleString() %></span>
                     </div>
                 </div>
             </div>      
@@ -169,14 +184,14 @@
             <div class="bg-gray-800/50 backdrop-blur-md rounded-[1.5rem] border border-gray-700 p-6 transition-all duration-300 hover:border-gray-600 hover:shadow-lg hover:shadow-emerald-500/5">
                 <div class="flex items-center justify-between mb-6">
                     <div class="flex items-center space-x-3">
-                        <div class="w-10 h-10 rounded-xl <%= (!discordStats || mongoStats?.status !== 'Connected' || botStats?.status !== 'Online' || mcStatus.status !== 'online') ? 'bg-red-500/10' : 'bg-emerald-500/10' %> flex items-center justify-center">
-                            <i class="ph ph-gauge text-xl <%= (!discordStats || mongoStats?.status !== 'Connected' || botStats?.status !== 'Online' || mcStatus.status !== 'online') ? 'text-red-400' : 'text-emerald-400' %>"></i>
+                        <div class="w-10 h-10 rounded-xl <%= (!discordStats || mongoStats?.status !== 'Connected' || botStats?.status !== 'Online' || mcStatus.status !== 'online' || mediaStatus !== 'operational') ? 'bg-red-500/10' : 'bg-emerald-500/10' %> flex items-center justify-center">
+                            <i class="ph ph-gauge text-xl <%= (!discordStats || mongoStats?.status !== 'Connected' || botStats?.status !== 'Online' || mcStatus.status !== 'online' || mediaStatus !== 'operational') ? 'text-red-400' : 'text-emerald-400' %>"></i>
                         </div>
-                        <h2 class="text-xl font-semibold <%= (!discordStats || mongoStats?.status !== 'Connected' || botStats?.status !== 'Online' || mcStatus.status !== 'online') ? 'text-red-400' : 'text-emerald-400' %>">System Status</h2>
+                        <h2 class="text-xl font-semibold <%= (!discordStats || mongoStats?.status !== 'Connected' || botStats?.status !== 'Online' || mcStatus.status !== 'online' || mediaStatus !== 'operational') ? 'text-red-400' : 'text-emerald-400' %>">System Status</h2>
                     </div>
-                    <span class="px-3 py-1 rounded-full text-sm font-medium <%= (!discordStats || mongoStats?.status !== 'Connected' || botStats?.status !== 'Online' || mcStatus.status !== 'online') ? 'bg-red-500/20 text-red-400' : 'bg-emerald-500/20 text-emerald-400' %>">
-                        <i class="ph <%= (!discordStats || mongoStats?.status !== 'Connected' || botStats?.status !== 'Online' || mcStatus.status !== 'online') ? 'ph-warning' : 'ph-check-circle' %> mr-1"></i>
-                        <%= (!discordStats || mongoStats?.status !== 'Connected' || botStats?.status !== 'Online' || mcStatus.status !== 'online') ? 'Issues Detected' : 'Healthy' %>
+                    <span class="px-3 py-1 rounded-full text-sm font-medium <%= (!discordStats || mongoStats?.status !== 'Connected' || botStats?.status !== 'Online' || mcStatus.status !== 'online' || mediaStatus !== 'operational') ? 'bg-red-500/20 text-red-400' : 'bg-emerald-500/20 text-emerald-400' %>">
+                        <i class="ph <%= (!discordStats || mongoStats?.status !== 'Connected' || botStats?.status !== 'Online' || mcStatus.status !== 'online' || mediaStatus !== 'operational') ? 'ph-warning' : 'ph-check-circle' %> mr-1"></i>
+                        <%= (!discordStats || mongoStats?.status !== 'Connected' || botStats?.status !== 'Online' || mcStatus.status !== 'online' || mediaStatus !== 'operational') ? 'Issues Detected' : 'Healthy' %>
                     </span>
                 </div>
                 <div class="space-y-4">
@@ -188,13 +203,14 @@
                         <span class="text-gray-400">Memory Usage</span>
                         <span class="text-white font-medium"><%= systemStats?.memory || 'N/A' %>%</span>
                     </div>
-                    <% if (!discordStats || mongoStats?.status !== 'Connected' || botStats?.status !== 'Online' || mcStatus.status !== 'online') { %>
+                    <% if (!discordStats || mongoStats?.status !== 'Connected' || botStats?.status !== 'Online' || mcStatus.status !== 'online' || mediaStatus !== 'operational') { %>
                     <div class="mt-4 p-3 bg-red-500/10 rounded-lg">
                         <p class="text-red-400 text-sm">
                             <% if (!discordStats) { %>• Discord Server is offline<br><% } %>
                             <% if (mongoStats?.status !== 'Connected') { %>• Database is disconnected<br><% } %>
                             <% if (botStats?.status !== 'Online') { %>• Discord Bot is offline<br><% } %>
-                            <% if (mcStatus.status !== 'online') { %>• Minecraft Server is offline<% } %>
+                            <% if (mcStatus.status !== 'online') { %>• Minecraft Server is offline<br><% } %>
+                            <% if (mediaStatus !== 'operational') { %>• Media Service is offline<% } %>
                         </p>
                     </div>
                     <% } %>
@@ -226,21 +242,21 @@
     </main>
 
     <script>
-    // Auto-refresh the page every 30 seconds
-    setInterval(() => {
-        location.reload();
-    }, 30000);
+        // Auto-refresh the page every 30 seconds
+        setInterval(() => {
+            location.reload();
+        }, 30000);
 
-    // Update the last updated timestamp
-    function updateLastUpdated() {
-        const lastUpdated = document.getElementById('lastUpdated');
-        if (lastUpdated) {
-            lastUpdated.textContent = new Date().toLocaleString();
+        // Update the last updated timestamp
+        function updateLastUpdated() {
+            const lastUpdated = document.getElementById('lastUpdated');
+            if (lastUpdated) {
+                lastUpdated.textContent = new Date().toLocaleString();
+            }
         }
-    }
 
-    // Update timestamp every second
-    setInterval(updateLastUpdated, 1000);
+        // Update timestamp every second
+        setInterval(updateLastUpdated, 1000);
     </script>
 
     <%- include('partials/footer') %>
