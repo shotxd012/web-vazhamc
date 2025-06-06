@@ -1,5 +1,6 @@
 const { Client, GatewayIntentBits } = require("discord.js");
 require("dotenv").config();
+const { staffRoles } = require('../config/roles.json');
 
 const bot = new Client({
     intents: [
@@ -22,17 +23,6 @@ async function getStaffDetails() {
     try {
         const guild = await bot.guilds.fetch(GUILD_ID);
         const members = await guild.members.fetch();
-
-        const staffRoles = [
-            "ꜰᴏᴜɴᴅᴇʀ",
-            "ᴄᴏᴍᴍᴜɴɪᴛʏ ᴍᴀɴᴀɢᴇʀ",
-            "ᴀᴅᴍɪɴ",
-            "ᴅᴇᴠ",
-            "ᴍᴏᴅ",
-            "ꜱᴛᴀꜰꜰ ɪɴᴛᴇʀᴠɪᴇᴡᴇʀ",
-            "ꜱᴇʀᴠᴇʀ ꜱᴛᴀꜰꜰ",
-            "ꜱᴛᴀꜰꜰ"
-        ];
 
         let staffList = [];
 

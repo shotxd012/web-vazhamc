@@ -1,4 +1,4 @@
-const allowedRoles = ["ꜰᴏᴜɴᴅᴇʀ", "ᴄᴏᴍᴍᴜɴɪᴛʏ ᴍᴀɴᴀɢᴇʀ", "ᴀᴅᴍɪɴ", "ᴅᴇᴠ"];
+const { allowedRoles } = require('../config/roles.json');
 
 module.exports = function isStaff(req, res, next) {
     if (!req.isAuthenticated || !req.isAuthenticated()) return res.redirect("/login");
