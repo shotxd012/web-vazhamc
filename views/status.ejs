@@ -4,6 +4,7 @@
     <%- include('partials/head') %>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body class="bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white min-h-screen font-sans">
     <%- include('partials/nav') %>
@@ -65,16 +66,8 @@
                 </div>
                 <div class="space-y-4">
                     <div class="flex justify-between items-center">
-                        <span class="text-gray-400">Response Time</span>
-                        <span class="text-white font-medium"><%= webStats?.responseTime?.toFixed(2) || 'N/A' %>ms</span>
-                    </div>
-                    <div class="flex justify-between items-center">
                         <span class="text-gray-400">Uptime</span>
                         <span class="text-white font-medium"><%= webStats?.uptime || 'N/A' %></span>
-                    </div>
-                    <div class="flex justify-between items-center">
-                        <span class="text-gray-400">Memory Usage</span>
-                        <span class="text-white font-medium"><%= webStats?.memoryUsage || 'N/A' %></span>
                     </div>
                 </div>
             </div>
@@ -128,6 +121,8 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Minecraft Server Status -->
             <div class="bg-gray-800/50 backdrop-blur-md rounded-[1.5rem] border border-gray-700 p-6 transition-all duration-300 hover:border-gray-600 hover:shadow-lg hover:shadow-emerald-500/5">
                 <div class="flex items-center justify-between mb-6">
                     <div class="flex items-center space-x-3">
@@ -155,6 +150,7 @@
                     </div>
                 </div>
             </div>
+
             <!-- Media Service Status -->
             <div class="bg-gray-800/50 backdrop-blur-md rounded-[1.5rem] border border-gray-700 p-6 transition-all duration-300 hover:border-gray-600 hover:shadow-lg hover:shadow-emerald-500/5">
                 <div class="flex items-center justify-between mb-6">
@@ -195,14 +191,6 @@
                     </span>
                 </div>
                 <div class="space-y-4">
-                    <div class="flex justify-between items-center">
-                        <span class="text-gray-400">CPU Usage</span>
-                        <span class="text-white font-medium"><%= systemStats?.cpu || 'N/A' %>%</span>
-                    </div>
-                    <div class="flex justify-between items-center">
-                        <span class="text-gray-400">Memory Usage</span>
-                        <span class="text-white font-medium"><%= systemStats?.memory || 'N/A' %>%</span>
-                    </div>
                     <% if (!discordStats || mongoStats?.status !== 'Connected' || botStats?.status !== 'Online' || mcStatus.status !== 'online' || mediaStatus !== 'operational') { %>
                     <div class="mt-4 p-3 bg-red-500/10 rounded-lg">
                         <p class="text-red-400 text-sm">
@@ -214,6 +202,22 @@
                         </p>
                     </div>
                     <% } %>
+                </div>
+            </div>
+
+            <!-- API Response Time Chart -->
+            <div class="bg-gray-800/50 backdrop-blur-md rounded-[1.5rem] border border-gray-700 p-6 transition-all duration-300 hover:border-gray-600 hover:shadow-lg hover:shadow-emerald-500/5 col-span-1 md:col-span-2 lg:col-span-3">
+                <h2 class="text-xl font-semibold text-emerald-400 mb-6">API Response Time (Last 24 Hours)</h2>
+                <div style="height: 300px;">
+                    <canvas id="responseTimeChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Combined Metrics Chart -->
+            <div class="bg-gray-800/50 backdrop-blur-md rounded-[1.5rem] border border-gray-700 p-6 transition-all duration-300 hover:border-gray-600 hover:shadow-lg hover:shadow-emerald-500/5 col-span-1 md:col-span-2 lg:col-span-3">
+                <h2 class="text-xl font-semibold text-emerald-400 mb-6">System Metrics (Last 24 Hours)</h2>
+                <div style="height: 400px;">
+                    <canvas id="combinedMetricsChart"></canvas>
                 </div>
             </div>
 
@@ -230,7 +234,7 @@
                 <div class="space-y-4">
                     <div class="flex justify-between items-center">
                         <span class="text-gray-400">Timestamp</span>
-                        <span class="text-white font-medium" id="lastUpdated"><%= new Date().toLocaleString() %></span>
+                        <span class="text-white font-medium" id="lastUpdated"></span>
                     </div>
                     <div class="flex justify-between items-center">
                         <span class="text-gray-400">Auto Refresh</span>
@@ -241,24 +245,320 @@
         </div>
     </main>
 
-    <script>
-        // Auto-refresh the page every 30 seconds
-        setInterval(() => {
-            location.reload();
-        }, 30000);
+    <!-- Footer -->
+    <%- include('partials/footer') %>   
 
-        // Update the last updated timestamp
-        function updateLastUpdated() {
-            const lastUpdated = document.getElementById('lastUpdated');
-            if (lastUpdated) {
-                lastUpdated.textContent = new Date().toLocaleString();
+    <script>
+        // Initialize charts with real data
+        function initializeCharts() {
+            const historicalData = JSON.parse('<%- JSON.stringify(historicalData) %>');
+            
+            try {
+                // API Response Time Chart
+                const responseTimeCtx = document.getElementById('responseTimeChart');
+                if (responseTimeCtx) {
+                    const responseTimeChart = new Chart(responseTimeCtx, {
+                        type: 'line',
+                        data: {
+                            labels: historicalData.map(data => new Date(data.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})),
+                            datasets: [{
+                                label: 'API Response Time (ms)',
+                                data: historicalData.map(data => data.webResponseTime),
+                                borderColor: '#10B981',
+                                backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                                fill: true,
+                                tension: 0.1,
+                                pointBackgroundColor: '#10B981',
+                                pointBorderColor: '#10B981',
+                                pointRadius: 3
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            interaction: {
+                                intersect: false,
+                                mode: 'index'
+                            },
+                            scales: {
+                                x: {
+                                    type: 'category',
+                                    ticks: {
+                                        color: '#CBD5E0',
+                                        maxTicksLimit: 8
+                                    },
+                                    grid: {
+                                        color: 'rgba(255, 255, 255, 0.1)'
+                                    }
+                                },
+                                y: {
+                                    beginAtZero: true,
+                                    ticks: {
+                                        color: '#CBD5E0',
+                                        callback: function(value) {
+                                            return value + 'ms';
+                                        }
+                                    },
+                                    grid: {
+                                        color: 'rgba(255, 255, 255, 0.1)'
+                                    }
+                                }
+                            },
+                            plugins: {
+                                legend: {
+                                    labels: {
+                                        color: '#CBD5E0'
+                                    }
+                                },
+                                tooltip: {
+                                    backgroundColor: 'rgba(17, 24, 39, 0.9)',
+                                    titleColor: '#CBD5E0',
+                                    bodyColor: '#CBD5E0',
+                                    borderColor: '#10B981',
+                                    borderWidth: 1
+                                }
+                            }
+                        }
+                    });
+                }
+
+                // Combined Metrics Chart
+                const combinedMetricsCtx = document.getElementById('combinedMetricsChart');
+                if (combinedMetricsCtx) {
+                    const combinedMetricsChart = new Chart(combinedMetricsCtx, {
+                        type: 'line',
+                        data: {
+                            labels: historicalData.map(data => new Date(data.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})),
+                            datasets: [
+                                {
+                                    label: 'API Response Time (ms)',
+                                    data: historicalData.map(data => data.webResponseTime),
+                                    borderColor: '#10B981',
+                                    backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                                    fill: false,
+                                    tension: 0.4,
+                                    pointBackgroundColor: '#10B981',
+                                    pointBorderColor: '#10B981',
+                                    pointRadius: 2,
+                                    yAxisID: 'y'
+                                },
+                                {
+                                    label: 'CPU Usage (%)',
+                                    data: historicalData.map(data => data.systemCpu),
+                                    borderColor: '#3B82F6',
+                                    backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                                    fill: false,
+                                    tension: 0.4,
+                                    pointBackgroundColor: '#3B82F6',
+                                    pointBorderColor: '#3B82F6',
+                                    pointRadius: 2,
+                                    yAxisID: 'y1'
+                                },
+                                {
+                                    label: 'Memory Usage (%)',
+                                    data: historicalData.map(data => data.systemMemory),
+                                    borderColor: '#EC4899',
+                                    backgroundColor: 'rgba(236, 72, 153, 0.1)',
+                                    fill: false,
+                                    tension: 0.4,
+                                    pointBackgroundColor: '#EC4899',
+                                    pointBorderColor: '#EC4899',
+                                    pointRadius: 2,
+                                    yAxisID: 'y1'
+                                },
+                                {
+                                    label: 'Bot Ping (ms)',
+                                    data: historicalData.map(data => data.botPing),
+                                    borderColor: '#F59E0B',
+                                    backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                                    fill: false,
+                                    tension: 0.4,
+                                    pointBackgroundColor: '#F59E0B',
+                                    pointBorderColor: '#F59E0B',
+                                    pointRadius: 2,
+                                    yAxisID: 'y'
+                                }
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            interaction: {
+                                intersect: false,
+                                mode: 'index'
+                            },
+                            scales: {
+                                x: {
+                                    type: 'category',
+                                    ticks: {
+                                        color: '#CBD5E0',
+                                        maxTicksLimit: 8
+                                    },
+                                    grid: {
+                                        color: 'rgba(255, 255, 255, 0.1)'
+                                    }
+                                },
+                                y: {
+                                    type: 'linear',
+                                    display: true,
+                                    position: 'left',
+                                    title: {
+                                        display: true,
+                                        text: 'Response Time / Ping (ms)',
+                                        color: '#CBD5E0'
+                                    },
+                                    beginAtZero: true,
+                                    ticks: {
+                                        color: '#CBD5E0',
+                                        callback: function(value) {
+                                            return value + 'ms';
+                                        }
+                                    },
+                                    grid: {
+                                        color: 'rgba(255, 255, 255, 0.1)'
+                                    }
+                                },
+                                y1: {
+                                    type: 'linear',
+                                    display: true,
+                                    position: 'right',
+                                    title: {
+                                        display: true,
+                                        text: 'Usage (%)',
+                                        color: '#CBD5E0'
+                                    },
+                                    beginAtZero: true,
+                                    max: 100,
+                                    ticks: {
+                                        color: '#CBD5E0',
+                                        callback: function(value) {
+                                            return value + '%';
+                                        }
+                                    },
+                                    grid: {
+                                        color: 'rgba(255, 255, 255, 0.1)'
+                                    }
+                                }
+                            },
+                            plugins: {
+                                legend: {
+                                    labels: {
+                                        color: '#CBD5E0',
+                                        usePointStyle: true,
+                                        pointStyle: 'circle'
+                                    }
+                                },
+                                tooltip: {
+                                    backgroundColor: 'rgba(17, 24, 39, 0.9)',
+                                    titleColor: '#CBD5E0',
+                                    bodyColor: '#CBD5E0',
+                                    borderColor: '#10B981',
+                                    borderWidth: 1,
+                                    callbacks: {
+                                        label: function(context) {
+                                            let label = context.dataset.label || '';
+                                            if (label) {
+                                                label += ': ';
+                                            }
+                                            if (context.dataset.yAxisID === 'y') {
+                                                label += context.parsed.y + 'ms';
+                                            } else {
+                                                label += context.parsed.y + '%';
+                                            }
+                                            return label;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+            } catch (error) {
+                console.error('Error initializing charts:', error);
+                
+                // Show error message in chart container
+                const container = document.getElementById('combinedMetricsChart');
+                if (container) {
+                    container.style.display = 'flex';
+                    container.style.alignItems = 'center';
+                    container.style.justifyContent = 'center';
+                    container.innerHTML = '<p class="text-red-400">Chart could not be loaded</p>';
+                }
             }
         }
 
-        // Update timestamp every second
-        setInterval(updateLastUpdated, 1000);
+        // Update timestamps
+        function updateTimestamps() {
+            const now = new Date();
+            const timeString = now.toLocaleString();
+            
+            const elements = ['lastUpdated', 'navLastUpdated', 'mediaLastCheck'];
+            elements.forEach(elementId => {
+                const element = document.getElementById(elementId);
+                if (element) {
+                    element.textContent = timeString;
+                }
+            });
+        }
+
+        // Fetch latest data from server
+        async function fetchLatestData() {
+            try {
+                const response = await fetch('/status/data');
+                const data = await response.json();
+                
+                // Update charts with new data
+                if (data.historicalData) {
+                    initializeCharts();
+                }
+                
+                // Update other metrics
+                updateSystemMetrics(data);
+            } catch (error) {
+                console.error('Error fetching latest data:', error);
+            }
+        }
+
+        // Update system metrics with real data
+        function updateSystemMetrics(data) {
+            if (!data) return;
+            
+            const elements = {
+                'webResponseTime': data.webStats?.responseTime?.toFixed(2) + 'ms',
+                'botPing': data.botStats?.ping + 'ms',
+                'discordMembers': data.discordStats?.memberCount?.toLocaleString(),
+                'mcPlayers': `${data.mcStatus?.players?.online || 0}/${data.mcStatus?.players?.max || 0}`
+            };
+
+            Object.entries(elements).forEach(([id, value]) => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.textContent = value;
+                }
+            });
+        }
+
+        // Initialize everything
+        document.addEventListener('DOMContentLoaded', function() {
+            updateTimestamps();
+            initializeCharts();
+            
+            // Update timestamps every second
+            setInterval(updateTimestamps, 1000);
+            
+            // Fetch latest data every 30 seconds
+            setInterval(fetchLatestData, 30000);
+        });
+
+        // Handle chart responsiveness
+        window.addEventListener('resize', function() {
+            Chart.helpers.each(Chart.instances, function(instance) {
+                if (instance.chart) {
+                    instance.chart.resize();
+                }
+            });
+        });
     </script>
 
-    <%- include('partials/footer') %>
 </body>
-</html> 
+</html>

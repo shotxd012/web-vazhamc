@@ -4,6 +4,7 @@ const os = require('os');
 const { bot } = require('../config/bot');
 const mongoose = require('mongoose');
 const axios = require('axios');
+const StatusEntry = require('../models/StatusEntry');
 
 // Helper function to format uptime
 function formatUptime(seconds) {
@@ -104,6 +105,24 @@ router.get('/', async (req, res) => {
             mediaStatus = 'error';
         }
 
+        // Save current status to database
+        const newStatusEntry = new StatusEntry({
+            webResponseTime: webStats.responseTime,
+            webUptime: webStats.uptime,
+            mongoStatus: mongoStats.status,
+            botPing: botStats.ping,
+            botUptime: botStats.uptime,
+            mcStatus: mcStatus.status,
+            mediaStatus: mediaStatus,
+            systemCpu: parseFloat(systemStats.cpu),
+            systemMemory: parseFloat(systemStats.memory)
+        });
+        await newStatusEntry.save();
+
+        // Fetch last 24 hours of data for charts
+        const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
+        const historicalData = await StatusEntry.find({ timestamp: { $gte: twentyFourHoursAgo } }).sort({ timestamp: 1 });
+
         res.render('status', {
             discordStats,
             webStats,
@@ -115,7 +134,8 @@ router.get('/', async (req, res) => {
             user: req.user,
             lastUpdate: new Date().toLocaleString(),
             formatUptime,
-            formatBytes
+            formatBytes,
+            historicalData
         });
     } catch (error) {
         console.error('Error in status route:', error);
@@ -125,6 +145,121 @@ router.get('/', async (req, res) => {
             error: process.env.NODE_ENV === 'development' ? error : {},
             user: req.user
         });
+    }
+});
+
+// Add new endpoint for fetching latest status data
+router.get('/data', async (req, res) => {
+    try {
+        // Get Discord server stats
+        let discordStats = null;
+        if (bot && bot.isReady()) {
+            const guild = bot.guilds.cache.get(process.env.GUILD_ID);
+            if (guild) {
+                discordStats = {
+                    memberCount: guild.memberCount,
+                    channelCount: guild.channels.cache.size,
+                    roleCount: guild.roles.cache.size
+                };
+            }
+        }
+
+        // Get web server stats
+        const webStats = {
+            responseTime: process.hrtime()[1] / 1000000,
+            uptime: formatUptime(process.uptime()),
+            memoryUsage: formatBytes(process.memoryUsage().heapUsed)
+        };
+
+        // Get MongoDB stats
+        const mongoStats = {
+            status: mongoose.connection.readyState === 1 ? 'Connected' : 'Disconnected',
+            collections: Object.keys(mongoose.connection.collections).length
+        };
+
+        // Get bot stats
+        const botStats = {
+            ping: bot?.ws?.ping || 0,
+            commands: bot?.commands?.size || 0,
+            uptime: bot?.uptime || 0,
+            status: bot?.isReady() ? 'Online' : 'Offline'
+        };
+
+        // Get system stats
+        const systemStats = {
+            cpu: os.loadavg()[0].toFixed(2),
+            memory: ((1 - os.freemem() / os.totalmem()) * 100).toFixed(2)
+        };
+
+        // Get Minecraft server status
+        let mcStatus = {
+            status: 'offline',
+            players: {
+                online: 0,
+                max: 0
+            },
+            version: 'Unknown',
+            motd: 'Server offline'
+        };
+
+        try {
+            const mcResponse = await axios.get('https://api.mcsrvstat.us/3/play.vazha.fun:25017');
+            if (mcResponse.data.online) {
+                mcStatus = {
+                    status: 'online',
+                    players: {
+                        online: mcResponse.data.players.online,
+                        max: mcResponse.data.players.max
+                    },
+                    version: mcResponse.data.version,
+                    motd: mcResponse.data.motd.clean.join('\n')
+                };
+            }
+        } catch (error) {
+            console.error('Error fetching Minecraft server status:', error);
+        }
+
+        // Get media service status
+        let mediaStatus = 'operational';
+        try {
+            const mediaResponse = await axios.get(`${process.env.BASE_URL}/api/v1/status/media`);
+            mediaStatus = mediaResponse.data.status === 'connected' ? 'operational' : 'error';
+        } catch (error) {
+            console.error('Error fetching media service status:', error);
+            mediaStatus = 'error';
+        }
+
+        // Save current status to database
+        const newStatusEntry = new StatusEntry({
+            webResponseTime: webStats.responseTime,
+            webUptime: webStats.uptime,
+            mongoStatus: mongoStats.status,
+            botPing: botStats.ping,
+            botUptime: botStats.uptime,
+            mcStatus: mcStatus.status,
+            mediaStatus: mediaStatus,
+            systemCpu: parseFloat(systemStats.cpu),
+            systemMemory: parseFloat(systemStats.memory)
+        });
+        await newStatusEntry.save();
+
+        // Fetch last 24 hours of data for charts
+        const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
+        const historicalData = await StatusEntry.find({ timestamp: { $gte: twentyFourHoursAgo } }).sort({ timestamp: 1 });
+
+        res.json({
+            discordStats,
+            webStats,
+            mongoStats,
+            botStats,
+            systemStats,
+            mcStatus,
+            mediaStatus,
+            historicalData
+        });
+    } catch (error) {
+        console.error('Error in status data route:', error);
+        res.status(500).json({ error: 'Error fetching status data' });
     }
 });
 
