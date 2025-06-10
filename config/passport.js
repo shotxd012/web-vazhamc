@@ -2,10 +2,17 @@ const passport = require("passport");
 const DiscordStrategy = require("passport-discord").Strategy;
 const User = require("../models/User");
 
+// Determine callback URL based on environment
+const callbackURL = process.env.NODE_ENV === 'production' 
+    ? `${process.env.BASE_URL}/auth/discord/callback`
+    : process.env.DISCORD_CALLBACK_URL;
+
+console.log('Using callback URL:', callbackURL);
+
 passport.use(new DiscordStrategy({
     clientID: process.env.DISCORD_CLIENT_ID,
     clientSecret: process.env.DISCORD_CLIENT_SECRET,
-    callbackURL: process.env.DISCORD_CALLBACK_URL,
+    callbackURL: callbackURL,
     scope: ["identify"]
 }, async (accessToken, refreshToken, profile, done) => {
     console.log('Discord strategy called with profile:', {
