@@ -3,19 +3,29 @@ const passport = require("passport");
 
 const router = express.Router();
 
-// Login route
-router.get("/login", (req, res, next) => {
-    if (req.isAuthenticated()) {
-        return res.redirect("/profile");
-    }
-    passport.authenticate("discord")(req, res, next);
-});
+// Start OAuth login flow
+router.get("/login", passport.authenticate("discord"));
 
-// Discord callback route
+// Discord callback route with debugging
 router.get("/auth/discord/callback", (req, res, next) => {
+    console.log("Callback route hit");
     passport.authenticate("discord", {
         failureRedirect: "/",
-        successRedirect: "/profile"
+    }, (err, user, info) => {
+        if (err || !user) {
+            console.error("Auth failed:", err || "No user");
+            return res.redirect("/");
+        }
+
+        req.logIn(user, (err) => {
+            if (err) {
+                console.error("Login error:", err);
+                return res.redirect("/");
+            }
+
+            console.log("Login successful:", user);
+            return res.redirect("/profile");
+        });
     })(req, res, next);
 });
 

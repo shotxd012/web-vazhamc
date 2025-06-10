@@ -60,6 +60,16 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
+// Add session debugging middleware
+app.use((req, res, next) => {
+    console.log('Session state:', {
+        isAuthenticated: req.isAuthenticated(),
+        sessionID: req.sessionID,
+        user: req.user ? 'User exists' : 'No user'
+    });
+    next();
+});
+
 // Add a middleware to check session
 app.use((req, res, next) => {
     if (req.session && req.session.destroyed) {
