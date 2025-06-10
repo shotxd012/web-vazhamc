@@ -3,14 +3,23 @@ const passport = require("passport");
 
 const router = express.Router();
 
-router.get("/login", passport.authenticate("discord"));
-
-router.get("/auth/discord/callback", passport.authenticate("discord", {
-    failureRedirect: "/"
-}), (req, res) => {
-    res.redirect("/profile");
+// Login route
+router.get("/login", (req, res, next) => {
+    if (req.isAuthenticated()) {
+        return res.redirect("/profile");
+    }
+    passport.authenticate("discord")(req, res, next);
 });
 
+// Discord callback route
+router.get("/auth/discord/callback", (req, res, next) => {
+    passport.authenticate("discord", {
+        failureRedirect: "/",
+        successRedirect: "/profile"
+    })(req, res, next);
+});
+
+// Logout route
 router.get("/logout", (req, res) => {
     req.session.destroy((err) => {
         if (err) {

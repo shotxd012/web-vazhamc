@@ -19,10 +19,18 @@ passport.use(new DiscordStrategy({
                 role: "Member"
             });
             await user.save();
+        } else {
+            // Update user information if it has changed
+            if (user.username !== profile.username || user.avatar !== profile.avatar) {
+                user.username = profile.username;
+                user.avatar = profile.avatar;
+                await user.save();
+            }
         }
 
         return done(null, user);
     } catch (err) {
+        console.error('Discord strategy error:', err);
         return done(err, null);
     }
 }));
@@ -34,8 +42,12 @@ passport.serializeUser((user, done) => {
 passport.deserializeUser(async (id, done) => {
     try {
         const user = await User.findById(id);
+        if (!user) {
+            return done(null, false);
+        }
         done(null, user);
     } catch (err) {
+        console.error('Deserialize user error:', err);
         done(err, null);
     }
 });
