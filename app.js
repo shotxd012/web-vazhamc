@@ -51,13 +51,25 @@ app.use(session({
     cookie: {
         secure: process.env.NODE_ENV === 'production',
         httpOnly: true,
-        maxAge: null 
-    }
+        maxAge: null
+    },
+    name: 'sessionId'
 }));
 
+// Initialize Passport and restore authentication state from session
 app.use(passport.initialize());
 app.use(passport.session());
 
+// Add a middleware to check session
+app.use((req, res, next) => {
+    if (req.session && req.session.destroyed) {
+        req.logout(() => {
+            res.redirect('/login');
+        });
+        return;
+    }
+    next();
+});
 
 // Routes
 app.use(authRoutes);
