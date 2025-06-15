@@ -1,7 +1,34 @@
 const express = require("express");
 const passport = require("passport");
+const User = require("../models/User");
 
 const router = express.Router();
+
+// Development-only direct login route
+router.get("/dev-login/:userId", async (req, res) => {
+    if (process.env.NODE_ENV === 'production') {
+        return res.status(403).send('Not available in production');
+    }
+    
+    try {
+        const user = await User.findById(req.params.userId);
+        if (!user) {
+            return res.status(404).send('User not found');
+        }
+        
+        req.logIn(user, (err) => {
+            if (err) {
+                console.error("Dev login error:", err);
+                return res.redirect("/");
+            }
+            console.log("Dev login successful:", user);
+            return res.redirect("/profile");
+        });
+    } catch (err) {
+        console.error("Dev login error:", err);
+        res.status(500).send('Error during dev login');
+    }
+});
 
 // Start OAuth login flow
 router.get("/login", passport.authenticate("discord"));
