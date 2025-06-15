@@ -8,25 +8,24 @@
     <style>
         body {
             font-family: 'Poppins', sans-serif;
-            background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
+            background: #111827;
         }
         
         .glass-card {
-            backdrop-filter: blur(16px);
-            background: rgba(17, 25, 40, 0.65);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: #1f2937;
+            border: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
         }
         
         .stat-card {
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
         
         .stat-card:hover {
             transform: translateY(-8px);
             box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
-            border-color: rgba(80, 250, 123, 0.4);
+            border-color: #4CAF50;
         }
         
         .action-button {
@@ -67,7 +66,7 @@
         }
         
         .avatar-border {
-            background: linear-gradient(45deg, #50fa7b, #00b4d8, #8a2be2);
+            background: #4CAF50;
             padding: 4px;
             border-radius: 50%;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
@@ -79,29 +78,22 @@
         
         @keyframes pulse {
             0% {
-                box-shadow: 0 0 0 0 rgba(80, 250, 123, 0.7);
+                box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7);
             }
             70% {
-                box-shadow: 0 0 0 10px rgba(80, 250, 123, 0);
+                box-shadow: 0 0 0 10px rgba(76, 175, 80, 0);
             }
             100% {
-                box-shadow: 0 0 0 0 rgba(80, 250, 123, 0);
+                box-shadow: 0 0 0 0 rgba(76, 175, 80, 0);
             }
         }
         
         .stat-number {
-            background: linear-gradient(120deg, #50fa7b, #00b4d8);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            position: relative;
+            color: #4CAF50;
         }
         
         .gradient-heading {
-            background: linear-gradient(120deg, #50fa7b, #00b4d8, #8a2be2);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
+            color: #4CAF50;
         }
         
         .tag-pill {
@@ -148,12 +140,12 @@
         }
         
         ::-webkit-scrollbar-thumb {
-            background: rgba(80, 250, 123, 0.4);
+            background: rgba(76, 175, 80, 0.4);
             border-radius: 10px;
         }
         
         ::-webkit-scrollbar-thumb:hover {
-            background: rgba(80, 250, 123, 0.7);
+            background: rgba(76, 175, 80, 0.7);
         }
     </style>
 </head>
