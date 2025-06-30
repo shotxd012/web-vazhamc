@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('partials/head') %>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+        
+        .profile-banner {
+            background-image: url('/img/devshot.png');
+            background-size: cover;
+            background-position: center;
+            height: 250px;
+            position: relative;
+        }
+        
+        .avatar-border {
+            background: linear-gradient(45deg, #4CAF50, #81C784);
+            padding: 4px;
+            border-radius: 50%;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+        
+        .gradient-heading {
+            background: -webkit-linear-gradient(45deg, #4CAF50, #81C784);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .skill-bar {
+            background-color: #2d3748;
+            border-radius: 10px;
+            overflow: hidden;
+            height: 10px;
+        }
+
+        .skill-level {
+            background: linear-gradient(45deg, #4CAF50, #81C784);
+            height: 100%;
+            border-radius: 10px;
+            transition: width 2s ease-in-out;
+            width: 0;
+        }
+
+        .project-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 1s ease-out forwards;
+        }
+
+    </style>
+</head>
+<body class="bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white min-h-screen font-sans">
+    
+    <%- include('partials/nav') %>
+
+    <main class="container mx-auto px-4 py-16">
+        <!-- Profile Section -->
+        <div class="relative mb-16 perspective-1000 fade-in">
+            <div class="glass-card rounded-2xl overflow-hidden">
+                <!-- Profile Banner -->
+                <div class="profile-banner relative">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                </div>
+                
+                <!-- Profile Content -->
+                <div class="px-8 py-10 relative">
+                    <!-- Avatar -->
+                    <div class="absolute -top-20 left-1/2 transform -translate-x-1/2 md:left-10 md:transform-none">
+                        <div class="avatar-border">
+                            <div class="relative w-32 h-32 md:w-36 md:h-36">
+                                <img 
+                                    src="<%= developer.displayAvatarURL({ format: 'png', size: 256 }) %>" 
+                                    alt="User Avatar"
+                                    class="rounded-full object-cover w-full h-full shadow-2xl"
+                                >
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- User Info -->
+                    <div class="pt-16 md:pt-0 md:pl-44 lg:pl-48">
+                        <div class="flex flex-col md:flex-row items-center md:items-end gap-4 mb-6">
+                            <h2 class="text-4xl font-bold gradient-heading">@<%= developer.username %></h2>
+                            <span 
+                                class="px-4 py-1.5 rounded-full text-sm font-semibold shadow-lg tag-pill"
+                                style="background-color: #4CAF50;"
+                            >
+                                Developer
+                            </span>
+                        </div>
+                        
+                        <p class="text-gray-400 mb-6 text-center md:text-left">A passionate developer creating awesome things.</p>
+                        
+                        <!-- Social Links -->
+                        <div class="flex flex-wrap gap-4 justify-center md:justify-start mt-6">
+                            <a href="https://github.com/vazham" target="_blank" class="glass-card px-4 py-2 rounded-xl flex items-center gap-2 hover:bg-white/10 transition-colors">
+                                <i class="ph ph-github-logo text-xl text-white"></i>
+                                <span>GitHub</span>
+                            </a>
+                            <a href="https://twitter.com/vazham" target="_blank" class="glass-card px-4 py-2 rounded-xl flex items-center gap-2 hover:bg-white/10 transition-colors">
+                                <i class="ph ph-twitter-logo text-xl text-blue-400"></i>
+                                <span>Twitter</span>
+                            </a>
+                            <a href="https://www.linkedin.com/in/vazham/" target="_blank" class="glass-card px-4 py-2 rounded-xl flex items-center gap-2 hover:bg-white/10 transition-colors">
+                                <i class="ph ph-linkedin-logo text-xl text-blue-700"></i>
+                                <span>LinkedIn</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Skills Section -->
+        <div class="mb-16 fade-in" style="animation-delay: 0.2s;">
+            <h2 class="text-3xl font-bold mb-8 gradient-heading">Skills</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="glass-card p-6 rounded-xl">
+                    <h3 class="text-xl font-semibold mb-4">JavaScript</h3>
+                    <div class="skill-bar"><div class="skill-level" style="width: 90%;"></div></div>
+                </div>
+                <div class="glass-card p-6 rounded-xl">
+                    <h3 class="text-xl font-semibold mb-4">Node.js</h3>
+                    <div class="skill-bar"><div class="skill-level" style="width: 85%;"></div></div>
+                </div>
+                <div class="glass-card p-6 rounded-xl">
+                    <h3 class="text-xl font-semibold mb-4">React</h3>
+                    <div class="skill-bar"><div class="skill-level" style="width: 80%;"></div></div>
+                </div>
+                <div class="glass-card p-6 rounded-xl">
+                    <h3 class="text-xl font-semibold mb-4">CSS</h3>
+                    <div class="skill-bar"><div class="skill-level" style="width: 95%;"></div></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Projects Section -->
+        <div class="fade-in" style="animation-delay: 0.4s;">
+            <h2 class="text-3xl font-bold mb-8 gradient-heading">Projects</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="project-card glass-card p-6 rounded-xl">
+                    <h3 class="text-xl font-semibold mb-2">Project One</h3>
+                    <p class="text-gray-400">A brief description of the first project.</p>
+                </div>
+                <div class="project-card glass-card p-6 rounded-xl">
+                    <h3 class="text-xl font-semibold mb-2">Project Two</h3>
+                    <p class="text-gray-400">A brief description of the second project.</p>
+                </div>
+                <div class="project-card glass-card p-6 rounded-xl">
+                    <h3 class="text-xl font-semibold mb-2">Project Three</h3>
+                    <p class="text-gray-400">A brief description of the third project.</p>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <%- include('partials/footer') %>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const skillLevels = document.querySelectorAll(".skill-level");
+            skillLevels.forEach(skill => {
+                const width = skill.style.width;
+                skill.style.width = "0";
+                setTimeout(() => {
+                    skill.style.width = width;
+                }, 200);
+            });
+        });
+    </script>
+
+</body>
+</html>

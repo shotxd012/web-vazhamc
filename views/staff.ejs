@@ -6,12 +6,29 @@
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <style>
         .staff-card {
-            transition: all 0.3s ease;
-            backdrop-filter: blur(12px);
+            background: rgba(31, 41, 55, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
         }
         .staff-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 10px 25px rgba(15, 190, 29, 0.2);
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 255, 135, 0.15);
+            border-color: rgba(76, 175, 80, 0.5);
+        }
+        .staff-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(76, 175, 80, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+        .staff-card:hover::before {
+            left: 100%;
         }
         .profile-section {
             backdrop-filter: blur(12px);
@@ -75,26 +92,7 @@
         </div>
     </main>
 
-    <!-- Status Message -->
-    <div class="status-message fixed bottom-4 right-4 bg-gray-800 bg-opacity-90 px-4 py-2 rounded-lg shadow-lg">
-        <p></p>
-    </div>
-
-    <script>
-        const statuses = [
-            " \u003Cspan style=\"color: #FFFFFF;\"\u003EJoin...\u003C/span\u003E",
-            " \u003Cspan style=\"color: #55FF55;\"\u003EVazha\u003C/span\u003E\u003Cspan style=\"color: #FFFFFF;\"\u003EMC \u003C/span\u003E\u003Cspan style=\"color: #55FF55;\"\u003ENetwork\u003C/span\u003E\u003Cspan style=\"color: #FFFFFF;\"\u003E! \u003C/span\u003E",
-            " \u003Cspan style=\"color: #FFFFFF;\"\u003ESupport Version: \u003C/span\u003E\u003Cspan style=\"color: #55FF55;\"\u003E1.8.x - 1.21.x \u003C/span\u003E",
-            "\u003Cspan style=\"color: #AAAAAA;\"\u003E- \u003C/span\u003E\u003Cspan style=\"color: #55FF55;\"\u003EDEVADARSH212\u003C/span\u003E",
-            "\u003Cspan style=\"color: #AAAAAA;\"\u003E- \u003C/span\u003E\u003Cspan style=\"color: #55FF55;\"\u003ETEJOPii\u003C/span\u003E",
-            "\u003Cspan style=\"color: #AAAAAA;\"\u003E- \u003C/span\u003E\u003Cspan style=\"color: #55FF55;\"\u003Eitmegaming\u003C/span\u003E",
-            "\u003Cspan style=\"color: #AAAAAA;\"\u003E- \u003C/span\u003E\u003Cspan style=\"color: #55FF55;\"\u003Ebravo\u003C/span\u003E",
-            "\u003Cspan style=\"color: #AAAAAA;\"\u003E- \u003C/span\u003E\u003Cspan style=\"color: #55FF55;\"\u003ENKBRO\u003C/span\u003E",
-            " \u003Cspan style=\"color: #AAAAAA;\"\u003E+\u003C/span\u003E\u003Cspan style=\"color: #55FF55;\"\u003E21 \u003C/span\u003E\u003Cspan style=\"color: #AAAAAA;\"\u003Eplayers. \u003C/span\u003E"
-        ];
-        const randomStatus = statuses[Math.floor(Math.random() * statuses.length)];
-        document.querySelector('.status-message').innerHTML = randomStatus;
-    </script>
+    
 
     <%- include('partials/footer') %>
 </body>

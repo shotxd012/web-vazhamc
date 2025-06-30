@@ -24,6 +24,7 @@ const adminTicketRoutes = require("./routes/admin/tickets");
 const admin = require("./routes/admin/dash");
 const legalRoutes = require("./routes/legal");
 const statusRoutes = require("./routes/status");
+const developerRoutes = require("./routes/developer");
 const path = require('path');
 const { loadEvents } = require('./events');
 
@@ -115,6 +116,7 @@ app.use("/admin", admin);
 app.use("/admin/media", require("./routes/admin/media"));
 app.use("/legal", legalRoutes);
 app.use("/status", statusRoutes);
+app.use(developerRoutes);
 
 // Error handling routes
 app.use((req, res, next) => {
