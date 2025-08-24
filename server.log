@@ -1,0 +1,35 @@
+Using callback URL: http://localhost:3000/auth/discord/callback
+✅ Loaded event: interactionCreate
+🚀 Server running on http://localhost:3000
+Error [TokenInvalid]: An invalid token was provided.
+    at Client.login (/app/node_modules/discord.js/src/client/Client.js:217:52)
+    at Object.<anonymous> (/app/config/discordClient.js:21:8)
+    at Module._compile (node:internal/modules/cjs/loader:1730:14)
+    at Object..js (node:internal/modules/cjs/loader:1895:10)
+    at Module.load (node:internal/modules/cjs/loader:1465:32)
+    at Function._load (node:internal/modules/cjs/loader:1282:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+    at Module.require (node:internal/modules/cjs/loader:1487:12)
+    at require (node:internal/modules/helpers:135:16) {
+  code: 'TokenInvalid'
+}
+/app/node_modules/discord.js/src/client/Client.js:217
+    if (!token || typeof token !== 'string') throw new DiscordjsError(ErrorCodes.TokenInvalid);
+                                                   ^
+
+Error [TokenInvalid]: An invalid token was provided.
+    at Client.login (/app/node_modules/discord.js/src/client/Client.js:217:52)
+    at Object.<anonymous> (/app/utils/discordBot.js:16:5)
+    at Module._compile (node:internal/modules/cjs/loader:1730:14)
+    at Object..js (node:internal/modules/cjs/loader:1895:10)
+    at Module.load (node:internal/modules/cjs/loader:1465:32)
+    at Function._load (node:internal/modules/cjs/loader:1282:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+    at Module.require (node:internal/modules/cjs/loader:1487:12)
+    at require (node:internal/modules/helpers:135:16) {
+  code: 'TokenInvalid'
+}
+
+Node.js v22.17.1

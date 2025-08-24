@@ -38,8 +38,8 @@ app.use(express.json());
 app.use(express.static("public"));
 
 // connect to database
-connectDB();
-startBot();
+// connectDB();
+// startBot();
 
 // Load Discord events
 loadEvents();
