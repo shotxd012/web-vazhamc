@@ -70,7 +70,7 @@
     <main class="container mx-auto px-4 py-16">
         <!-- Page Header -->
         <div class="container mx-auto px-4 py-10 flex flex-col items-center gap-8">
-            <h1 class="text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-teal-400 via-emerald-500 to-green-600">
+            <h1 class="text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-red-400 via-red-500 to-red-600">
                 System Status
             </h1>
             <p class="text-gray-400 text-center max-w-2xl">Real-time monitoring of all system components and services</p>
@@ -79,16 +79,16 @@
         <!-- Status Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
             <!-- Discord Server Status -->
-            <div class="bg-gray-800/50 backdrop-blur-md rounded-[1.5rem] border border-gray-700 p-6 transition-all duration-300 hover:border-gray-600 hover:shadow-lg hover:shadow-emerald-500/5">
+            <div class="bg-gray-800/50 backdrop-blur-md rounded-[1.5rem] border border-gray-700 p-6 transition-all duration-300 hover:border-gray-600 hover:shadow-lg hover:shadow-red-500/5">
                 <div class="flex items-center justify-between mb-6">
                     <div class="flex items-center space-x-3">
-                        <div class="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center">
-                            <i class="ph ph-discord-logo text-xl text-emerald-400"></i>
+                        <div class="w-10 h-10 rounded-xl bg-red-500/10 flex items-center justify-center">
+                            <i class="ph ph-discord-logo text-xl text-red-400"></i>
                         </div>
-                        <h2 class="text-xl font-semibold text-emerald-400">Discord Server</h2>
+                        <h2 class="text-xl font-semibold text-red-400">Discord Server</h2>
                     </div>
                     <div class="flex items-center space-x-2">
-                        <span class="w-3 h-3 <%= discordStats ? 'bg-emerald-500 animate-pulse' : 'bg-red-500' %> rounded-full"></span>
+                        <span class="w-3 h-3 <%= discordStats ? 'bg-red-500 animate-pulse' : 'bg-red-500' %> rounded-full"></span>
                         <span class="text-sm text-gray-300"><%= discordStats ? 'Online' : 'Offline' %></span>
                     </div>
                 </div>
@@ -109,16 +109,16 @@
             </div>
 
             <!-- Web Server Status -->
-            <div class="bg-gray-800/50 backdrop-blur-md rounded-[1.5rem] border border-gray-700 p-6 transition-all duration-300 hover:border-gray-600 hover:shadow-lg hover:shadow-emerald-500/5">
+            <div class="bg-gray-800/50 backdrop-blur-md rounded-[1.5rem] border border-gray-700 p-6 transition-all duration-300 hover:border-gray-600 hover:shadow-lg hover:shadow-red-500/5">
                 <div class="flex items-center justify-between mb-6">
                     <div class="flex items-center space-x-3">
-                        <div class="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center">
-                            <i class="ph ph-globe text-xl text-emerald-400"></i>
+                        <div class="w-10 h-10 rounded-xl bg-red-500/10 flex items-center justify-center">
+                            <i class="ph ph-globe text-xl text-red-400"></i>
                         </div>
-                        <h2 class="text-xl font-semibold text-emerald-400">Web Server</h2>
+                        <h2 class="text-xl font-semibold text-red-400">Web Server</h2>
                     </div>
                     <div class="flex items-center space-x-2">
-                        <span class="w-3 h-3 bg-emerald-500 rounded-full animate-pulse"></span>
+                        <span class="w-3 h-3 bg-red-500 rounded-full animate-pulse"></span>
                         <span class="text-sm text-gray-300">Online</span>
                     </div>
                 </div>
@@ -131,15 +131,15 @@
             </div>
 
             <!-- ShotDB Status -->
-            <div class="bg-gray-800/50 backdrop-blur-md rounded-[1.5rem] border border-gray-700 p-6 transition-all duration-300 hover:border-gray-600 hover:shadow-lg hover:shadow-emerald-500/5">
+            <div class="bg-gray-800/50 backdrop-blur-md rounded-[1.5rem] border border-gray-700 p-6 transition-all duration-300 hover:border-gray-600 hover:shadow-lg hover:shadow-red-500/5">
                 <div class="flex items-center justify-between mb-6">
                     <div class="flex items-center space-x-3">
-                        <div class="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center">
-                            <i class="ph ph-database text-xl text-emerald-400"></i>
+                        <div class="w-10 h-10 rounded-xl bg-red-500/10 flex items-center justify-center">
+                            <i class="ph ph-database text-xl text-red-400"></i>
                         </div>
-                        <h2 class="text-xl font-semibold text-emerald-400">ShotDB V6</h2>
+                        <h2 class="text-xl font-semibold text-red-400">ShotDB V6</h2>
                     </div>
-                    <span class="px-3 py-1 rounded-full text-sm font-medium <%= mongoStats?.status === 'Connected' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-red-500/20 text-red-400' %>">
+                    <span class="px-3 py-1 rounded-full text-sm font-medium <%= mongoStats?.status === 'Connected' ? 'bg-red-500/20 text-red-400' : 'bg-red-500/20 text-red-400' %>">
                         <%= mongoStats?.status || 'Disconnected' %>
                     </span>
                 </div>
@@ -156,15 +156,15 @@
             </div>
 
             <!-- Discord Bot Status -->
-            <div class="bg-gray-800/50 backdrop-blur-md rounded-[1.5rem] border border-gray-700 p-6 transition-all duration-300 hover:border-gray-600 hover:shadow-lg hover:shadow-emerald-500/5">
+            <div class="bg-gray-800/50 backdrop-blur-md rounded-[1.5rem] border border-gray-700 p-6 transition-all duration-300 hover:border-gray-600 hover:shadow-lg hover:shadow-red-500/5">
                 <div class="flex items-center justify-between mb-6">
                     <div class="flex items-center space-x-3">
-                        <div class="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center">
-                            <i class="ph ph-robot text-xl text-emerald-400"></i>
+                        <div class="w-10 h-10 rounded-xl bg-red-500/10 flex items-center justify-center">
+                            <i class="ph ph-robot text-xl text-red-400"></i>
                         </div>
-                        <h2 class="text-xl font-semibold text-emerald-400">Discord Bot</h2>
+                        <h2 class="text-xl font-semibold text-red-400">Discord Bot</h2>
                     </div>
-                    <span class="px-3 py-1 rounded-full text-sm font-medium <%= botStats?.status === 'Online' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-red-500/20 text-red-400' %>">
+                    <span class="px-3 py-1 rounded-full text-sm font-medium <%= botStats?.status === 'Online' ? 'bg-red-500/20 text-red-400' : 'bg-red-500/20 text-red-400' %>">
                         <%= botStats?.status || 'Offline' %>
                     </span>
                 </div>
@@ -181,15 +181,15 @@
             </div>
 
             <!-- Minecraft Server Status -->
-            <div class="bg-gray-800/50 backdrop-blur-md rounded-[1.5rem] border border-gray-700 p-6 transition-all duration-300 hover:border-gray-600 hover:shadow-lg hover:shadow-emerald-500/5">
+            <div class="bg-gray-800/50 backdrop-blur-md rounded-[1.5rem] border border-gray-700 p-6 transition-all duration-300 hover:border-gray-600 hover:shadow-lg hover:shadow-red-500/5">
                 <div class="flex items-center justify-between mb-6">
                     <div class="flex items-center space-x-3">
-                        <div class="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center">
-                            <i class="ph ph-game-controller text-xl text-emerald-400"></i>
+                        <div class="w-10 h-10 rounded-xl bg-red-500/10 flex items-center justify-center">
+                            <i class="ph ph-game-controller text-xl text-red-400"></i>
                         </div>
-                        <h2 class="text-xl font-semibold text-emerald-400">Minecraft Server</h2>
+                        <h2 class="text-xl font-semibold text-red-400">Minecraft Server</h2>
                     </div>
-                    <span class="px-3 py-1 rounded-full text-sm font-medium <%= mcStatus.status === 'online' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-red-500/20 text-red-400' %>">
+                    <span class="px-3 py-1 rounded-full text-sm font-medium <%= mcStatus.status === 'online' ? 'bg-red-500/20 text-red-400' : 'bg-red-500/20 text-red-400' %>">
                         <%= mcStatus.status %>
                     </span>
                 </div>
@@ -210,15 +210,15 @@
             </div>
 
             <!-- Media Service Status -->
-            <div class="bg-gray-800/50 backdrop-blur-md rounded-[1.5rem] border border-gray-700 p-6 transition-all duration-300 hover:border-gray-600 hover:shadow-lg hover:shadow-emerald-500/5">
+            <div class="bg-gray-800/50 backdrop-blur-md rounded-[1.5rem] border border-gray-700 p-6 transition-all duration-300 hover:border-gray-600 hover:shadow-lg hover:shadow-red-500/5">
                 <div class="flex items-center justify-between mb-6">
                     <div class="flex items-center space-x-3">
-                        <div class="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center">
-                            <i class="ph ph-cloud-lightning text-xl text-emerald-400"></i>
+                        <div class="w-10 h-10 rounded-xl bg-red-500/10 flex items-center justify-center">
+                            <i class="ph ph-cloud-lightning text-xl text-red-400"></i>
                         </div>  
-                        <h2 class="text-xl font-semibold text-emerald-400">Media Service</h2>
+                        <h2 class="text-xl font-semibold text-red-400">Media Service</h2>
                     </div>
-                    <span id="mediaStatus" class="px-3 py-1 rounded-full text-sm font-medium <%= mediaStatus === 'operational' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-red-500/20 text-red-400' %>">
+                    <span id="mediaStatus" class="px-3 py-1 rounded-full text-sm font-medium <%= mediaStatus === 'operational' ? 'bg-red-500/20 text-red-400' : 'bg-red-500/20 text-red-400' %>">
                         <%= mediaStatus === 'operational' ? 'Connected' : (mediaStatus === 'error' ? 'Disconnected' : 'Unknown') %>
                     </span>
                 </div>
@@ -235,15 +235,15 @@
             </div>      
 
             <!-- System Status -->
-            <div class="bg-gray-800/50 backdrop-blur-md rounded-[1.5rem] border border-gray-700 p-6 transition-all duration-300 hover:border-gray-600 hover:shadow-lg hover:shadow-emerald-500/5">
+            <div class="bg-gray-800/50 backdrop-blur-md rounded-[1.5rem] border border-gray-700 p-6 transition-all duration-300 hover:border-gray-600 hover:shadow-lg hover:shadow-red-500/5">
                 <div class="flex items-center justify-between mb-6">
                     <div class="flex items-center space-x-3">
-                        <div class="w-10 h-10 rounded-xl <%= (!discordStats || mongoStats?.status !== 'Connected' || botStats?.status !== 'Online' || mcStatus.status !== 'online' || mediaStatus !== 'operational') ? 'bg-red-500/10' : 'bg-emerald-500/10' %> flex items-center justify-center">
-                            <i class="ph ph-gauge text-xl <%= (!discordStats || mongoStats?.status !== 'Connected' || botStats?.status !== 'Online' || mcStatus.status !== 'online' || mediaStatus !== 'operational') ? 'text-red-400' : 'text-emerald-400' %>"></i>
+                        <div class="w-10 h-10 rounded-xl <%= (!discordStats || mongoStats?.status !== 'Connected' || botStats?.status !== 'Online' || mcStatus.status !== 'online' || mediaStatus !== 'operational') ? 'bg-red-500/10' : 'bg-red-500/10' %> flex items-center justify-center">
+                            <i class="ph ph-gauge text-xl <%= (!discordStats || mongoStats?.status !== 'Connected' || botStats?.status !== 'Online' || mcStatus.status !== 'online' || mediaStatus !== 'operational') ? 'text-red-400' : 'text-red-400' %>"></i>
                         </div>
-                        <h2 class="text-xl font-semibold <%= (!discordStats || mongoStats?.status !== 'Connected' || botStats?.status !== 'Online' || mcStatus.status !== 'online' || mediaStatus !== 'operational') ? 'text-red-400' : 'text-emerald-400' %>">System Status</h2>
+                        <h2 class="text-xl font-semibold <%= (!discordStats || mongoStats?.status !== 'Connected' || botStats?.status !== 'Online' || mcStatus.status !== 'online' || mediaStatus !== 'operational') ? 'text-red-400' : 'text-red-400' %>">System Status</h2>
                     </div>
-                    <span class="px-3 py-1 rounded-full text-sm font-medium <%= (!discordStats || mongoStats?.status !== 'Connected' || botStats?.status !== 'Online' || mcStatus.status !== 'online' || mediaStatus !== 'operational') ? 'bg-red-500/20 text-red-400' : 'bg-emerald-500/20 text-emerald-400' %>">
+                    <span class="px-3 py-1 rounded-full text-sm font-medium <%= (!discordStats || mongoStats?.status !== 'Connected' || botStats?.status !== 'Online' || mcStatus.status !== 'online' || mediaStatus !== 'operational') ? 'bg-red-500/20 text-red-400' : 'bg-red-500/20 text-red-400' %>">
                         <i class="ph <%= (!discordStats || mongoStats?.status !== 'Connected' || botStats?.status !== 'Online' || mcStatus.status !== 'online' || mediaStatus !== 'operational') ? 'ph-warning' : 'ph-check-circle' %> mr-1"></i>
                         <%= (!discordStats || mongoStats?.status !== 'Connected' || botStats?.status !== 'Online' || mcStatus.status !== 'online' || mediaStatus !== 'operational') ? 'Issues Detected' : 'Healthy' %>
                     </span>
@@ -264,29 +264,29 @@
             </div>
 
             <!-- API Response Time Chart -->
-            <div class="bg-gray-800/50 backdrop-blur-md rounded-[1.5rem] border border-gray-700 p-6 transition-all duration-300 hover:border-gray-600 hover:shadow-lg hover:shadow-emerald-500/5 col-span-1 md:col-span-2 lg:col-span-3">
-                <h2 class="text-xl font-semibold text-emerald-400 mb-6">API Response Time (Last 24 Hours)</h2>
+            <div class="bg-gray-800/50 backdrop-blur-md rounded-[1.5rem] border border-gray-700 p-6 transition-all duration-300 hover:border-gray-600 hover:shadow-lg hover:shadow-red-500/5 col-span-1 md:col-span-2 lg:col-span-3">
+                <h2 class="text-xl font-semibold text-red-400 mb-6">API Response Time (Last 24 Hours)</h2>
                 <div style="height: 300px;">
                     <canvas id="responseTimeChart"></canvas>
                 </div>
             </div>
 
             <!-- Combined Metrics Chart -->
-            <div class="bg-gray-800/50 backdrop-blur-md rounded-[1.5rem] border border-gray-700 p-6 transition-all duration-300 hover:border-gray-600 hover:shadow-lg hover:shadow-emerald-500/5 col-span-1 md:col-span-2 lg:col-span-3">
-                <h2 class="text-xl font-semibold text-emerald-400 mb-6">System Metrics (Last 24 Hours)</h2>
+            <div class="bg-gray-800/50 backdrop-blur-md rounded-[1.5rem] border border-gray-700 p-6 transition-all duration-300 hover:border-gray-600 hover:shadow-lg hover:shadow-red-500/5 col-span-1 md:col-span-2 lg:col-span-3">
+                <h2 class="text-xl font-semibold text-red-400 mb-6">System Metrics (Last 24 Hours)</h2>
                 <div style="height: 400px;">
                     <canvas id="combinedMetricsChart"></canvas>
                 </div>
             </div>
 
             <!-- Last Updated -->
-            <div class="bg-gray-800/50 backdrop-blur-md rounded-[1.5rem] border border-gray-700 p-6 transition-all duration-300 hover:border-gray-600 hover:shadow-lg hover:shadow-emerald-500/5">
+            <div class="bg-gray-800/50 backdrop-blur-md rounded-[1.5rem] border border-gray-700 p-6 transition-all duration-300 hover:border-gray-600 hover:shadow-lg hover:shadow-red-500/5">
                 <div class="flex items-center justify-between mb-6">
                     <div class="flex items-center space-x-3">
-                        <div class="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center">
-                            <i class="ph ph-clock text-xl text-emerald-400"></i>
+                        <div class="w-10 h-10 rounded-xl bg-red-500/10 flex items-center justify-center">
+                            <i class="ph ph-clock text-xl text-red-400"></i>
                         </div>
-                        <h2 class="text-xl font-semibold text-emerald-400">Last Updated</h2>
+                        <h2 class="text-xl font-semibold text-red-400">Last Updated</h2>
                     </div>
                 </div>
                 <div class="space-y-4">

@@ -3,29 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VAZHA MC</title>
+    <title>SHOT DEVS</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <%- include('background') %>
     <meta name="google-site-verification" content="zk5C9kONeDZnEJEGo7wutzoO5w5Xn_fXu0-Wk8z6SEo" />
 
-    <meta name="title" content="Vazha MC" />
-    <meta name="description" content="A world of adventure, creativity, and endless possibilities! - Vazha MC" />
+    <meta name="title" content="shotdevs" />
+    <meta name="description" content="A custom Discord bot and website developing server - shotdevs" />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://web.vazha.fun/" />
-    <meta property="og:title" content="Vazha MC" />
+    <meta property="og:url" content="https://shotdevs.live/" />
+    <meta property="og:title" content="shotdevs" />
     <meta property="og:image" content="/img/modded-favicon.ico">
-    <meta property="og:description" content="A world of adventure, creativity, and endless possibilities! - Vazha MC" />
-    <meta property="twitter:url" content="https://web.vazha.fun" />
-    <meta property="twitter:title" content="Vazha MC" />
-    <meta property="twitter:description" content="A world of adventure, creativity, and endless possibilities! - Vazha MC" />
+    <meta property="og:description" content="A custom Discord bot and website developing server - shotdevs />
+    <meta property="twitter:url" content="https://shotdevs.live" />
+    <meta property="twitter:title" content="shotdevs" />
+    <meta property="twitter:description" content="A custom Discord bot and website developing server - shotdevs " />
 
     <link href="/img/modded-favicon.ico" rel="icon">
     <link href="/img/modded-favicon.ico" rel="apple-touch-icon">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-
     <style>
+    body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Poppins', sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        :root {
+            --bg-color: #111827;
+            --text-color: #e5e7eb;
+            --primary-color: #a855f7;
+            --hero-gradient-start: rgba(168, 85, 247, 0.1);
+            --hero-gradient-end: rgba(249, 115, 22, 0.1);
+        }
+
+        [data-theme="light"] {
+            --bg-color: #ffffff;
+            --text-color: #1f2937;
+            --primary-color: #a855f7;
+            --hero-gradient-start: rgba(168, 85, 247, 0.1);
+            --hero-gradient-end: rgba(249, 115, 22, 0.1);
+        }
+
+        [data-theme="red"] {
+            --bg-color: #1f2937;
+            --text-color: #fca5a5;
+            --primary-color: #ef4444;
+            --hero-gradient-start: rgba(239, 68, 68, 0.1);
+            --hero-gradient-end: rgba(251, 146, 60, 0.1);
+        }
         [x-cloak] { display: none !important; }
         @keyframes float {
             0% { transform: translateY(0px); }
@@ -43,7 +72,7 @@
             box-shadow: 0 20px 30px rgba(0, 0, 0, 0.2);
         }
         .hero-gradient {
-            background: linear-gradient(135deg, rgba(168, 85, 247, 0.1) 0%, rgba(249, 115, 22, 0.1) 100%);
+            background: linear-gradient(135deg, var(--hero-gradient-start) 0%, var(--hero-gradient-end) 100%);
         }
         .nav-link {
             position: relative;
@@ -56,11 +85,31 @@
             left: 0;
             width: 0;
             height: 2px;
-            background: #a855f7;
+            background: var(--primary-color);
             transition: width 0.3s ease;
         }
         .nav-link:hover::after {
             width: 100%;
         }
     </style>
+    <script>
+        function applyTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
+        }
+
+        function cycleThemes() {
+            const themes = ['dark', 'light', 'red'];
+            const currentTheme = localStorage.getItem('theme') || 'dark';
+            const currentIndex = themes.indexOf(currentTheme);
+            const nextIndex = (currentIndex + 1) % themes.length;
+            applyTheme(themes[nextIndex]);
+        }
+
+        // Apply saved theme on page load
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+            applyTheme(savedTheme);
+        }
+    </script>
 </head>

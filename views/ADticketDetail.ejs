@@ -9,22 +9,22 @@
     <%- include('partials/shot/sidebar') %>
 
     <div class="flex-1 p-8">
-      <h2 class="text-2xl font-bold text-emerald-400 mb-8 flex items-center gap-2">🎫 Ticket: <span class="text-white"><%= ticket.ticketId %></span></h2>
+      <h2 class="text-2xl font-bold text-red-400 mb-8 flex items-center gap-2">🎫 Ticket: <span class="text-white"><%= ticket.ticketId %></span></h2>
 
       <div class="bg-dark-600 border border-dark-200 rounded-2xl p-8 shadow-xl">
         <!-- Ticket Info -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm text-gray-300 mb-8">
           <div class="space-y-2">
-            <p><span class="text-emerald-400 font-semibold">Title:</span> <%= ticket.title %></p>
-            <p><span class="text-emerald-400 font-semibold">Reason:</span> <%= ticket.reason %></p>
-            <p><span class="text-emerald-400 font-semibold">Description:</span> <%= ticket.description %></p>
-            <p><span class="text-emerald-400 font-semibold">Type:</span> <%= ticket.type %></p>
+            <p><span class="text-red-400 font-semibold">Title:</span> <%= ticket.title %></p>
+            <p><span class="text-red-400 font-semibold">Reason:</span> <%= ticket.reason %></p>
+            <p><span class="text-red-400 font-semibold">Description:</span> <%= ticket.description %></p>
+            <p><span class="text-red-400 font-semibold">Type:</span> <%= ticket.type %></p>
           </div>
           <div class="space-y-2">
-            <p><span class="text-emerald-400 font-semibold">User:</span> <%= ticket.username %></p>
-            <p><span class="text-emerald-400 font-semibold">User ID:</span> <%= ticket.userId %></p>
-            <p><span class="text-emerald-400 font-semibold">Status:</span>
-              <span class="<%= ticket.status === 'closed' ? 'text-red-500' : 'text-green-400' %> font-semibold">
+            <p><span class="text-red-400 font-semibold">User:</span> <%= ticket.username %></p>
+            <p><span class="text-red-400 font-semibold">User ID:</span> <%= ticket.userId %></p>
+            <p><span class="text-red-400 font-semibold">Status:</span>
+              <span class="<%= ticket.status === 'closed' ? 'text-red-500' : 'text-red-400' %> font-semibold">
                 <%= ticket.status %>
               </span>
             </p>
@@ -43,7 +43,7 @@
                 <div class="bg-dark-500 p-4 rounded-lg shadow max-w-md w-full">
                   <div class="flex items-center space-x-3 mb-2">
                     <img src="https://cdn.discordapp.com/avatars/<%= msg.userId %>/<%= msg.avatar %>.png" class="w-7 h-7 rounded-full">
-                    <span class="text-emerald-400 font-semibold text-sm"><%= msg.username %></span>
+                    <span class="text-red-400 font-semibold text-sm"><%= msg.username %></span>
                   </div>
                   <% if (msg.message) { %>
                     <p class="text-sm text-gray-200 leading-relaxed"><%= msg.message %></p>
@@ -59,10 +59,10 @@
           <!-- Admin Reply -->
           <% if (ticket.status !== "closed") { %>
             <form action="/shot/ticket/<%= ticket.ticketId %>/reply" method="POST" enctype="multipart/form-data" class="bg-dark-700 p-6 rounded-xl border border-dark-200 space-y-4 h-fit shadow">
-              <h3 class="text-lg font-bold text-emerald-400">💬 Reply to Ticket</h3>
+              <h3 class="text-lg font-bold text-red-400">💬 Reply to Ticket</h3>
               <textarea name="message" rows="3" class="w-full bg-gray-700 rounded p-2 mb-4" placeholder="Write your message..."></textarea>
               <input type="file" name="image" accept="image/*" class="text-sm text-gray-300">
-              <button type="submit" class="bg-emerald-600 hover:bg-emerald-700 w-full py-2 rounded text-sm font-semibold transition duration-300">
+              <button type="submit" class="bg-red-600 hover:bg-red-700 w-full py-2 rounded text-sm font-semibold transition duration-300">
                 📤 Send Reply
               </button>
             </form>

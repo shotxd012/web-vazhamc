@@ -155,20 +155,31 @@
     
     <%- include('partials/nav') %>
 
-    <main class="container mx-auto px-4 py-8 relative">
+    <main class="container mx-auto px-4 py-16">
         <!-- Dashboard Title -->
-        <div class="text-center mb-12">
-            <h1 class="text-6xl font-bold gradient-heading mb-4">User Dashboard</h1>
-            <p class="text-gray-400 text-xl max-w-2xl mx-auto">Welcome back to your personal space. Explore your content and manage your account.</p>
+        <div class="container mx-auto px-4 py-10 flex flex-col items-center gap-12">
+            <h1 class="text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-red-400 via-red-500 to-red-600 mb-4">
+                User Profile
+            </h1>
+            <p class="text-gray-400 text-xl max-w-2xl mx-">Welcome back to your personal space. Explore your content and manage your account.</p>
         </div>
         
         <!-- Profile Section -->
         <div class="relative mb-16 perspective-1000">
             <div class="glass-card rounded-2xl overflow-hidden transform transition-all hover:scale-[1.01]">
                 <!-- Profile Banner -->
-                <div class="profile-banner relative">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-                </div>
+<div
+    class="profile-banner relative"
+    style="
+        background-image: url('https://i.imgur.com/QwW84jL.jpeg');
+        background-size: auto;
+        background-position: auto;
+        background-repeat: no-repeat;
+    "
+>
+    <!-- This div creates the dark gradient overlay on top of the image -->
+    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+</div>
                 
                 <!-- Profile Content -->
                 <div class="px-8 py-10 relative">
@@ -227,10 +238,10 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
             <!-- Media Stats Card -->
             <div class="stat-card glass-card p-6 rounded-2xl overflow-hidden relative group">
-                <div class="absolute top-0 left-0 h-2 w-full bg-gradient-to-r from-emerald-400 to-green-300"></div>
+                <div class="absolute top-0 left-0 h-2 w-full bg-gradient-to-r from-red-400 to-red-300"></div>
                 <div class="flex items-center gap-5">
-                    <div class="bg-emerald-500/20 p-4 rounded-xl">
-                        <i class="ph ph-images text-3xl text-emerald-400 floating-icon"></i>
+                    <div class="bg-red-500/20 p-4 rounded-xl">
+                        <i class="ph ph-images text-3xl text-red-400 floating-icon"></i>
                     </div>
                     <div>
                         <p class="text-gray-400 font-light mb-1">Total Media</p>
@@ -298,8 +309,8 @@
         <h2 class="text-3xl font-bold mb-8 gradient-heading">Quick Actions</h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
             <a href="/media" class="action-button glass-card flex flex-col items-center text-center p-6 rounded-2xl">
-                <div class="bg-emerald-500/20 p-4 rounded-full mb-3 w-16 h-16 flex items-center justify-center">
-                    <i class="ph ph-images text-2xl text-emerald-400"></i>
+                <div class="bg-red-500/20 p-4 rounded-full mb-3 w-16 h-16 flex items-center justify-center">
+                    <i class="ph ph-images text-2xl text-red-400"></i>
                 </div>
                 <h3 class="font-semibold text-lg mb-2">View Gallery</h3>
                 <p class="text-gray-400 text-sm">Browse all your media content</p>

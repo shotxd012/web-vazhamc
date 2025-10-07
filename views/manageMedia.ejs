@@ -12,7 +12,7 @@
     <main class="container mx-auto px-4 py-12">
         <!-- Header Section -->
         <div class="container mx-auto px-4 py-10 flex flex-col items-center gap-12">
-            <h1 class="text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-teal-400 via-emerald-500 to-green-600">
+            <h1 class="text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-red-400 via-red-500 to-red-600">
                 Media Gallery
             </h1>
             <p class="text-gray-400 max-w-2xl mx-auto">Manage your media collection with our intuitive interface. Upload, organize, and share your content effortlessly.</p>
@@ -24,10 +24,10 @@
                 <div class="sticky top-4">
                     <form action="/profile/manage/media/upload" method="POST" enctype="multipart/form-data" class="bg-gray-900 bg-opacity-80 backdrop-blur-xl p-6 rounded-2xl shadow-xl border border-gray-700">
                         <div class="flex items-center gap-3 mb-6">
-                            <span class="p-2 bg-emerald-500 bg-opacity-20 rounded-lg">
-                                <i class="ph-upload-simple text-2xl text-emerald-400"></i>
+                            <span class="p-2 bg-red-500 bg-opacity-20 rounded-lg">
+                                <i class="ph-upload-simple text-2xl text-red-400"></i>
                             </span>
-                            <h2 class="text-2xl font-semibold text-emerald-400">Upload Media</h2>
+                            <h2 class="text-2xl font-semibold text-red-400">Upload Media</h2>
                         </div>
 
                         <div class="space-y-6">
@@ -35,7 +35,7 @@
                                 <input type="file" name="image" accept="image/*" required 
                                     class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
                                     onchange="updateFileName(this)" />
-                                <div class="border-2 border-dashed border-gray-600 rounded-xl p-6 text-center hover:border-emerald-500 transition-colors">
+                                <div class="border-2 border-dashed border-gray-600 rounded-xl p-6 text-center hover:border-red-500 transition-colors">
                                     <i class="ph-image-square text-4xl text-gray-500 mb-2"></i>
                                     <p class="text-gray-400 text-sm" id="fileName">Drag & drop or click to upload</p>
                                 </div>
@@ -46,11 +46,11 @@
                                 <textarea 
                                     name="description" 
                                     rows="3" 
-                                    class="w-full bg-gray-800 border border-gray-700 rounded-lg p-3 text-gray-300 placeholder-gray-500 focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all"
+                                    class="w-full bg-gray-800 border border-gray-700 rounded-lg p-3 text-gray-300 placeholder-gray-500 focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all"
                                     placeholder="Write something about your media..."></textarea>
                             </div>
 
-                            <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-3 rounded-lg transition-colors flex items-center justify-center gap-2">
+                            <button type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-3 rounded-lg transition-colors flex items-center justify-center gap-2">
                                 <i class="ph-cloud-arrow-up"></i>
                                 Upload Media
                             </button>
@@ -82,7 +82,7 @@
                                             <label class="block text-sm font-medium text-gray-300 mb-2">Description</label>
                                             <textarea 
                                                 name="description" 
-                                                class="w-full bg-gray-800 border border-gray-700 rounded-lg p-3 text-gray-300 placeholder-gray-500 focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all"
+                                                class="w-full bg-gray-800 border border-gray-700 rounded-lg p-3 text-gray-300 placeholder-gray-500 focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all"
                                                 rows="3"><%= item.description || "" %></textarea>
                                         </div>
                                         <div class="flex items-center justify-between">
@@ -103,8 +103,8 @@
                                     <% const itemComments = comments.filter(c => c.mediaId === item._id.toString()); %>
                                     <div class="mt-6">
                                         <div class="flex items-center gap-2 mb-4">
-                                            <i class="ph-chat-circle text-emerald-400"></i>
-                                            <h3 class="text-lg font-medium text-emerald-400">Comments</h3>
+                                            <i class="ph-chat-circle text-red-400"></i>
+                                            <h3 class="text-lg font-medium text-red-400">Comments</h3>
                                         </div>
                                         
                                         <div class="space-y-3 max-h-64 overflow-y-auto pr-2">
@@ -113,7 +113,7 @@
                                                     <div class="bg-gray-800 rounded-lg p-3">
                                                         <div class="flex items-start justify-between">
                                                             <div>
-                                                                <p class="text-emerald-300 font-medium mb-1"><%= comment.username %></p>
+                                                                <p class="text-red-300 font-medium mb-1"><%= comment.username %></p>
                                                                 <p class="text-gray-300"><%= comment.message %></p>
                                                             </div>
                                                             <form action="/profile/manage/media/<%= comment._id %>/comment/delete" method="POST" class="ml-4">

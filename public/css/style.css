@@ -1,7 +1,7 @@
 /* Custom Scrollbar */
 #chat-messages {
     scrollbar-width: thin; /* For Firefox */
-    scrollbar-color: #4ade80 #1f2937; /* Track color */
+    scrollbar-color: #ef4444 #1f2937; /* Track color */
 }
 
 /* Webkit Browsers (Chrome, Edge, Safari) */
@@ -15,10 +15,10 @@
 }
 
 #chat-messages::-webkit-scrollbar-thumb {
-    background: #4ade80; /* Emerald Green */
+    background: #ef4444; /* Red */
     border-radius: 10px;
 }
 
 #chat-messages::-webkit-scrollbar-thumb:hover {
-    background: #34d399; /* Lighter Green on Hover */
+    background: #dc2626; /* Darker Red on Hover */
 }

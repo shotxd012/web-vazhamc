@@ -1,13 +1,13 @@
 <div class="container mx-auto px-4 py-8 md:py-12">
     <div class="relative mb-8 md:mb-16">
-        <div class="absolute inset-0 bg-emerald-500 opacity-10 blur-3xl"></div>
+        <div class="absolute inset-0 bg-red-500 opacity-10 blur-3xl"></div>
         <div class="relative z-10 p-4 md:p-8 rounded-2xl bg-gray-800 bg-opacity-50 border border-gray-700 shadow-xl">
             <div class="flex flex-col sm:flex-row items-center justify-between space-y-4 sm:space-y-0">
                 <div class="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-4">
-                    <h2 class="text-xl md:text-2xl font-bold text-emerald-400">Server Status</h2>
+                    <h2 class="text-xl md:text-2xl font-bold text-red-400">Server Status</h2>
                     <% if (serverStatus.online) { %>
                         <div class="flex items-center space-x-2 bg-gray-900 px-3 md:px-4 py-2 rounded-lg">
-                            <span class="w-2 md:w-3 h-2 md:h-3 bg-emerald-500 rounded-full animate-pulse"></span>
+                            <span class="w-2 md:w-3 h-2 md:h-3 bg-red-500 rounded-full animate-pulse"></span>
                             <span class="text-sm md:text-base text-gray-300">Online</span>
                         </div>
                     <% } else { %>
@@ -21,9 +21,9 @@
                 <% if (serverStatus.online) { %>
                     <div class="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-4">
                         <div class="bg-gray-900 px-3 md:px-4 py-2 rounded-lg">
-                            <span class="text-sm md:text-base text-gray-300">Players: <span class="text-emerald-400 font-semibold"><%= serverStatus.players.online %></span></span>
+                            <span class="text-sm md:text-base text-gray-300">Players: <span class="text-red-400 font-semibold"><%= serverStatus.players.online %></span></span>
                         </div>
-                        <div class="bg-emerald-600 hover:bg-emerald-700 px-4 md:px-6 py-2 rounded-lg transition-colors cursor-pointer w-full sm:w-auto text-center" onclick="copyServerIP()">
+                        <div class="bg-red-600 hover:bg-red-700 px-4 md:px-6 py-2 rounded-lg transition-colors cursor-pointer w-full sm:w-auto text-center" onclick="copyServerIP()">
                             <span class="text-sm md:text-base text-white font-medium">play.vazha.fun</span>
                         </div>
                     </div>

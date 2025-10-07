@@ -1,14 +1,14 @@
 <div class="container mx-auto px-4 py-8 sm:py-12">
     <div class="relative mb-8 sm:mb-16">
-        <div class="absolute inset-0 bg-emerald-500 opacity-10 blur-3xl"></div>
+        <div class="absolute inset-0 bg-red-500 opacity-10 blur-3xl"></div>
         <div class="relative z-10 p-4 sm:p-8 rounded-2xl bg-gray-800 bg-opacity-50 border border-gray-700 shadow-xl backdrop-blur-sm">
             <!-- Header Section -->
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 sm:mb-8">
-                <h2 class="text-xl sm:text-2xl font-bold text-emerald-400 flex items-center gap-2">
+                <h2 class="text-xl sm:text-2xl font-bold text-red-400 flex items-center gap-2">
                     <i class="ph ph-trophy text-2xl"></i>
                     Top Users
                 </h2>
-                <a href="/media" class="bg-emerald-600 hover:bg-emerald-700 px-4 sm:px-6 py-2 rounded-lg transition-all duration-300 flex items-center justify-center gap-2 hover:shadow-lg hover:shadow-emerald-500/20 w-full sm:w-auto">
+                <a href="/media" class="bg-red-600 hover:bg-red-700 px-4 sm:px-6 py-2 rounded-lg transition-all duration-300 flex items-center justify-center gap-2 hover:shadow-lg hover:shadow-red-500/20 w-full sm:w-auto">
                     <i class="ph ph-images"></i>
                     <span class="text-white font-medium">View Media</span>
                 </a>
@@ -17,10 +17,10 @@
             <!-- Users List -->
             <div class="space-y-3 sm:space-y-4">
                 <% (Array.isArray(topUsers) ? topUsers : []).forEach((user, index) => { %>
-                    <div class="bg-gray-800 bg-opacity-50 p-3 sm:p-4 rounded-xl border border-gray-700 shadow-lg hover:transform hover:translate-x-2 transition-all duration-300 hover:shadow-emerald-500/10 hover:border-emerald-500/50 group">
+                    <div class="bg-gray-800 bg-opacity-50 p-3 sm:p-4 rounded-xl border border-gray-700 shadow-lg hover:transform hover:translate-x-2 transition-all duration-300 hover:shadow-red-500/10 hover:border-red-500/50 group">
                         <div class="flex items-center gap-3 sm:gap-4">
                             <!-- Rank Badge -->
-                            <div class="bg-emerald-600 text-white w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center font-bold flex-shrink-0 shadow-lg shadow-emerald-500/20 group-hover:scale-110 transition-transform">
+                            <div class="bg-red-600 text-white w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center font-bold flex-shrink-0 shadow-lg shadow-red-500/20 group-hover:scale-110 transition-transform">
                                 <%= index + 1 %>
                             </div>
 
@@ -28,7 +28,7 @@
                             <img 
                                 src="https://cdn.discordapp.com/avatars/<%= user.discordId %>/<%= user.avatar %>.png" 
                                 alt="<%= user.username %>'s avatar" 
-                                class="w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 border-emerald-500 object-cover flex-shrink-0 shadow-lg shadow-emerald-500/20 group-hover:border-emerald-400 transition-colors"
+                                class="w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 border-red-500 object-cover flex-shrink-0 shadow-lg shadow-red-500/20 group-hover:border-red-400 transition-colors"
                             >
 
                             <!-- User Info -->
@@ -36,7 +36,7 @@
                                 <h3 class="text-base sm:text-lg font-semibold text-white truncate"><%= user.username %></h3>
                                 <div class="flex items-center gap-3 sm:gap-4 mt-1 flex-wrap">
                                     <!-- Media Count -->
-                                    <div class="flex items-center gap-1 text-emerald-400 hover:text-emerald-300 transition-colors text-sm">
+                                    <div class="flex items-center gap-1 text-red-400 hover:text-red-300 transition-colors text-sm">
                                         <i class="ph ph-images"></i>
                                         <span><%= user.mediaCount %></span>
                                     </div>
@@ -146,13 +146,13 @@
 
   @keyframes pulse {
     0% {
-      box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
+      box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4);
     }
     70% {
-      box-shadow: 0 0 0 10px rgba(16, 185, 129, 0);
+      box-shadow: 0 0 0 10px rgba(239, 68, 68, 0);
     }
     100% {
-      box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+      box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
     }
   }
 </style>

@@ -13,7 +13,7 @@
                     <p class="text-gray-400">Manage and respond to user support tickets</p>
                 </div>
                 <div class="flex items-center space-x-4">
-                    <a href="/admin" class="px-4 py-2 bg-emerald-500/10 text-emerald-400 rounded-full text-sm font-medium hover:bg-emerald-500/20 transition-all flex items-center gap-2">
+                    <a href="/admin" class="px-4 py-2 bg-red-500/10 text-red-400 rounded-full text-sm font-medium hover:bg-red-500/20 transition-all flex items-center gap-2">
                         <i class="ph ph-gauge"></i>
                         Dashboard
                     </a>
@@ -23,28 +23,28 @@
 
         <!-- Ticket Stats -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <div class="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 hover:border-emerald-500/50 transition-all duration-300">
+            <div class="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 hover:border-red-500/50 transition-all duration-300">
                 <div class="flex items-center justify-between mb-4">
                     <h3 class="text-lg font-semibold text-white">Total Tickets</h3>
-                    <i class="ph ph-ticket text-2xl text-emerald-400"></i>
+                    <i class="ph ph-ticket text-2xl text-red-400"></i>
                 </div>
                 <p class="text-3xl font-bold text-white mb-2"><%= tickets.length %></p>
                 <p class="text-sm text-gray-400">All time ticket submissions</p>
             </div>
 
-            <div class="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 hover:border-emerald-500/50 transition-all duration-300">
+            <div class="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 hover:border-red-500/50 transition-all duration-300">
                 <div class="flex items-center justify-between mb-4">
                     <h3 class="text-lg font-semibold text-white">Open Tickets</h3>
-                    <i class="ph ph-chat-circle-dots text-2xl text-emerald-400"></i>
+                    <i class="ph ph-chat-circle-dots text-2xl text-red-400"></i>
                 </div>
                 <p class="text-3xl font-bold text-white mb-2"><%= tickets.filter(t => t.status === 'open').length %></p>
                 <p class="text-sm text-gray-400">Currently active tickets</p>
             </div>
 
-            <div class="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 hover:border-emerald-500/50 transition-all duration-300">
+            <div class="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 hover:border-red-500/50 transition-all duration-300">
                 <div class="flex items-center justify-between mb-4">
                     <h3 class="text-lg font-semibold text-white">Closed Tickets</h3>
-                    <i class="ph ph-check-circle text-2xl text-emerald-400"></i>
+                    <i class="ph ph-check-circle text-2xl text-red-400"></i>
                 </div>
                 <p class="text-3xl font-bold text-white mb-2"><%= tickets.filter(t => t.status === 'closed').length %></p>
                 <p class="text-sm text-gray-400">Resolved tickets</p>
@@ -69,7 +69,7 @@
                     <tbody class="divide-y divide-gray-700/50">
                         <% tickets.forEach(ticket => { %>
                             <tr class="text-sm hover:bg-gray-700/30 transition-colors">
-                                <td class="py-4 text-emerald-400 font-medium">#<%= ticket.ticketId %></td>
+                                <td class="py-4 text-red-400 font-medium">#<%= ticket.ticketId %></td>
                                 <td class="py-4">
                                     <div class="flex items-center gap-2">
                                         <img src="https://cdn.discordapp.com/avatars/<%= ticket.userId %>/<%= ticket.avatar %>.png" 
@@ -85,7 +85,7 @@
                                     </span>
                                 </td>
                                 <td class="py-4">
-                                    <span class="px-2 py-1 rounded-full text-xs font-medium <%= ticket.status === 'open' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-red-500/10 text-red-400' %>">
+                                    <span class="px-2 py-1 rounded-full text-xs font-medium <%= ticket.status === 'open' ? 'bg-red-500/10 text-red-400' : 'bg-red-500/10 text-red-400' %>">
                                         <%= ticket.status.toUpperCase() %>
                                     </span>
                                 </td>
@@ -94,7 +94,7 @@
                                 </td>
                                 <td class="py-4">
                                     <a href="/admin/tickets/<%= ticket.ticketId %>" 
-                                       class="inline-flex items-center gap-1 text-emerald-400 hover:text-emerald-300 transition-colors">
+                                       class="inline-flex items-center gap-1 text-red-400 hover:text-red-300 transition-colors">
                                         <i class="ph ph-eye"></i>
                                         View
                                     </a>

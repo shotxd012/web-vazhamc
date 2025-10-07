@@ -13,7 +13,7 @@
                     <p class="text-gray-400">Welcome back, <%= user.username %></p>
                 </div>
                 <div class="flex items-center space-x-4">
-                    <span class="px-4 py-2 bg-emerald-500/10 text-emerald-400 rounded-full text-sm font-medium">
+                    <span class="px-4 py-2 bg-red-500/10 text-red-400 rounded-full text-sm font-medium">
                         <i class="ph ph-shield-check mr-2"></i>Staff Member
                     </span>
                 </div>
@@ -67,30 +67,30 @@
         <!-- Discord Server Stats -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             <!-- Server Boost -->
-            <div class="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 hover:border-emerald-500/50 transition-all duration-300">
+            <div class="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 hover:border-red-500/50 transition-all duration-300">
                 <div class="flex items-center justify-between mb-4">
                     <h3 class="text-lg font-semibold text-white">Discord Server Boost</h3>
-                    <i class="ph ph-lightning text-2xl text-emerald-400"></i>
+                    <i class="ph ph-lightning text-2xl text-red-400"></i>
                 </div>
                 <p class="text-3xl font-bold text-white mb-2">Level <%= discordStats.boostLevel %></p>
                 <p class="text-sm text-gray-400"><%= discordStats.boostCount %> Boosts</p>
             </div>
 
             <!-- Total Roles -->
-            <div class="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 hover:border-emerald-500/50 transition-all duration-300">
+            <div class="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 hover:border-red-500/50 transition-all duration-300">
                 <div class="flex items-center justify-between mb-4">
                     <h3 class="text-lg font-semibold text-white">Discord Total Roles</h3>
-                    <i class="ph ph-users-three text-2xl text-emerald-400"></i>
+                    <i class="ph ph-users-three text-2xl text-red-400"></i>
                 </div>
                 <p class="text-3xl font-bold text-white mb-2"><%= discordStats.totalRoles %></p>
                 <p class="text-sm text-gray-400">Server Roles</p>
             </div>
 
             <!-- Total Channels -->
-            <div class="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 hover:border-emerald-500/50 transition-all duration-300">
+            <div class="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 hover:border-red-500/50 transition-all duration-300">
                 <div class="flex items-center justify-between mb-4">
                     <h3 class="text-lg font-semibold text-white">Discord Total Channels</h3>
-                    <i class="ph ph-hash text-2xl text-emerald-400"></i>
+                    <i class="ph ph-hash text-2xl text-red-400"></i>
                 </div>
                 <p class="text-3xl font-bold text-white mb-2"><%= discordStats.totalChannels %></p>
                 <p class="text-sm text-gray-400">Server Channels</p>
@@ -100,40 +100,40 @@
         <!-- Quick Stats -->
         <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
             <!-- Total Tickets -->
-            <div class="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 hover:border-emerald-500/50 transition-all duration-300">
+            <div class="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 hover:border-red-500/50 transition-all duration-300">
                 <div class="flex items-center justify-between mb-4">
                     <h3 class="text-lg font-semibold text-white">Total Tickets</h3>
-                    <i class="ph ph-ticket text-2xl text-emerald-400"></i>
+                    <i class="ph ph-ticket text-2xl text-red-400"></i>
                 </div>
                 <p class="text-3xl font-bold text-white mb-2"><%= totalTickets %></p>
                 <p class="text-sm text-gray-400">All time ticket submissions</p>
             </div>
 
             <!-- Open Tickets -->
-            <div class="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 hover:border-emerald-500/50 transition-all duration-300">
+            <div class="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 hover:border-red-500/50 transition-all duration-300">
                 <div class="flex items-center justify-between mb-4">
                     <h3 class="text-lg font-semibold text-white">Open Tickets</h3>
-                    <i class="ph ph-chat-circle-dots text-2xl text-emerald-400"></i>
+                    <i class="ph ph-chat-circle-dots text-2xl text-red-400"></i>
                 </div>
                 <p class="text-3xl font-bold text-white mb-2"><%= openTickets %></p>
                 <p class="text-sm text-gray-400">Currently active tickets</p>
             </div>
 
             <!-- Total Media -->
-            <div class="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 hover:border-emerald-500/50 transition-all duration-300">
+            <div class="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 hover:border-red-500/50 transition-all duration-300">
                 <div class="flex items-center justify-between mb-4">
                     <h3 class="text-lg font-semibold text-white">Total Media</h3>
-                    <i class="ph ph-image text-2xl text-emerald-400"></i>
+                    <i class="ph ph-image text-2xl text-red-400"></i>
                 </div>
                 <p class="text-3xl font-bold text-white mb-2"><%= totalMedia %></p>
                 <p class="text-sm text-gray-400">Uploaded media files</p>
             </div>
 
             <!-- Total Comments -->
-            <div class="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 hover:border-emerald-500/50 transition-all duration-300">
+            <div class="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 hover:border-red-500/50 transition-all duration-300">
                 <div class="flex items-center justify-between mb-4">
                     <h3 class="text-lg font-semibold text-white">Total Comments</h3>
-                    <i class="ph ph-chat-circle text-2xl text-emerald-400"></i>
+                    <i class="ph ph-chat-circle text-2xl text-red-400"></i>
                 </div>
                 <p class="text-3xl font-bold text-white mb-2"><%= totalComments %></p>
                 <p class="text-sm text-gray-400">Media comments</p>
@@ -147,7 +147,7 @@
                 <% topMediaUsers.forEach((user, index) => { %>
                     <div class="flex items-center justify-between p-3 bg-gray-700/30 rounded-xl">
                         <div class="flex items-center space-x-3">
-                            <span class="text-emerald-400 font-medium">#<%= index + 1 %></span>
+                            <span class="text-red-400 font-medium">#<%= index + 1 %></span>
                             <span class="text-white"><%= user.username || 'Unknown User' %></span>
                         </div>
                         <span class="text-gray-400"><%= user.count %> uploads</span>
@@ -159,10 +159,10 @@
         <!-- Quick Actions -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             <!-- View All Tickets -->
-            <a href="/admin/tickets" class="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 hover:border-emerald-500/50 transition-all duration-300 group">
+            <a href="/admin/tickets" class="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 hover:border-red-500/50 transition-all duration-300 group">
                 <div class="flex items-center space-x-4">
-                    <div class="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center group-hover:bg-emerald-500/20 transition-colors">
-                        <i class="ph ph-ticket text-2xl text-emerald-400"></i>
+                    <div class="w-12 h-12 rounded-xl bg-red-500/10 flex items-center justify-center group-hover:bg-red-500/20 transition-colors">
+                        <i class="ph ph-ticket text-2xl text-red-400"></i>
                     </div>
                     <div>
                         <h3 class="text-lg font-semibold text-white mb-1">View All Tickets</h3>
@@ -172,10 +172,10 @@
             </a>
 
             <!-- Manage Media -->
-            <a href="/admin/media" class="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 hover:border-emerald-500/50 transition-all duration-300 group">
+            <a href="/admin/media" class="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 hover:border-red-500/50 transition-all duration-300 group">
                 <div class="flex items-center space-x-4">
-                    <div class="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center group-hover:bg-emerald-500/20 transition-colors">
-                        <i class="ph ph-image text-2xl text-emerald-400"></i>
+                    <div class="w-12 h-12 rounded-xl bg-red-500/10 flex items-center justify-center group-hover:bg-red-500/20 transition-colors">
+                        <i class="ph ph-image text-2xl text-red-400"></i>
                     </div>
                     <div>
                         <h3 class="text-lg font-semibold text-white mb-1">Manage Media</h3>
@@ -185,10 +185,10 @@
             </a>
 
             <!-- System Status -->
-            <a href="/status" class="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 hover:border-emerald-500/50 transition-all duration-300 group">
+            <a href="/status" class="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 hover:border-red-500/50 transition-all duration-300 group">
                 <div class="flex items-center space-x-4">
-                    <div class="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center group-hover:bg-emerald-500/20 transition-colors">
-                        <i class="ph ph-gauge text-2xl text-emerald-400"></i>
+                    <div class="w-12 h-12 rounded-xl bg-red-500/10 flex items-center justify-center group-hover:bg-red-500/20 transition-colors">
+                        <i class="ph ph-gauge text-2xl text-red-400"></i>
                     </div>
                     <div>
                         <h3 class="text-lg font-semibold text-white mb-1">System Status</h3>

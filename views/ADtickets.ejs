@@ -31,12 +31,12 @@
                             </td>
                             <td class="py-2 px-4 text-sm capitalize text-gray-300"><%= ticket.type %></td>
                             <td class="py-2 px-4 text-sm">
-                                <span class="<%= ticket.status === 'closed' ? 'text-red-500' : 'text-green-400' %>">
+                                <span class="<%= ticket.status === 'closed' ? 'text-red-500' : 'text-red-400' %>">
                                     <%= ticket.status %>
                                 </span>
                             </td>
                             <td class="py-2 px-4 text-sm">
-                                <a href="/shot/ticket/<%= ticket.ticketId %>" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1 rounded">Open</a>
+                                <a href="/shot/ticket/<%= ticket.ticketId %>" class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded">Open</a>
                             </td>
                         </tr>
                     <% }); %>

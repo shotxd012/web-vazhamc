@@ -120,7 +120,7 @@
             </p>
             
             <!-- Create Ticket Button -->
-            <button id="create-ticket-btn" class="create-btn bg-emerald-600 hover:bg-emerald-700 px-6 py-3 rounded-lg text-white font-semibold transition duration-200 flex items-center gap-2 shadow-lg">
+            <button id="create-ticket-btn" class="create-btn bg-red-600 hover:bg-red-700 px-6 py-3 rounded-lg text-white font-semibold transition duration-200 flex items-center gap-2 shadow-lg">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
                     <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
                 </svg>
@@ -135,7 +135,7 @@
         
         <!-- Header -->
         <div class="flex justify-between items-center p-4 border-b border-gray-700">
-            <h2 class="text-xl font-semibold text-emerald-400">Create Support Ticket</h2>
+            <h2 class="text-xl font-semibold text-red-400">Create Support Ticket</h2>
             <button id="close-form-btn" class="text-gray-400 hover:text-white">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
                     <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
@@ -148,22 +148,22 @@
             <form id="ticket-form" action="/profile/tickets/create" method="POST" class="space-y-4">
                 <div>
                     <label for="title" class="block text-sm font-medium text-gray-300 mb-1">Title</label>
-                    <input type="text" id="title" name="title" placeholder="Brief summary of your issue" required class="w-full px-3 py-2 rounded-md bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring focus:ring-emerald-500">
+                    <input type="text" id="title" name="title" placeholder="Brief summary of your issue" required class="w-full px-3 py-2 rounded-md bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring focus:ring-red-500">
                 </div>
 
                 <div>
                     <label for="reason" class="block text-sm font-medium text-gray-300 mb-1">Reason</label>
-                    <input type="text" id="reason" name="reason" placeholder="Main reason for this ticket" required class="w-full px-3 py-2 rounded-md bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring focus:ring-emerald-500">
+                    <input type="text" id="reason" name="reason" placeholder="Main reason for this ticket" required class="w-full px-3 py-2 rounded-md bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring focus:ring-red-500">
                 </div>
 
                 <div>
                     <label for="description" class="block text-sm font-medium text-gray-300 mb-1">Description</label>
-                    <textarea id="description" name="description" placeholder="Provide details about your issue..." rows="4" class="w-full px-3 py-2 rounded-md bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring focus:ring-emerald-500 resize-none"></textarea>
+                    <textarea id="description" name="description" placeholder="Provide details about your issue..." rows="4" class="w-full px-3 py-2 rounded-md bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring focus:ring-red-500 resize-none"></textarea>
                 </div>
 
                 <div>
                     <label for="type" class="block text-sm font-medium text-gray-300 mb-1">Priority</label>
-                    <select id="type" name="type" required class="w-full px-3 py-2 rounded-md bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring focus:ring-emerald-500">
+                    <select id="type" name="type" required class="w-full px-3 py-2 rounded-md bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring focus:ring-red-500">
                         <option value="low">Low Priority</option>
                         <option value="medium">Medium Priority</option>
                         <option value="high">High Priority</option>
@@ -195,7 +195,7 @@
                             <div class="flex items-center space-x-3">
                                 <img src="https://cdn.discordapp.com/avatars/<%= ticket.userId %>/<%= ticket.avatar %>.png" class="w-10 h-10 rounded-full border border-gray-600/50">
                                 <div>
-                                    <p class="font-semibold text-emerald-400"><%= ticket.username %></p>
+                                    <p class="font-semibold text-red-400"><%= ticket.username %></p>
                                     <p class="text-xs text-gray-400"><%= new Date(ticket.createdAt).toLocaleString() %></p>
                                 </div>
                             </div>
@@ -216,7 +216,7 @@
                             </h3>
                             <p class="text-xs text-gray-400 mb-2">
                                 Ticket #<%= ticket.ticketId %> • 
-                                <span class="<%= ticket.status === 'closed' ? 'text-red-400' : 'text-green-400' %>">
+                                <span class="<%= ticket.status === 'closed' ? 'text-red-400' : 'text-red-400' %>">
                                     <%= ticket.status.charAt(0).toUpperCase() + ticket.status.slice(1) %>
                                 </span>
                             </p>

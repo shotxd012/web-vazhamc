@@ -121,7 +121,7 @@
 
   <main class="container mx-auto px-4 py-16">
     <div class="container mx-auto px-4 py-10 flex flex-col items-center gap-4">
-        <h1 class="text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-teal-400 via-emerald-500 to-green-600">
+        <h1 class="text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-red-400 via-red-500 to-red-600">
             Ticket #<%= ticket.ticketId %>
         </h1>
     </div>
@@ -148,14 +148,14 @@
               
               <div class="bg-gray-700/50 p-4 rounded-lg">
                 <div class="flex items-center gap-2 mb-3">
-                  <span class="text-emerald-400 text-2xl">🎟️</span>
+                  <span class="text-red-400 text-2xl">🎟️</span>
                   <h2 class="text-xl font-semibold text-white"><%= ticket.title %></h2>
                 </div>
                 
                 <div class="grid grid-cols-1 gap-3 text-sm">
                   <p class="flex justify-between">
                     <span class="text-gray-400">Ticket ID:</span>
-                    <span class="font-mono text-emerald-400"><%= ticket.ticketId %></span>
+                    <span class="font-mono text-red-400"><%= ticket.ticketId %></span>
                   </p>
                   <p class="flex justify-between">
                     <span class="text-gray-400">Type:</span>
@@ -182,7 +182,7 @@
 
             <!-- Quick Actions -->
             <div class="bg-gray-900/70 rounded-lg border border-gray-700/50 mb-6">
-              <h3 class="text-sm font-semibold text-emerald-400 p-3 border-b border-gray-700/50">Quick Actions</h3>
+              <h3 class="text-sm font-semibold text-red-400 p-3 border-b border-gray-700/50">Quick Actions</h3>
               <div class="p-4 space-y-4">
                 <% if (ticket.status !== 'closed') { %>
                   <form action="/profile/ticket/<%= ticket.ticketId %>/close" method="POST" class="space-y-3">
@@ -209,12 +209,12 @@
             <div class="messages-container p-4 space-y-4 chat-scroll max-h-[500px] overflow-y-auto">
               <% messages.forEach(msg => { %>
                 <div class="flex <%= msg.userId === user.discordId ? 'justify-end' : 'justify-start' %>">
-                  <div class="max-w-[75%] <%= msg.userId === user.discordId ? 'bg-emerald-900/30 border-emerald-800/30' : 'bg-gray-700/70 border-gray-600/30' %> p-3 rounded-lg shadow-sm text-sm border message-bubble">
+                  <div class="max-w-[75%] <%= msg.userId === user.discordId ? 'bg-red-900/30 border-red-800/30' : 'bg-gray-700/70 border-gray-600/30' %> p-3 rounded-lg shadow-sm text-sm border message-bubble">
                     <div class="flex items-center gap-2 mb-2">
                       <img src="https://cdn.discordapp.com/avatars/<%= msg.userId %>/<%= msg.avatar %>.png" 
                            class="w-7 h-7 rounded-full border border-gray-600/50"
                            onerror="this.src='https://ui-avatars.com/api/?name=<%= encodeURIComponent(msg.username) %>&background=10b981&color=fff'"/>
-                      <span class="<%= msg.userId === user.discordId ? 'text-emerald-400' : 'text-blue-400' %> font-medium">
+                      <span class="<%= msg.userId === user.discordId ? 'text-red-400' : 'text-blue-400' %> font-medium">
                         <%= msg.userId === user.discordId ? msg.username : (msg.role || "Admin") %>
                       </span>
                     </div>
@@ -244,7 +244,7 @@
                   <div class="relative">
                     <textarea name="message" 
                               placeholder="Write your reply..." 
-                              class="w-full p-3 pr-12 rounded-lg bg-gray-700 text-white text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/50 resize-none"
+                              class="w-full p-3 pr-12 rounded-lg bg-gray-700 text-white text-sm focus:outline-none focus:ring-2 focus:ring-red-500/50 resize-none"
                               rows="4"
                               required></textarea>
                   </div>
@@ -256,7 +256,7 @@
                              accept="image/*" 
                              class="w-full p-2 bg-gray-700 border border-gray-600 rounded-lg text-sm text-white file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:bg-gray-600 file:text-white hover:file:bg-gray-500 cursor-pointer"/>
                     </div>
-                    <button type="submit" class="bg-emerald-600 hover:bg-emerald-700 px-6 py-2 rounded-lg text-white font-medium transition-colors flex items-center gap-2">
+                    <button type="submit" class="bg-red-600 hover:bg-red-700 px-6 py-2 rounded-lg text-white font-medium transition-colors flex items-center gap-2">
                       <i class="ph ph-paper-plane-right"></i>
                       Send Reply
                     </button>

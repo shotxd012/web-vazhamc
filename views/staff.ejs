@@ -42,7 +42,7 @@
     <main class="container mx-auto px-4 py-16">
         <!-- Header Section -->
         <div class="container mx-auto px-4 py-10 flex flex-col items-center gap-12">
-            <h1 class="text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-teal-400 via-emerald-500 to-green-600">
+            <h1 class="text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-red-400 via-red-500 to-red-600">
                 Meet Our Staff
             </h1>
             <p class="text-xl text-gray-300 text-center max-w-2xl">
@@ -58,15 +58,15 @@
                         <!-- Avatar with Status -->
                         <div class="relative mb-4">
                             <img src="<%= staff.avatar %>" alt="<%= staff.name %>" 
-                                class="w-24 h-24 rounded-full border-4 border-emerald-500 shadow-xl object-cover">
+                                class="w-24 h-24 rounded-full border-4 border-red-500 shadow-xl object-cover">
                             <div class="absolute bottom-2 right-2 w-4 h-4 rounded-full border-2 border-gray-900 shadow-lg"
-                                 style="background-color: <%= staff.status === 'online' ? '#34D399' : staff.status === 'idle' ? '#FACC15' : staff.status === 'dnd' ? '#EF4444' : '#6B7280' %>;">
+                                 style="background-color: <%= staff.status === 'online' ? '#EF4444' : staff.status === 'idle' ? '#FACC15' : staff.status === 'dnd' ? '#DC2626' : '#6B7280' %>;">
                             </div>
                         </div>
 
                         <!-- Staff Info -->
                         <h3 class="text-xl font-bold mb-2"><%= staff.name %></h3>
-                        <p class="text-emerald-400 font-medium mb-2"><%= staff.position %></p>
+                        <p class="text-red-400 font-medium mb-2"><%= staff.position %></p>
                         
                         <!-- Roles -->
                         <div class="flex flex-wrap gap-2 justify-center mb-4">
@@ -80,7 +80,7 @@
                         <!-- Status Badge -->
                         <div class="flex items-center gap-2 bg-gray-700 bg-opacity-50 px-4 py-2 rounded-lg">
                             <i class="ph ph-circle-fill text-sm"
-                               style="color: <%= staff.status === 'online' ? '#34D399' : staff.status === 'idle' ? '#FACC15' : staff.status === 'dnd' ? '#EF4444' : '#6B7280' %>;">
+                               style="color: <%= staff.status === 'online' ? '#EF4444' : staff.status === 'idle' ? '#FACC15' : staff.status === 'dnd' ? '#DC2626' : '#6B7280' %>;">
                             </i>
                             <span class="text-sm font-medium">
                                 <%= staff.status.charAt(0).toUpperCase() + staff.status.slice(1) %>
