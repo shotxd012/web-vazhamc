@@ -28,7 +28,13 @@ setInterval(fetchServerStatus, 60000);
 router.get("/", async (req, res) => {
     try {
         const topUsersRes = await axios.get(`${process.env.BASE_URL}/api/v1/top-users`);
-        const topUsers = topUsersRes.data;
+        let topUsers = topUsersRes.data;
+
+        // Defensive: ensure topUsers is an array before rendering
+        if (!Array.isArray(topUsers)) {
+            console.warn("/ - Warning: /api/v1/top-users returned non-array, coercing to []", { topUsersType: typeof topUsers });
+            topUsers = [];
+        }
 
         res.render("index", {
             user: req.user,

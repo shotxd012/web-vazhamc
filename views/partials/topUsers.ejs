@@ -16,7 +16,7 @@
 
             <!-- Users List -->
             <div class="space-y-3 sm:space-y-4">
-                <% topUsers.forEach((user, index) => { %>
+                <% (Array.isArray(topUsers) ? topUsers : []).forEach((user, index) => { %>
                     <div class="bg-gray-800 bg-opacity-50 p-3 sm:p-4 rounded-xl border border-gray-700 shadow-lg hover:transform hover:translate-x-2 transition-all duration-300 hover:shadow-emerald-500/10 hover:border-emerald-500/50 group">
                         <div class="flex items-center gap-3 sm:gap-4">
                             <!-- Rank Badge -->
