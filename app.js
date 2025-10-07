@@ -48,22 +48,9 @@ loadEvents();
 app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
-    saveUninitialized: false,
-    cookie: {
-        secure: process.env.NODE_ENV === 'production',
-        httpOnly: true,
-        maxAge: null,
-        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
-        domain: process.env.NODE_ENV === 'production' ? process.env.COOKIE_DOMAIN : undefined
-    },
-    name: 'sessionId',
-    proxy: process.env.NODE_ENV === 'production' // Trust the reverse proxy when setting secure cookies
+    saveUninitialized: false
 }));
 
-// Trust proxy in production
-if (process.env.NODE_ENV === 'production') {
-    app.set('trust proxy', 1);
-}
 
 // Initialize Passport and restore authentication state from session
 app.use(passport.initialize());
@@ -74,10 +61,7 @@ app.use((req, res, next) => {
     console.log('Session state:', {
         isAuthenticated: req.isAuthenticated(),
         sessionID: req.sessionID,
-        user: req.user ? 'User exists' : 'No user',
-        env: process.env.NODE_ENV,
-        secure: req.secure,
-        host: req.headers.host
+        user: req.user ? 'User exists' : 'No user'
     });
     next();
 });

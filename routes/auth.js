@@ -66,7 +66,6 @@ router.get("/logout", (req, res) => {
             if (err) {
                 console.error('Error during logout:', err);
             }
-            res.clearCookie('sessionId');
             res.redirect("/");
         });
     });
