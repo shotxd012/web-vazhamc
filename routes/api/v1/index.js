@@ -7,7 +7,6 @@ const mediaRoutes = require("./media");
 const ticketsRoutes = require("./tickets");
 const commentsRoutes = require("./comments");
 const statusRoutes = require("./status");
-const docsRoutes = require("./docs");
 
 // Import useful API keys and configurations from all route modules
 const cloudinary = require("../../../config/cloudinary");
