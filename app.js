@@ -102,6 +102,8 @@ app.use("/legal", legalRoutes);
 app.use("/status", statusRoutes);
 app.use(developerRoutes);
 
+
+
 // Error handling routes
 app.use((req, res, next) => {
     res.status(404).render('errors/404', {
