@@ -13,7 +13,7 @@ passport.use(new DiscordStrategy({
     clientID: process.env.DISCORD_CLIENT_ID,
     clientSecret: process.env.DISCORD_CLIENT_SECRET,
     callbackURL: callbackURL,
-    scope: ["identify"]
+    scope: ["identify", "guilds"]
 }, async (accessToken, refreshToken, profile, done) => {
     console.log('Discord strategy called with profile:', {
         id: profile.id,
@@ -30,16 +30,18 @@ passport.use(new DiscordStrategy({
                 discordId: profile.id,
                 username: profile.username,
                 avatar: profile.avatar,
+                guilds: profile.guilds,
                 role: "Member"
             });
             await user.save();
             console.log('New user created:', user.username);
         } else {
             // Update user information if it has changed
-            if (user.username !== profile.username || user.avatar !== profile.avatar) {
+            if (user.username !== profile.username || user.avatar !== profile.avatar || user.guilds !== profile.guilds) {
                 console.log('Updating user information');
                 user.username = profile.username;
                 user.avatar = profile.avatar;
+                user.guilds = profile.guilds;
                 await user.save();
                 console.log('User updated:', user.username);
             }

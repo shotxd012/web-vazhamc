@@ -1,0 +1,94 @@
+<%- include('../partials/head') %>
+<%- include('../partials/message') %>
+
+<body class="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white">
+    <%- include('../partials/nav') %>
+
+    <main class="container mx-auto px-4 pt-24 pb-16">
+        <!-- Admin Source Code Management Header -->
+        <div class="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-8 mb-8 border border-gray-700/50 shadow-xl mt-16">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 class="text-3xl font-bold text-white mb-2">Source Code Management</h1>
+                    <p class="text-gray-400">Manage source code uploads</p>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span class="px-4 py-2 bg-red-500/10 text-red-400 rounded-full text-sm font-medium">
+                        <i class="ph ph-shield-check mr-2"></i>Staff Member
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add Source Code Form -->
+        <div class="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 mb-8">
+            <h3 class="text-lg font-semibold text-white mb-4">Add New Source Code</h3>
+            <form action="/admin/source-code" method="POST">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="title" class="block text-sm font-medium text-gray-400 mb-2">Title</label>
+                        <input type="text" name="title" id="title" class="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-4 py-2 text-white placeholder-gray-400 focus:outline-none focus:border-red-500" required>
+                    </div>
+                    <div>
+                        <label for="githubLink" class="block text-sm font-medium text-gray-400 mb-2">GitHub Link</label>
+                        <input type="text" name="githubLink" id="githubLink" class="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-4 py-2 text-white placeholder-gray-400 focus:outline-none focus:border-red-500" required>
+                    </div>
+                    <div class="md:col-span-2">
+                        <label for="youtubeThumbnail" class="block text-sm font-medium text-gray-400 mb-2">YouTube Thumbnail URL</label>
+                        <input type="text" name="youtubeThumbnail" id="youtubeThumbnail" class="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-4 py-2 text-white placeholder-gray-400 focus:outline-none focus:border-red-500" required>
+                    </div>
+                    <div class="md:col-span-2">
+                        <label for="description" class="block text-sm font-medium text-gray-400 mb-2">Description</label>
+                        <textarea name="description" id="description" rows="4" class="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-4 py-2 text-white placeholder-gray-400 focus:outline-none focus:border-red-500"></textarea>
+                    </div>
+                    <div>
+                        <label for="price" class="block text-sm font-medium text-gray-400 mb-2">Price</label>
+                        <input type="number" name="price" id="price" class="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-4 py-2 text-white placeholder-gray-400 focus:outline-none focus:border-red-500" value="0">
+                    </div>
+                    <div>
+                        <label for="isPaid" class="block text-sm font-medium text-gray-400 mb-2">Paid</label>
+                        <input type="checkbox" name="isPaid" id="isPaid" class="w-6 h-6 bg-gray-700/50 border border-gray-600 rounded-lg focus:outline-none focus:border-red-500">
+                    </div>
+                </div>
+                <div class="mt-6">
+                    <button type="submit" class="px-6 py-2 bg-red-600 hover:bg-red-700 rounded-lg font-medium transition-colors">Add Source Code</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Source Code List -->
+        <div class="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50">
+            <h3 class="text-lg font-semibold text-white mb-4">Recent Source Codes</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <% sourceCodes.forEach(item => { %>
+                    <div class="bg-gray-700/30 rounded-xl p-4">
+                        <img src="<%= item.youtubeThumbnail %>" alt="Youtube Thumbnail" class="w-full h-48 object-cover rounded-lg mb-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="flex items-center space-x-2">
+                                <img src="https://cdn.discordapp.com/avatars/<%= item.discordId %>/<%= item.avatar %>.png" 
+                                     alt="<%= item.username %>" 
+                                     class="w-6 h-6 rounded-full">
+                                <span class="text-white font-medium"><%= item.username %></span>
+                            </div>
+                            <span class="text-gray-400 text-sm"><%= new Date(item.timestamp).toLocaleDateString() %></span>
+                        </div>
+                        <h4 class="text-lg font-semibold text-white mb-2"><%= item.title %></h4>
+                        <p class="text-gray-400 text-sm mb-4"><%= item.description || 'No description' %></p>
+                        <div class="flex items-center justify-between">
+                            <a href="<%= item.githubLink %>" target="_blank" class="px-3 py-1 bg-blue-500/10 text-blue-400 rounded-lg hover:bg-blue-500/20 transition-colors">
+                                <i class="ph ph-github-logo mr-1"></i>GitHub
+                            </a>
+                            <form action="/admin/source-code/<%= item._id %>/delete" method="POST" onsubmit="return confirm('Are you sure you want to delete this source code?');">
+                                <button type="submit" class="px-3 py-1 bg-red-500/10 text-red-400 rounded-lg hover:bg-red-500/20 transition-colors">
+                                    <i class="ph ph-trash mr-1"></i>Delete
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                <% }); %>
+            </div>
+        </div>
+    </main>
+
+    <%- include('../partials/footer') %>
+</body>

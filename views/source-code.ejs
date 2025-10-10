@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('partials/head') %>
+</head>
+<body class="bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white font-sans min-h-screen">
+    <%- include('partials/nav') %>
+    <%- include('partials/message') %>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-16">
+        <div class="container mx-auto px-4 py-10 flex flex-col items-center gap-12">
+            <h1 class="text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-red-400 via-red-500 to-red-600 mb-4">
+                Source Codes
+            </h1>
+            <p class="text-gray-400 max-w-2xl mx-auto">
+                Explore and download source codes for your projects.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <% sourceCodes.forEach(item => { %>
+                <div class="media-card bg-gray-800 bg-opacity-50 backdrop-blur-xl rounded-2xl overflow-hidden border border-gray-700 shadow-xl">
+                    <!-- Media Header -->
+                    <div class="relative">
+                        <img src="<%= item.youtubeThumbnail %>" alt="Youtube Thumbnail" class="w-full h-72 object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent"></div>
+                        
+                        <!-- User Info -->
+                        <div class="absolute bottom-4 left-4 flex items-center space-x-3">
+                            <img src="https://cdn.discordapp.com/avatars/<%= item.discordId %>/<%= item.avatar %>.png" 
+                                 class="w-10 h-10 rounded-full border-2 border-red-500 shadow-lg"
+                                 alt="<%= item.username %>">
+                            <span class="font-medium text-white shadow-text"><%= item.username %></span>
+                        </div>
+                    </div>
+
+                    <!-- Content -->
+                    <div class="p-6">
+                        <h2 class="text-2xl font-bold mb-2"><%= item.title %></h2>
+                        <% if (item.description) { %>
+                            <p class="text-gray-300 mb-4"><%= item.description %></p>
+                        <% } %>
+
+                        <!-- Interaction Buttons -->
+                        <div class="flex items-center justify-between">
+                            <% if (item.isPaid) { %>
+                                <a href="/source-code/<%= item._id %>/purchase" class="bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                                    Purchase ($<%= item.price %>)
+                                </a>
+                            <% } else { %>
+                                <a href="<%= item.githubLink %>" target="_blank" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                                    View on GitHub
+                                </a>
+                            <% } %>
+                        </div>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+    </main>
+
+    <%- include('partials/footer') %>
+</body>
+</html>

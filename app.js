@@ -25,6 +25,7 @@ const admin = require("./routes/admin/dash");
 const legalRoutes = require("./routes/legal");
 const statusRoutes = require("./routes/status");
 const developerRoutes = require("./routes/developer");
+const sourceCodeRoutes = require("./routes/sourceCode");
 const apiDocsRoutes = require("./routes/api/docs");
 const path = require('path');
 const { loadEvents } = require('./events');
@@ -99,9 +100,11 @@ app.use(adminticket);
 app.use("/admin/tickets", adminTicketRoutes);
 app.use("/admin", admin);
 app.use("/admin/media", require("./routes/admin/media"));
+app.use("/admin", require("./routes/admin/sourceCode"));
 app.use("/legal", legalRoutes);
 app.use("/status", statusRoutes);
 app.use(developerRoutes);
+app.use(sourceCodeRoutes);
 app.use("/api/docs", apiDocsRoutes);
 
 
