@@ -44,24 +44,8 @@ router.get("/", isStaff, async (req, res) => {
         const totalMedia = await Media.countDocuments();
         const totalComments = await Comment.countDocuments();
         
-        // Get top media users with user information
-        const topMediaUsers = await Media.aggregate([
-            { $group: { _id: "$discordId", count: { $sum: 1 } } },
-            { $sort: { count: -1 } },
-            { $limit: 5 }
-        ]);
-
-        // Get user information for top media users
-        const topUsersWithInfo = await Promise.all(
-            topMediaUsers.map(async (user) => {
-                const userInfo = await User.findOne({ discordId: user._id });
-                return {
-                    ...user,
-                    username: userInfo ? userInfo.username : 'Unknown User',
-                    avatar: userInfo ? userInfo.avatar : null
-                };
-            })
-        );
+    // The top-media-users feature was removed; keep an empty array for template compatibility.
+    const topUsersWithInfo = [];
 
         // Get user information for media
         const mediaWithUserInfo = await Promise.all(
@@ -93,7 +77,7 @@ router.get("/", isStaff, async (req, res) => {
             comments: commentsWithUserInfo,
             totalMedia,
             totalComments,
-            topMediaUsers: topUsersWithInfo
+      topMediaUsers: topUsersWithInfo
         });
     } catch (error) {
         console.error("Media Management Error:", error);

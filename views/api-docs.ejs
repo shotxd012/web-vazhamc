@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('partials/head') %>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&family=Poppins:wght@400;600&display=swap');
+
+    :root {
+      --bg-dark: #0f172a;
+      --bg-light: #1e293b;
+      --text-primary: #f9fafb;
+      --text-secondary: #94a3b8;
+      --border: #334155;
+      --accent: #3b82f6;
+      --radius: 12px;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-primary);
+      margin: 0;
+      line-height: 1.6;
+    }
+
+    /* Layout */
+    .api-docs-container {
+      display: flex;
+      flex-wrap: wrap;
+      padding-top: 100px;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding-inline: 20px;
+      gap: 30px;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 280px;
+      flex-shrink: 0;
+      position: sticky;
+      top: 100px;
+      align-self: flex-start;
+      height: fit-content;
+    }
+
+    .sidebar-inner {
+      background: var(--bg-light);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 25px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      transition: transform 0.2s;
+    }
+
+    .sidebar-inner:hover {
+      transform: translateY(-2px);
+    }
+
+    .sidebar h2 {
+      font-weight: 600;
+      font-size: 1.3em;
+      margin-bottom: 1rem;
+      color: white;
+    }
+
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .sidebar li a {
+      display: block;
+      padding: 10px 15px;
+      margin-bottom: 6px;
+      color: var(--text-secondary);
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 0.95em;
+      transition: all 0.2s ease;
+    }
+
+    .sidebar li a:hover {
+      background-color: #334155;
+      color: white;
+      transform: translateX(3px);
+    }
+
+    .sidebar li a.active {
+      background-color: var(--accent);
+      color: white;
+      font-weight: 600;
+    }
+
+    /* Content */
+    .content {
+      flex-grow: 1;
+      min-width: 300px;
+    }
+
+    .endpoint {
+      margin-bottom: 70px;
+      display: none;
+      animation: fadeIn 0.4s ease;
+    }
+
+    .endpoint.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .endpoint h3 {
+      display: flex;
+      align-items: center;
+      font-size: 1.8em;
+      margin-bottom: 20px;
+    }
+
+    .endpoint .method {
+      font-family: 'Roboto Mono', monospace;
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 0.8em;
+      font-weight: 700;
+      margin-right: 10px;
+      color: white;
+    }
+
+    .get { background: #10b981; }
+    .post { background: #3b82f6; }
+    .put { background: #f59e0b; }
+    .delete { background: #ef4444; }
+
+    .endpoint p {
+      color: var(--text-secondary);
+      font-size: 1em;
+      margin-bottom: 18px;
+    }
+
+    /* Code Blocks */
+    pre {
+      position: relative;
+      background: var(--bg-light);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      font-family: 'Roboto Mono', monospace;
+      color: #e5e7eb;
+      font-size: 0.9em;
+      overflow-x: auto;
+      box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+    }
+
+    .copy-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: #475569;
+      border: none;
+      color: white;
+      border-radius: 8px;
+      font-size: 0.8em;
+      padding: 5px 10px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .copy-btn:hover {
+      background: #64748b;
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .api-docs-container {
+        flex-direction: column;
+        padding-top: 80px;
+      }
+      .sidebar {
+        width: 100%;
+        position: relative;
+        top: 0;
+      }
+      .sidebar-inner {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      .sidebar ul {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        justify-content: center;
+      }
+      .sidebar li a {
+        font-size: 0.85em;
+        padding: 8px 10px;
+      }
+      .content {
+        padding-left: 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <%- include('partials/background') %>
+  <%- include('partials/nav') %>
+
+  <div class="api-docs-container">
+
+    <!-- Main Content -->
+    <main class="content">
+      <div id="comments" class="endpoint active">
+        <h3><span class="method get">GET</span> /api/v1/comments</h3>
+        <p>Fetches all comments from the database.</p>
+        <pre><button class="copy-btn">Copy</button><code>[
+  {
+    "_id": "60c72b2f9b1d8c001f8e4c6a",
+    "text": "This is a sample comment.",
+    "author": "user123",
+    "createdAt": "2023-10-08T12:00:00.000Z"
+  }
+]</code></pre>
+      </div>
+    <div class="api-docs-container">
+        <aside class="sidebar">
+            <div class="sidebar-inner">
+                <h2>API Reference</h2>
+                <nav>
+                    <ul>
+                        <li><a href="#comments">GET /comments</a></li>
+                        <li><a href="#media">GET /media</a></li>
+                        <li><a href="#profile-stats">GET /profile/stats</a></li>
+                        <li><a href="#status-vazha">GET /status/vazha</a></li>
+                        <li><a href="#status-media">GET /status/media</a></li>
+                        <li><a href="#tickets">GET /tickets</a></li>
+                        <li><a href="#status-all">GET /status/all</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </aside>
+
+        <main class="content">
+            <div id="comments" class="endpoint">
+                <h3><span class="method get">GET</span> /api/v1/comments</h3>
+                <p>Fetches all comments from the database.</p>
+                <p><strong>Example Response:</strong></p>
+                <pre><button class="copy-btn">Copy</button><code>[
+    {
+        "_id": "60c72b2f9b1d8c001f8e4c6a",
+        "text": "This is a sample comment.",
+        "author": "user123",
+        "createdAt": "2023-10-08T12:00:00.000Z"
+    }
+]</code></pre>
+            </div>
+
+            <div id="media" class="endpoint">
+                <h3><span class="method get">GET</span> /api/v1/media</h3>
+                <p>Retrieves a list of all media files.</p>
+                <p><strong>Example Response:</strong></p>
+                <pre><button class="copy-btn">Copy</button><code>[
+    {
+        "_id": "60c72b2f9b1d8c001f8e4c6b",
+        "url": "https://example.com/media.jpg",
+        "author": "user456",
+        "createdAt": "2023-10-08T12:05:00.000Z"
+    }
+]</code></pre>
+            </div>
+
+            <div id="profile-stats" class="endpoint">
+                <h3><span class="method get">GET</span> /api/v1/profile/stats</h3>
+                <p>Fetches statistics for the authenticated user. Requires authentication.</p>
+                <p><strong>Example Response:</strong></p>
+                <pre><button class="copy-btn">Copy</button><code>{
+    "mediaCount": 15,
+    "activeTickets": 3,
+    "totalLikes": 250,
+    "commentCount": 8
+}</code></pre>
+            </div>
+
+            <div id="status-vazha" class="endpoint">
+                <h3><span class="method get">GET</span> /api/v1/status/vazha</h3>
+                <p>Fetches the current status of the Minecraft server.</p>
+                <p><strong>Example Response:</strong></p>
+                <pre><button class="copy-btn">Copy</button><code>{
+    "online": true,
+    "players": {
+        "online": 25,
+        "max": 100
+    },
+    "version": "1.20.1",
+    "motd": {
+        "raw": "Vazha Network",
+        "clean": "Vazha Network"
+    }
+}</code></pre>
+            </div>
+
+            <div id="status-media" class="endpoint">
+                <h3><span class="method get">GET</span> /api/v1/status/media</h3>
+                <p>Checks the status of the media service (Cloudinary).</p>
+                <p><strong>Example Response:</strong></p>
+                <pre><button class="copy-btn">Copy</button><code>{
+    "status": "connected",
+    "message": "Media service (Cloudinary) is connected successfully",
+    "timestamp": "2023-10-08T12:10:00.000Z"
+}</code></pre>
+            </div>
+
+            <div id="tickets" class="endpoint">
+                <h3><span class="method get">GET</span> /api/v1/tickets</h3>
+                <p>Retrieves all support tickets.</p>
+                <p><strong>Example Response:</strong></p>
+                <pre><button class="copy-btn">Copy</button><code>[
+    {
+        "_id": "60c72b2f9b1d8c001f8e4c6c",
+        "title": "Urgent: Server Issue",
+        "status": "open",
+        "author": "user789",
+        "createdAt": "2023-10-08T12:15:00.000Z"
+    }
+]</code></pre>
+            </div>
+
+            <div id="status-all" class="endpoint">
+                <h3><span class="method get">GET</span> /api/v1/status/all</h3>
+                <p>Provides a comprehensive status report of all integrated services.</p>
+                <p><strong>Example Response:</strong></p>
+                <pre><button class="copy-btn">Copy</button><code>{
+    "timestamp": "2023-10-08T12:20:00.000Z",
+    "services": {
+        "cloudinary": {
+            "status": "operational",
+            "message": "Cloudinary is connected"
+        },
+        "discord": {
+            "status": "operational",
+            "message": "Connected to guild: Vazha Devs"
+        },
+        "database": {
+            "status": "operational",
+            "message": "MongoDB is connected"
+        },
+        "minecraft": {
+            "status": "operational",
+            "message": "Minecraft server is online"
+        }
+    },
+    "overall": {
+        "status": "operational",
+        "message": "4/4 services operational"
+    }
+}</code></pre>
+            </div>
+        </main>
+    </div>
+    </main>
+  </div>
+
+  <%- include('partials/footer') %>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const links = document.querySelectorAll('.sidebar a');
+      const endpoints = document.querySelectorAll('.endpoint');
+      const copyButtons = document.querySelectorAll('.copy-btn');
+
+      function showEndpoint(id) {
+        endpoints.forEach(ep => ep.classList.remove('active'));
+        links.forEach(link => link.classList.remove('active'));
+        const active = document.querySelector(id);
+        const activeLink = document.querySelector(`a[href="${id}"]`);
+        if (active) active.classList.add('active');
+        if (activeLink) activeLink.classList.add('active');
+        active?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+
+      links.forEach(link => {
+        link.addEventListener('click', e => {
+          e.preventDefault();
+          const target = link.getAttribute('href');
+          history.pushState(null, null, target);
+          showEndpoint(target);
+        });
+      });
+
+      copyButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const code = btn.nextElementSibling.innerText;
+          navigator.clipboard.writeText(code).then(() => {
+            btn.innerText = 'Copied!';
+            setTimeout(() => btn.innerText = 'Copy', 2000);
+          });
+        });
+      });
+
+      window.addEventListener('popstate', () => {
+        showEndpoint(location.hash || '#comments');
+      });
+
+      showEndpoint(location.hash || '#comments');
+    });
+  </script>
+</body>
+</html>

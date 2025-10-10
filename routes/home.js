@@ -25,30 +25,14 @@ async function fetchServerStatus() {
 fetchServerStatus();
 setInterval(fetchServerStatus, 60000);
 
-router.get("/", async (req, res) => {
-    try {
-        const topUsersRes = await axios.get(`${process.env.BASE_URL}/api/v1/top-users`);
-        let topUsers = topUsersRes.data;
-
-        // Defensive: ensure topUsers is an array before rendering
-        if (!Array.isArray(topUsers)) {
-            console.warn("/ - Warning: /api/v1/top-users returned non-array, coercing to []", { topUsersType: typeof topUsers });
-            topUsers = [];
-        }
-
-        res.render("index", {
-            user: req.user,
-            serverStatus,
-            topUsers
-        });
-    } catch (err) {
-        console.error("Failed to fetch top users:", err.message);
-        res.render("index", {
-            user: req.user,
-            serverStatus,
-            topUsers: []
-        });
-    }
+router.get("/", (req, res) => {
+    // The external `/api/v1/top-users` endpoint is no longer used.
+    // Render the index page and provide an empty `topUsers` array so the view remains compatible.
+    res.render("index", {
+        user: req.user,
+        serverStatus,
+        topUsers: []
+    });
 });
 
 module.exports = router;
