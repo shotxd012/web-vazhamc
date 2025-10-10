@@ -1,0 +1,44 @@
+<%- include('../partials/shot/head') %>
+<%- include('../partials/shot/header') %>
+
+<div class="min-h-screen bg-gray-900 text-white py-12 px-4">
+	<div class="max-w-6xl mx-auto">
+		<div class="flex items-center justify-between mb-6">
+			<h1 class="text-3xl font-bold">Your Orders</h1>
+			<a href="/orders/create" class="bg-proxblue text-white px-4 py-2 rounded-md">New Order</a>
+		</div>
+
+		<% if (Array.isArray(orders) && orders.length) { %>
+			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+				<% orders.forEach(function(order){ %>
+					<div class="bg-gradient-to-br from-gray-800 to-gray-700 p-4 rounded-lg shadow">
+						<div class="flex items-center justify-between">
+							<div>
+								<h3 class="font-semibold">Order #<%= order.id %></h3>
+								<p class="text-gray-300 text-sm">Plan: <%= order.plan %></p>
+							</div>
+							<div class="text-right">
+								<div class="text-sm text-gray-300">$<%= order.price %></div>
+								<div class="text-xs mt-1 text-green-400">Completed</div>
+							</div>
+						</div>
+						<div class="mt-4 flex items-center gap-2">
+							<a href="/orders/<%= order.id %>" class="text-sm bg-proxblue px-3 py-1 rounded">View</a>
+							<a href="/profile/tickets/create?order=<%= order.id %>" class="text-sm border border-gray-600 px-3 py-1 rounded">Support</a>
+						</div>
+					</div>
+				<% }) %>
+			</div>
+		<% } else { %>
+			<div class="rounded-lg bg-gradient-to-br from-gray-800 to-gray-700 p-8 text-center">
+				<h2 class="text-2xl font-bold">No orders yet</h2>
+				<p class="text-gray-300 mt-2">Place your first order and we'll get started.</p>
+				<div class="mt-6">
+					<a href="/orders/create" class="bg-white text-proxblue px-6 py-3 rounded-full font-semibold">Create Order</a>
+				</div>
+			</div>
+		<% } %>
+	</div>
+</div>
+
+<%- include('../partials/footer') %>

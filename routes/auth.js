@@ -1,3 +1,5 @@
+// auth.js
+
 const express = require("express");
 const passport = require("passport");
 const User = require("../models/User");
@@ -31,11 +33,25 @@ router.get("/dev-login/:userId", async (req, res) => {
 });
 
 // Start OAuth login flow
-router.get("/login", passport.authenticate("discord"));
+router.get("/login", (req, res, next) => {
+    // If a returnTo query is provided, store it in the session.
+    // Express automatically decodes this from the query string.
+    if (req.query.returnTo) {
+        req.session.returnTo = req.query.returnTo;
+    }
+    // Proceed with Passport to authenticate with Discord
+    return passport.authenticate("discord")(req, res, next);
+});
 
 // Discord callback route with debugging
 router.get("/auth/discord/callback", (req, res, next) => {
     console.log("Callback route hit");
+
+    // ✅ FIX: Use a custom callback to handle the redirect logic cleanly.
+    // Retrieve the destination URL *before* the login clears the session.
+    const dest = req.session.returnTo || '/profile';
+    delete req.session.returnTo; // Clean up the session immediately
+
     passport.authenticate("discord", {
         failureRedirect: "/",
     }, (err, user, info) => {
@@ -51,10 +67,12 @@ router.get("/auth/discord/callback", (req, res, next) => {
             }
 
             console.log("Login successful:", user);
-            return res.redirect("/profile");
+            // Now, redirect to the saved destination.
+            return res.redirect(dest);
         });
     })(req, res, next);
 });
+
 
 // Logout route
 router.get("/logout", (req, res) => {

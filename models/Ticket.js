@@ -57,9 +57,23 @@ function createTicketEmbed(ticket, type = "created") {
 // Save hook
 TicketSchema.post("save", async function (doc, next) {
   try {
-    const logChannel = await client.channels.fetch(process.env.DISCORD_TICKET_LOG_CHANNEL);
+    // ensure the discord client is ready before using it
+    if (typeof client.waitUntilReady === 'function') {
+      await client.waitUntilReady();
+    }
+
+    const logChannelId = process.env.DISCORD_TICKET_LOG_CHANNEL;
+    if (!logChannelId) {
+      console.error('DISCORD_TICKET_LOG_CHANNEL is not set in environment');
+      return next();
+    }
+
+    const logChannel = await client.channels.fetch(logChannelId).catch(err => {
+      console.error('Failed to fetch DISCORD_TICKET_LOG_CHANNEL:', err?.message ?? err);
+      return null;
+    });
     if (!logChannel) {
-      console.error("❌ DISCORD_TICKET_LOG_CHANNEL not found.");
+      console.error("❌ DISCORD_TICKET_LOG_CHANNEL not found or bot missing access.");
       return next();
     }
 

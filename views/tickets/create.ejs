@@ -1,0 +1,42 @@
+<%- include('../partials/head') %>
+<%- include('../partials/nav') %>
+
+<div class="container mx-auto px-4 py-8">
+  <h1 class="text-3xl font-bold mb-4">Create Ticket / Order</h1>
+
+  <form action="/profile/tickets/create" method="POST" class="space-y-4 max-w-xl">
+    <div>
+      <label class="block text-sm font-medium text-gray-300">Title (Plan)</label>
+      <input name="title" value="<%= plan %>" class="mt-1 block w-full rounded-md bg-gray-800 border-gray-700 text-white p-2" required />
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium text-gray-300">Reason</label>
+      <select name="reason" class="mt-1 block w-full rounded-md bg-gray-800 border-gray-700 text-white p-2" required>
+        <option value="order">Order / Purchase</option>
+        <option value="custom">Custom Request</option>
+      </select>
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium text-gray-300">Description / Requirements</label>
+      <textarea name="description" rows="6" class="mt-1 block w-full rounded-md bg-gray-800 border-gray-700 text-white p-2"><%= price ? `Price: ₹${price}\n\n` : '' %></textarea>
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium text-gray-300">Priority</label>
+      <select name="type" class="mt-1 block w-full rounded-md bg-gray-800 border-gray-700 text-white p-2" required>
+        <option value="low">Low</option>
+        <option value="medium">Medium</option>
+        <option value="high">High</option>
+      </select>
+    </div>
+
+    <div>
+      <button type="submit" class="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-full">Create Ticket</button>
+      <a href="/profile/tickets" class="ml-4 text-gray-300">Back to Tickets</a>
+    </div>
+  </form>
+</div>
+
+<%- include('../partials/footer') %>

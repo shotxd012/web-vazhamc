@@ -5,11 +5,14 @@ const Message = require("../models/TicketMessage");
 const { CloudinaryStorage } = require("multer-storage-cloudinary");
 const multer = require("multer");
 const cloudinary = require("cloudinary").v2;
+const ensureOrderAuth = require("../middleware/ensureOrderAuth");
 
 // Auth middleware
 function isAuthenticated(req, res, next) {
-    if (req.isAuthenticated && req.isAuthenticated()) return next();
-    return res.redirect("/login");
+  if (req.isAuthenticated && req.isAuthenticated()) return next();
+  // Save the original URL (e.g. /profile/tickets/create?plan=Premium&price=9.99)
+  const returnTo = encodeURIComponent(req.originalUrl);
+  return res.redirect(`/login?returnTo=${returnTo}`);
 }
 
 // Ticket panel
@@ -18,8 +21,15 @@ router.get("/profile/tickets", isAuthenticated, async (req, res) => {
     res.render("ticketPanel", { user: req.user, tickets });
 });
 
+// GET ticket creation form (prefill from query: plan, price)
+router.get('/profile/tickets/create', ensureOrderAuth, (req, res) => {
+  const { plan = '', price = '' } = req.query;
+  // We'll map plan/price into the ticket form: use title=plan and description includes price.
+  res.render('tickets/create', { user: req.user, plan, price });
+});
+
 // Create ticket
-router.post("/profile/tickets/create", isAuthenticated, async (req, res) => {
+router.post("/profile/tickets/create", ensureOrderAuth, async (req, res) => {
     const { title, reason, description, type } = req.body;
 
     if (!title || !reason || !type) {
@@ -58,11 +68,12 @@ cloudinary.config({
   // Middleware to check auth
   function isAuthenticated(req, res, next) {
     if (req.isAuthenticated()) return next();
-    res.redirect("/login");
+    const returnTo = encodeURIComponent(req.originalUrl);
+    res.redirect(`/login?returnTo=${returnTo}`);
   }
   
   // Ticket detail page
-  router.get("/profile/ticket/:ticketId", isAuthenticated, async (req, res) => {
+  router.get("/profile/ticket/:ticketId", ensureOrderAuth, async (req, res) => {
     const ticket = await Ticket.findOne({ ticketId: req.params.ticketId });
     const messages = await Message.find({ ticketId: req.params.ticketId }).sort({ timestamp: 1 });
   
@@ -74,7 +85,7 @@ cloudinary.config({
   });
   
   // Post a message (text/image)
-  router.post("/profile/ticket/:ticketId/message", isAuthenticated, upload.single("image"), async (req, res) => {
+  router.post("/profile/ticket/:ticketId/message", ensureOrderAuth, upload.single("image"), async (req, res) => {
     const { ticketId } = req.params;
     const { message } = req.body;
     let imageUrl = null;

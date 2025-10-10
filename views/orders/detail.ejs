@@ -1,0 +1,62 @@
+<%- include('../partials/shot/head') %>
+<%- include('../partials/shot/header') %>
+
+<div class="min-h-screen bg-gray-900 text-white py-12 px-4">
+	<div class="max-w-4xl mx-auto">
+		<div class="bg-gradient-to-br from-gray-800 to-gray-700 rounded-xl p-6 shadow-lg">
+			<div class="flex items-start justify-between">
+				<div>
+					<h1 class="text-2xl font-bold">Order Summary</h1>
+					<p class="text-gray-300 mt-1">Order #<%= typeof order !== 'undefined' ? order.id : '—' %></p>
+				</div>
+				<div class="text-right">
+					<span class="text-sm text-gray-300">Status</span>
+					<div class="mt-1 inline-block px-3 py-1 rounded-full bg-green-600 text-white text-sm font-medium">Completed</div>
+				</div>
+			</div>
+
+			<div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+				<div class="space-y-4">
+					<div class="p-4 bg-gray-800 rounded-lg">
+						<h3 class="text-lg font-semibold">Plan</h3>
+						<p class="text-gray-300 mt-1"><%= typeof order !== 'undefined' ? order.plan : 'Pro' %></p>
+					</div>
+
+					<div class="p-4 bg-gray-800 rounded-lg">
+						<h3 class="text-lg font-semibold">Items</h3>
+						<ul class="mt-2 text-gray-300 list-disc list-inside">
+							<li>Edited images: <%= typeof order !== 'undefined' ? order.items : '5' %></li>
+							<li>Delivery: <%= typeof order !== 'undefined' ? order.delivery : 'Priority' %></li>
+						</ul>
+					</div>
+
+					<div class="p-4 bg-gray-800 rounded-lg">
+						<h3 class="text-lg font-semibold">Notes</h3>
+						<p class="text-gray-300 mt-1"><%= typeof order !== 'undefined' ? order.notes : 'No notes provided.' %></p>
+					</div>
+				</div>
+
+				<aside class="p-4 bg-gradient-to-br from-gray-900 to-gray-800 rounded-lg">
+					<h3 class="text-lg font-semibold">Payment</h3>
+					<div class="mt-4 flex items-baseline justify-between">
+						<div>
+							<div class="text-gray-300">Amount</div>
+							<div class="text-2xl font-bold">$<%= typeof order !== 'undefined' ? order.price : '25' %></div>
+						</div>
+						<div class="text-right">
+							<div class="text-gray-300">Method</div>
+							<div class="mt-1">Card •••• 4242</div>
+						</div>
+					</div>
+
+					<div class="mt-6 space-y-2">
+						<a href="/profile/tickets/create" class="block w-full text-center bg-proxblue hover:bg-blue-500 text-white py-2 rounded-md font-semibold">Contact Support</a>
+						<a href="#" class="block w-full text-center border border-gray-600 text-gray-200 py-2 rounded-md">Download Invoice</a>
+					</div>
+				</aside>
+			</div>
+		</div>
+	</div>
+</div>
+
+<%- include('../partials/footer') %>

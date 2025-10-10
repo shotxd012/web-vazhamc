@@ -8,17 +8,8 @@ const ActivityLog = require("../../models/ActivityLog");
 const Media = require("../../models/Media");
 const Comment = require("../../models/Comment");
 const isStaff = require("../../middleware/isStaff");
-const { Client, GatewayIntentBits } = require('discord.js');
-
-// Discord client setup
-const client = new Client({
-  intents: [
-    GatewayIntentBits.Guilds,
-    GatewayIntentBits.GuildMembers
-  ]
-});
-
-client.login(process.env.DISCORD_BOT_TOKEN);
+// reuse shared Discord client (logged in in config/discordClient.js)
+const client = require('../../config/discordClient');
 
 // GET /admin - Admin Dashboard
 router.get("/", isStaff, async (req, res) => {
@@ -49,15 +40,35 @@ router.get("/", isStaff, async (req, res) => {
     ]);
 
     // Get Discord server statistics
-    const guild = await client.guilds.fetch('1130133112920219769');
-    const discordStats = {
-      totalMembers: guild.memberCount,
-      onlineMembers: guild.members.cache.filter(member => member.presence?.status === 'online').size,
-      totalRoles: guild.roles.cache.size,
-      totalChannels: guild.channels.cache.size,
-      boostLevel: guild.premiumTier,
-      boostCount: guild.premiumSubscriptionCount
+    let discordStats = {
+      totalMembers: 0,
+      onlineMembers: 0,
+      totalRoles: 0,
+      totalChannels: 0,
+      boostLevel: 0,
+      boostCount: 0
     };
+
+    try {
+      const guildId = process.env.DISCORD_GUILD_ID;
+      if (!guildId) throw new Error('DISCORD_GUILD_ID is not set');
+
+      // attempt to fetch the guild; if the bot isn't in the guild this will throw
+      const guild = await client.guilds.fetch(guildId);
+
+      discordStats = {
+        totalMembers: guild.memberCount ?? 0,
+        onlineMembers: guild.members.cache.filter(member => member.presence?.status === 'online').size ?? 0,
+        totalRoles: guild.roles.cache.size ?? 0,
+        totalChannels: guild.channels.cache.size ?? 0,
+        boostLevel: guild.premiumTier ?? 0,
+        boostCount: guild.premiumSubscriptionCount ?? 0
+      };
+    } catch (err) {
+      // handle known Discord API error (unknown guild) and other cases gracefully
+      console.error('Discord guild fetch failed for dashboard:', err?.message ?? err);
+      // keep discordStats as defaults so the page still loads
+    }
 
     // Get recent activities
     const recentActivities = await ActivityLog.find()

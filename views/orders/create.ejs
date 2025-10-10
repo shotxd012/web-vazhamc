@@ -1,0 +1,71 @@
+<%- include('../partials/shot/head') %>
+<%- include('../partials/shot/header') %>
+
+<div class="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 text-white py-12 px-4">
+	<div class="max-w-6xl mx-auto">
+		<header class="mb-8 text-center">
+			<h1 class="text-4xl font-extrabold tracking-tight">Pick a plan</h1>
+			<p class="mt-2 text-gray-300">Flexible plans for creators — start a Support Ticket to place an order.</p>
+		</header>
+
+		<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+			<!-- Basic -->
+			<div class="rounded-xl bg-gradient-to-br from-gray-800 to-gray-700 p-6 shadow-lg border border-gray-700">
+				<div class="flex items-center justify-between">
+					<h2 class="text-xl font-semibold">Basic</h2>
+					<span class="text-sm text-gray-300">For starters</span>
+				</div>
+				<p class="mt-4 text-3xl font-bold">$5<span class="text-base font-medium">/one-time</span></p>
+				<ul class="mt-4 space-y-2 text-gray-300">
+					<li>• 1 Edited Image</li>
+					<li>• Basic Retouch</li>
+					<li>• Standard Delivery</li>
+				</ul>
+				<div class="mt-6">
+					<a href="/profile/tickets/create?plan=Basic&price=5" class="inline-block w-full text-center bg-proxblue hover:bg-blue-500 text-white py-2 rounded-md font-semibold">Order Basic</a>
+				</div>
+			</div>
+
+			<!-- Pro -->
+			<div class="rounded-2xl bg-gradient-to-br from-proxblue to-proxorange p-6 shadow-2xl transform scale-100 md:scale-105 border border-transparent">
+				<div class="flex items-center justify-between">
+					<h2 class="text-xl font-semibold">Pro</h2>
+					<span class="text-sm text-white/90">Most popular</span>
+				</div>
+				<p class="mt-4 text-4xl font-extrabold">$25<span class="text-base font-medium">/one-time</span></p>
+				<ul class="mt-4 space-y-2 text-white/90">
+					<li>• 5 Edited Images</li>
+					<li>• Advanced Retouch</li>
+					<li>• Priority Delivery</li>
+					<li>• Color Grading</li>
+				</ul>
+				<div class="mt-6">
+					<a href="/profile/tickets/create?plan=Pro&price=25" class="inline-block w-full text-center bg-white text-proxblue py-2 rounded-md font-semibold">Order Pro</a>
+				</div>
+			</div>
+
+			<!-- Studio -->
+			<div class="rounded-xl bg-gradient-to-br from-gray-800 to-gray-700 p-6 shadow-lg border border-gray-700">
+				<div class="flex items-center justify-between">
+					<h2 class="text-xl font-semibold">Studio</h2>
+					<span class="text-sm text-gray-300">For teams</span>
+				</div>
+				<p class="mt-4 text-3xl font-bold">$80<span class="text-base font-medium">/one-time</span></p>
+				<ul class="mt-4 space-y-2 text-gray-300">
+					<li>• 20 Edited Images</li>
+					<li>• Full Retouch + Edits</li>
+					<li>• Priority + Revisions</li>
+				</ul>
+				<div class="mt-6">
+					<a href="/profile/tickets/create?plan=Studio&price=80" class="inline-block w-full text-center bg-proxblue hover:bg-blue-500 text-white py-2 rounded-md font-semibold">Order Studio</a>
+				</div>
+			</div>
+		</div>
+
+		<section class="mt-10 text-center text-gray-400">
+			<p>Have a custom request? <a href="/profile/tickets/create" class="text-white underline">Open a ticket</a> and tell us what you need.</p>
+		</section>
+	</div>
+</div>
+
+<%- include('../partials/footer') %>
