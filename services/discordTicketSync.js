@@ -106,9 +106,11 @@ class DiscordTicketSync {
             });
 
             // Pin the ticket message
-            await message.pin().catch(() => {});
+            await message.pin().catch((err) => {
+                console.log('⚠️ Could not pin message:', err.message);
+            });
 
-            console.log(`✅ Discord channel created: ${channel.id} for ticket ${ticket.ticketId}`);
+            console.log(`✅ Discord channel created: ${channel.id} (${channel.name}) for ticket ${ticket.ticketId}`);
             return channel.id;
         } catch (error) {
             console.error('❌ Error creating Discord ticket channel:', error);

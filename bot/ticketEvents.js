@@ -8,16 +8,22 @@ const discordConfig = require('../config/discord.json');
 const processedMessages = new Set();
 
 module.exports = (client) => {
+    console.log('🎫 Initializing Discord ticket event listeners...');
+    
     // Listen for messages in ticket channels
     client.on(Events.MessageCreate, async (message) => {
         try {
             // Ignore bot messages and messages we've already processed
-            if (message.author.bot || processedMessages.has(message.id)) return;
+            if (message.author.bot || processedMessages.has(message.id)) {
+                return;
+            }
 
             // Check if message is in a ticket channel
             if (!message.channel.name.startsWith('ticket-') && !message.channel.name.startsWith('closed-')) {
                 return;
             }
+            
+            console.log(`📨 Message detected in ticket channel: ${message.channel.name}`);
 
             // Find the ticket by channel ID
             const ticket = await Ticket.findOne({ discordChannelId: message.channel.id });
@@ -244,7 +250,8 @@ module.exports = (client) => {
         }
     });
 
-    console.log('✅ Discord ticket events loaded');
+    console.log('✅ Discord ticket events loaded successfully');
+    console.log(`👂 Listening for messages in channels starting with: ticket- or closed-`);
 };
 
 // Export the processed messages set so the sync service can use it

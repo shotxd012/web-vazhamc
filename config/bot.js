@@ -1,21 +1,10 @@
-const { Client, GatewayIntentBits, SlashCommandBuilder, ButtonBuilder } = require("discord.js");
+const { SlashCommandBuilder } = require("discord.js");
 const mongoose = require("mongoose");
 const Announcement = require("../models/Announcement");
-const initTicketEvents = require("../bot/ticketEvents"); 
+const client = require("./discordClient"); // Use the same client
 
-
-const bot = new Client({
-    intents: [
-        GatewayIntentBits.Guilds, 
-        GatewayIntentBits.GuildMessages,
-        GatewayIntentBits.MessageContent,
-        GatewayIntentBits.GuildMembers
-    ]
-});
-
-bot.once("ready", () => {
-    console.log(`✅ Announcement Bot Logged in as ${bot.user.tag}`);
-});
+// Use the shared client instead of creating a new bot
+const bot = client;
 
 async function getAnnouncementChannel(guild) {
     const channels = guild.channels.cache.filter(channel => 
@@ -56,24 +45,24 @@ bot.on("interactionCreate", async (interaction) => {
     }
 });
 
-bot.once("ready", async () => {
-    const guild = bot.guilds.cache.get(process.env.GUILD_ID);
-    if (guild) {
-        await guild.commands.create(
-            new SlashCommandBuilder()
-                .setName("announce")
-                .setDescription("Send an announcement")
-                .addStringOption((option) => option.setName("title").setDescription("Announcement Title").setRequired(true))
-                .addStringOption((option) => option.setName("description").setDescription("Announcement Description").setRequired(true))
-                .addStringOption((option) => option.setName("footer").setDescription("Footer Text").setRequired(false))
-        );
-        console.log("✅ /announce command registered!");
-    }
-});
 
 function startBot() {
-    bot.login(process.env.DISCORD_BOT_TOKEN).catch((err) => {
-        console.error("❌ Bot Login Error:", err);
+    // Bot is already logged in via discordClient.js
+    // Just initialize slash commands
+    bot.once("ready", async () => {
+        console.log(`✅ Announcement commands initializing...`);
+        const guild = bot.guilds.cache.get(process.env.GUILD_ID);
+        if (guild) {
+            await guild.commands.create(
+                new SlashCommandBuilder()
+                    .setName("announce")
+                    .setDescription("Send an announcement")
+                    .addStringOption((option) => option.setName("title").setDescription("Announcement Title").setRequired(true))
+                    .addStringOption((option) => option.setName("description").setDescription("Announcement Description").setRequired(true))
+                    .addStringOption((option) => option.setName("footer").setDescription("Footer Text").setRequired(false))
+            );
+            console.log("✅ /announce command registered!");
+        }
     });
 }
 
