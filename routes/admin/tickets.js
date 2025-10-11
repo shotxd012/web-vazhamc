@@ -6,6 +6,7 @@ const isStaff = require("../../middleware/isStaff");
 const multer = require("multer");
 const { CloudinaryStorage } = require("multer-storage-cloudinary");
 const cloudinary = require("cloudinary").v2;
+const DiscordTicketSync = require("../../services/discordTicketSync");
 
 // Cloudinary setup
 cloudinary.config({
@@ -72,7 +73,7 @@ router.post("/:ticketId/reply", isStaff, upload.single("image"), async (req, res
 
     const imageUrl = req.file ? req.file.path : null;
 
-    await Message.create({
+    const newMessage = await Message.create({
       ticketId: ticket.ticketId,
       userId: req.user.discordId,
       username: req.user.username,
@@ -81,6 +82,9 @@ router.post("/:ticketId/reply", isStaff, upload.single("image"), async (req, res
       image: imageUrl,
       role: req.user.role
     });
+
+    // Sync to Discord
+    await DiscordTicketSync.sendMessage(ticket, newMessage, true);
 
     res.redirect(`/admin/tickets/${ticket.ticketId}`);
   } catch (error) {
@@ -104,6 +108,9 @@ router.post("/:ticketId/close", isStaff, async (req, res) => {
     ticket.closedReason = req.body.reason || "Closed by staff";
     await ticket.save();
 
+    // Close Discord channel
+    await DiscordTicketSync.closeTicketChannel(ticket);
+
     res.redirect(`/admin/tickets/${ticket.ticketId}`);
   } catch (error) {
     console.error("Error closing ticket:", error);
@@ -126,6 +133,9 @@ router.post("/:ticketId/reopen", isStaff, async (req, res) => {
     ticket.closedReason = null;
     await ticket.save();
 
+    // Reopen Discord channel
+    await DiscordTicketSync.reopenTicketChannel(ticket);
+
     res.redirect(`/admin/tickets/${ticket.ticketId}`);
   } catch (error) {
     console.error("Error reopening ticket:", error);
@@ -143,6 +153,9 @@ router.post("/:ticketId/delete", isStaff, async (req, res) => {
         error: { status: 404 }
       });
     }
+
+    // Delete Discord channel
+    await DiscordTicketSync.deleteTicketChannel(ticket);
 
     await Message.deleteMany({ ticketId: ticket.ticketId });
     await Ticket.deleteOne({ ticketId: ticket.ticketId });

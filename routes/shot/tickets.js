@@ -5,6 +5,7 @@ const Message = require("../../models/TicketMessage");
 const multer = require("multer");
 const { CloudinaryStorage } = require("multer-storage-cloudinary");
 const cloudinary = require("cloudinary").v2;
+const DiscordTicketSync = require("../../services/discordTicketSync");
 
 // Configure Cloudinary
 cloudinary.config({
@@ -56,13 +57,17 @@ router.post("/shot/ticket/:ticketId/reply", upload.single("image"), async (req, 
   const ticket = await Ticket.findOne({ ticketId });
   if (!ticket) return res.status(404).send("Ticket not found");
 
-  await Message.create({
+  const newMessage = await Message.create({
     ticketId,
     userId: "1196320815260651682",
     username: "Admin", 
+    avatar: "default",
     message,
     image: imageUrl
   });
+
+  // Sync to Discord
+  await DiscordTicketSync.sendMessage(ticket, newMessage, true);
 
   res.redirect(`/shot/ticket/${ticketId}`);
 });
@@ -79,6 +84,10 @@ router.post("/shot/ticket/:ticketId/close", async (req, res) => {
   ticket.status = "closed";
   ticket.closedReason = req.body.reason || "Closed by admin";
   await ticket.save();
+
+  // Close Discord channel
+  await DiscordTicketSync.closeTicketChannel(ticket);
+
   res.redirect(`/shot/ticket/${ticketId}`);
 });
 
@@ -92,6 +101,9 @@ router.post("/shot/ticket/:ticketId/reopen", async (req, res) => {
   ticket.status = "open";
   ticket.closedReason = ""; 
   await ticket.save();
+
+  // Reopen Discord channel
+  await DiscordTicketSync.reopenTicketChannel(ticket);
 
   res.redirect(`/shot/ticket/${ticketId}`);
 });

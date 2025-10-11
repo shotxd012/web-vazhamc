@@ -4,6 +4,7 @@ const SourceCode = require("../models/SourceCode");
 const { isAuthenticated } = require("../middleware/ensureAuthenticated");
 const SourceCodeOrder = require("../models/SourceCodeOrder");
 const Ticket = require("../models/Ticket");
+const DiscordTicketSync = require("../services/discordTicketSync");
 
 // GET /source-code
 router.get("/source-code", isAuthenticated, async (req, res) => {
@@ -62,6 +63,13 @@ router.post("/source-code/:id/purchase", isAuthenticated, async (req, res) => {
             type: "high"
         });
         await ticket.save();
+
+        // Create Discord channel for the ticket
+        const channelId = await DiscordTicketSync.createTicketChannel(ticket);
+        if (channelId) {
+            ticket.discordChannelId = channelId;
+            await ticket.save();
+        }
 
         res.redirect("/profile/tickets");
     } catch (err) {

@@ -6,6 +6,7 @@ const { CloudinaryStorage } = require("multer-storage-cloudinary");
 const multer = require("multer");
 const cloudinary = require("cloudinary").v2;
 const ensureOrderAuth = require("../middleware/ensureOrderAuth");
+const DiscordTicketSync = require("../services/discordTicketSync");
 
 // Auth middleware
 function isAuthenticated(req, res, next) {
@@ -36,7 +37,7 @@ router.post("/profile/tickets/create", ensureOrderAuth, async (req, res) => {
         return res.redirect("/profile/tickets");
     }
 
-    await new Ticket({
+    const ticket = await new Ticket({
         userId: req.user.discordId,
         username: req.user.username,
         avatar: req.user.avatar,
@@ -45,6 +46,13 @@ router.post("/profile/tickets/create", ensureOrderAuth, async (req, res) => {
         description,
         type
     }).save();
+
+    // Create Discord channel
+    const channelId = await DiscordTicketSync.createTicketChannel(ticket);
+    if (channelId) {
+        ticket.discordChannelId = channelId;
+        await ticket.save();
+    }
 
     res.redirect("/profile/tickets");
 });
@@ -92,7 +100,7 @@ cloudinary.config({
   
     if (req.file) imageUrl = req.file.path;
   
-    await Message.create({
+    const newMessage = await Message.create({
       ticketId,
       userId: req.user.discordId,
       username: req.user.username,
@@ -100,6 +108,12 @@ cloudinary.config({
       message,
       image: imageUrl
     });
+
+    // Sync to Discord
+    const ticket = await Ticket.findOne({ ticketId });
+    if (ticket) {
+      await DiscordTicketSync.sendMessage(ticket, newMessage, false);
+    }
   
     res.redirect(`/profile/ticket/${ticketId}`);
   });
@@ -111,9 +125,12 @@ cloudinary.config({
         return res.status(403).send("Unauthorized");
     }
 
-    ticket.status = "closed"; // ✅ Fix here
+    ticket.status = "closed";
     ticket.closedReason = req.body.reason || "Closed by user";
     await ticket.save();
+
+    // Close Discord channel
+    await DiscordTicketSync.closeTicketChannel(ticket);
 
     res.redirect(`/profile/ticket/${req.params.ticketId}`);
 });

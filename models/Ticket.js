@@ -15,6 +15,7 @@ const TicketSchema = new mongoose.Schema({
   type: { type: String, enum: ["low", "medium", "high", "suggestion"], default: "low" },
   status: { type: String, enum: ["open", "closed"], default: "open" },
   closedReason: String,
+  discordChannelId: String,
   createdAt: { type: Date, default: Date.now }
 });
 
@@ -77,8 +78,8 @@ TicketSchema.post("save", async function (doc, next) {
       return next();
     }
 
-    const adminUrl = `${process.env.BASE_URL}/shot/ticket/${doc.ticketId}`;
-    const userUrl = `${process.env.BASE_URL}/profile/ticket/${doc.ticketId}`;
+    const adminUrl = `${process.env.BASE_URL}admin/tickets/${doc.ticketId}`;
+    const userUrl = `${process.env.BASE_URL}profile/ticket/${doc.ticketId}`;
 
     const adminBtn = new ButtonBuilder()
       .setLabel("🔧 Admin View")

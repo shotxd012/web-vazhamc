@@ -1,14 +1,20 @@
 const { Client, GatewayIntentBits, SlashCommandBuilder, ButtonBuilder } = require("discord.js");
 const mongoose = require("mongoose");
-const Announcement = require("../models/Announcement"); 
+const Announcement = require("../models/Announcement");
+const initTicketEvents = require("../bot/ticketEvents"); 
 
 
 const bot = new Client({
-    intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages]
+    intents: [
+        GatewayIntentBits.Guilds, 
+        GatewayIntentBits.GuildMessages,
+        GatewayIntentBits.MessageContent,
+        GatewayIntentBits.GuildMembers
+    ]
 });
 
 bot.once("ready", () => {
-    console.log(`✅ Bot Logged in as ${bot.user.tag}`);
+    console.log(`✅ Announcement Bot Logged in as ${bot.user.tag}`);
 });
 
 async function getAnnouncementChannel(guild) {

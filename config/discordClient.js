@@ -24,6 +24,14 @@ client.login(process.env.DISCORD_TOKEN)
 // Ready handler
 client.once('ready', () => {
     console.log(`Discord client ready as ${client.user?.tag} (id: ${client.user?.id})`);
+    
+    // Initialize ticket events
+    try {
+        const initTicketEvents = require('../bot/ticketEvents');
+        initTicketEvents(client);
+    } catch (err) {
+        console.error('Error loading ticket events:', err);
+    }
 });
 
 // Attach a helper to allow other modules to await readiness
