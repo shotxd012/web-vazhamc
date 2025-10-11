@@ -3,6 +3,8 @@ module.exports = {
         if (req.isAuthenticated()) {
             return next();
         }
-        res.redirect('/auth/discord');
+        // Store the current URL to redirect back after authentication
+        const returnTo = req.originalUrl;
+        res.redirect(`/login?returnTo=${encodeURIComponent(returnTo)}`);
     }
 };

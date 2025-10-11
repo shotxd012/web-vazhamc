@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
+const shortid = require("shortid");
 
 const SourceCodeSchema = new mongoose.Schema({
+    sourceCodeId: { type: String, default: shortid.generate, unique: true },
     discordId: String,
     username: String,
     avatar: String,

@@ -25,9 +25,13 @@
             <textarea id="message-input" class="w-full p-2 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all duration-200 text-sm" 
                 placeholder="Type your message..." rows="1"></textarea>
             <button id="send-message" class="bg-red-600 w-full py-1.5 mt-1.5 rounded-lg hover:bg-red-700 transition-colors duration-200 flex items-center justify-center space-x-1 text-sm">
-                <span>Send</span>
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <span id="send-text">Send</span>
+                <svg id="send-icon" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                </svg>
+                <svg id="send-spinner" class="hidden h-4 w-4 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
             </button>
         </div>
@@ -139,12 +143,22 @@
     document.getElementById("send-message").addEventListener("click", async () => {
         const messageInput = document.getElementById("message-input");
         const message = messageInput.value.trim();
+        const sendBtn = document.getElementById("send-message");
+        const sendText = document.getElementById("send-text");
+        const sendIcon = document.getElementById("send-icon");
+        const sendSpinner = document.getElementById("send-spinner");
         
         if (!message) {
             messageInput.classList.add("border-red-500");
             setTimeout(() => messageInput.classList.remove("border-red-500"), 1000);
             return;
         }
+
+        // Show loading state
+        sendBtn.disabled = true;
+        sendText.textContent = "Sending...";
+        sendIcon.classList.add("hidden");
+        sendSpinner.classList.remove("hidden");
 
         try {
             const response = await fetch("/send-message", {
@@ -162,6 +176,12 @@
             }
         } catch (error) {
             console.error("Error sending message:", error);
+        } finally {
+            // Reset button state
+            sendBtn.disabled = false;
+            sendText.textContent = "Send";
+            sendIcon.classList.remove("hidden");
+            sendSpinner.classList.add("hidden");
         }
     });
 

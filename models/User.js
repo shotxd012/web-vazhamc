@@ -5,7 +5,8 @@ const UserSchema = new mongoose.Schema({
     username: String,
     avatar: String,
     guilds: Array,
-    role: { type: String, default: "Member" }
+    role: { type: String, default: "Member" },
+    accessToken: String
 });
 
 module.exports = mongoose.model("User", UserSchema);
